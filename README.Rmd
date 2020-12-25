@@ -13,12 +13,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# DRI.GLUCoSE
+# DRI-GLUCoSE
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of DRI.GLUCoSE is to provide a public package containing functions and code used in the development of the DRI-GLUCoSE Index.
+The goal of DRIGLUCoSE is to provide a public package containing functions and code used in the development of the DRI-GLUCoSE Index.
 
 ## Installation
 
@@ -87,6 +87,10 @@ tmap1 <- tmap::tm_shape(Erlangen[Erlangen$id == 1,] %>% sf::st_buffer(20*Erlange
   tmap::tm_basemap(leaflet::providers$OpenStreetMap)
 
 tmap::tmap_save(tmap1, "docs/erlangen_tmap")
+```
+
+```{r}
+htmltools::includeHTML("docs/erlangen_tmap.html")
 ```
 
 
