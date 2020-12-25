@@ -26,3 +26,5 @@ Suggests:
     remotes,
     tmap,
     leaflet
+URL: https://github.com/STBrinkmann/DRIGLUCoSE
+BugReports: https://github.com/STBrinkmann/DRIGLUCoSE/issues
