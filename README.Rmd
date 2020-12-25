@@ -58,12 +58,12 @@ erlangen.isodistances <- isodistances(x = Erlangen, road_network = erlangen.osm,
                                       isochrones_seq = seq(2, 20, 2), speed = "Speed", cores = 4)
 ```
 
-Finally, the isochrones can be calculated by applying an off-road buffer on the isodistances. The results will be mapped using the [tmap](https://github.com/mtennekes/tmap) package.
+Finally, the isochrones can be calculated by applying an off-road buffer on the isodistances. The results can be mapped using the [tmap](https://github.com/mtennekes/tmap) package, however at this point I do not know how to include the .html map into the GitHub-ReadMe. 
 ```{r eval=FALSE, include=TRUE}
 erlangen.isochrones <- isochrones(erlangen.isodistances, 40, 4)
 ```
 
-```{r eval=FALSE, include=FALSE}
+```{r eval=FALSE, include=TRUE}
 tmap::tmap_mode("view")
 
 tmap1 <- tmap::tm_shape(Erlangen[Erlangen$id == 1,] %>% sf::st_buffer(20*Erlangen[Erlangen$id == 1,]$Speed),
@@ -87,12 +87,7 @@ tmap1 <- tmap::tm_shape(Erlangen[Erlangen$id == 1,] %>% sf::st_buffer(20*Erlange
   tmap::tm_layout(legend.outside = TRUE) +
   tmap::tm_basemap(leaflet::providers$OpenStreetMap)
 
-tmap::tmap_save(tmap1, "docs/erlangen_tmap")
-```
-
-```{r}
-tmap::tmap_mode("view")
-htmltools::includeHTML("docs/erlangen_tmap.html")
+tmap1
 ```
 
 
