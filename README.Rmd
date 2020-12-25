@@ -1,5 +1,6 @@
 ---
 output: github_document
+always_allow_html: yes
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -37,7 +38,7 @@ Once installed, the library can be loaded as follows:
 library(DRI.GLUCoSE)
 ```
 
-### Isochrone workflow
+## Isochrone workflow
 
 One key purpose of this package is, to provide functions for route networked derived isochrones. For that purpose we have provided a simple sf object of 4 points in Erlangen, Germany.
 

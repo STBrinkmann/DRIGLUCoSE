@@ -38,7 +38,7 @@ library(DRI.GLUCoSE)
 #> Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1
 ```
 
-### Isochrone workflow
+## Isochrone workflow
 
 One key purpose of this package is, to provide functions for route
 networked derived isochrones. For that purpose we have provided a simple
