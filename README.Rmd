@@ -91,6 +91,7 @@ tmap::tmap_save(tmap1, "docs/erlangen_tmap")
 ```
 
 ```{r}
+tmap::tmap_mode("view")
 htmltools::includeHTML("docs/erlangen_tmap.html")
 ```
 

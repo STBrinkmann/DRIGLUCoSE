@@ -85,6 +85,8 @@ erlangen.isochrones <- isochrones(erlangen.isodistances, 40, 4)
 ```
 
 ``` r
+tmap::tmap_mode("view")
+#> tmap mode set to interactive viewing
 htmltools::includeHTML("docs/erlangen_tmap.html")
 ```
 
