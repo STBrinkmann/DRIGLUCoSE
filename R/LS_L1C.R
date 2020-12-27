@@ -35,6 +35,10 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
                    NDWI = TRUE, NDVI = TRUE,
                    cores = 1L, maxmemory = 1e+08) {
 
+  l1c_name <- basename(l1c_path)
+  l1c_name <- dplyr::if_else(endsWith(l1c_name, ".tar.gz"),
+                             gsub(".tar.gz", "", l1c_name), l1c_name)
+
   # l1c_path
   if (is.null(l1c_path)) stop("l1c_path is NULL.")
 
@@ -53,10 +57,6 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
   # Raster options
   raster::rasterOptions(tmpdir = file.path(proc_dir, l1c_name), datatype = 'FLT4S', overwrite = T)
   raster::rasterOptions(maxmemory = maxmemory)
-
-  l1c_name <- basename(l1c_path)
-  l1c_name <- dplyr::if_else(endsWith(l1c_name, ".tar.gz"),
-                             gsub(".tar.gz", "", l1c_name), l1c_name)
 
 
   # LANDSAT Bands ---------------------------------------------------
