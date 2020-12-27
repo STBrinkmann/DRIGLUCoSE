@@ -17,7 +17,8 @@ Imports:
     tidygraph (>= 1.2.0),
     nabor (>= 0.5.0),
     rlang (>= 0.4.1),
-    methods
+    methods,
+    raster (>= 3.4.5)
 Depends: 
     dplyr (>= 0.8.0),
     sf (>= 0.9.6),
