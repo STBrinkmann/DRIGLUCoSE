@@ -26,7 +26,7 @@ The goal of DRIGLUCoSE is to provide a public package containing functions and c
 You can install the latest version of DRI.GLUCoSE from [GitHub](https://CRAN.R-project.org) with:
 
 ```{r eval=FALSE, include=TRUE}
-devtools::install_git("https://github.com/STBrinkmann/DRI.GLUCoSE")
+devtools::install_git("https://github.com/STBrinkmann/DRIGLUCoSE")
 ```
 
 
@@ -35,12 +35,12 @@ devtools::install_git("https://github.com/STBrinkmann/DRI.GLUCoSE")
 Once installed, the library can be loaded as follows:
 
 ```{r}
-library(DRI.GLUCoSE)
+library(DRIGLUCoSE)
 ```
 
 ## Isochrone workflow
 
-One key purpose of this package is, to provide functions for route networked derived isochrones. For that purpose we have provided a simple sf object of 4 points in Erlangen, Germany.
+One key purpose of this package is, to provide functions for route networked derived isochrones. For that purpose we have provided a simple sf object of 2 points in Erlangen, Germany.
 
 ```{r}
 data(Erlangen)
@@ -49,13 +49,13 @@ Erlangen
 
 The first step is to download and preprocess OSM road data:
 ```{r eval=FALSE, include=TRUE}
-erlangen.osm <- osm_roads(x = Erlangen, dist = 20, speed = "Speed", cores = 4)
+erlangen.osm <- osm_roads(x = Erlangen, dist = 20, speed = "Speed", cores = 2)
 ```
 
-Next, the isodistances will be calculated based on the road network. Since the road network contains a lot of features (n=22337), this will take some time (~30-60 minutes).
+Next, the isodistances will be calculated based on the road network. Since the road network contains a lot of features (n=14061), this will take some time (~15-30 minutes).
 ```{r eval=FALSE, include=TRUE}
 erlangen.isodistances <- isodistances(x = Erlangen, road_network = erlangen.osm, tag = "id",
-                                      isochrones_seq = seq(2, 20, 2), speed = "Speed", cores = 4)
+                                      isochrones_seq = seq(2, 20, 2), speed = "Speed", cores = 2)
 ```
 
 Finally, the isochrones can be calculated by applying an off-road buffer on the isodistances. The results can be mapped using the [tmap](https://github.com/mtennekes/tmap) package, however at this point I do not know how to include the .html map into the GitHub-ReadMe. 
