@@ -15,7 +15,7 @@ A \code{sf} with 2 column, which are:
 Erlangen
 }
 \description{
-A simple \code{sf} of 4 points in Erlangen, Germany,
+A simple \code{sf} of 2 points in Erlangen, Germany,
     that is for simple testing and running.
 }
 \keyword{datasets}

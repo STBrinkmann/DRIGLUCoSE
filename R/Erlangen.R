@@ -1,6 +1,6 @@
 #' @title Sample Data for Analysis
 #'
-#' @description  A simple \code{sf} of 4 points in Erlangen, Germany,
+#' @description  A simple \code{sf} of 2 points in Erlangen, Germany,
 #'     that is for simple testing and running.
 #'
 #' @format A \code{sf} with 2 column, which are:

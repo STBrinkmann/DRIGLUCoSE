@@ -1,10 +1,10 @@
 ## code to prepare `Erlangen` dataset goes here
 Erlangen <- dplyr::tibble(
-  id = c(1:4),
-  age = c(26, 34, 65, 39),
-  sex = c("Male", "Female", "Male", "Female"),
-  X = c(35199.46, 36281.59, 35676.69, 36631.72),
-  Y = c(-159433.5, -159243.2, -158452.3, -158460.3)
+  id = c(1, 2),
+  age = c(26, 34),
+  sex = c("Male", "Female"),
+  X = c(35199.46, 36281.59),
+  Y = c(-159433.5, -159243.2)
 ) %>%
   # https://ij-healthgeographics.biomedcentral.com/articles/10.1186/1476-072X-11-43
   dplyr::mutate(Speed = ifelse(sex == "Female",
