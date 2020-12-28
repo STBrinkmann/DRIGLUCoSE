@@ -10,7 +10,7 @@
 #' @param speed numeric or character; either numeric value of speed (meters/minute) or string containing the column name, that indicates the speed.
 #' @param cores the number of cores to use.
 #'
-#' @return An \code{sf MULTILINESTRING} of isodistances is returned. The sf object contains two fields:
+#' @return An \code{sf MULTILINESTRING} of isodistances is returned. The sf object contains two fields:\cr
 #'     tag (id of the original point feature) and time (range of the segments).
 #' @export
 #'

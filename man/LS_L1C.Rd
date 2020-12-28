@@ -45,7 +45,7 @@ The lowest value of each band will therefore be subtracted.}
 than this value, \code{\link[raster]{canProcessInMemory}} will return \code{FALSE.}}
 }
 \value{
-L2A.grd file in \code{out_dir.}
+L2A.grd file in \code{out_dir}.
 }
 \description{
 The function corrects Landsat 1-8 L1C images to L2A.

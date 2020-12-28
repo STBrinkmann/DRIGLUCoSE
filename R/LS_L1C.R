@@ -27,7 +27,7 @@
 #' @param maxmemory numeric; Maximum number of bytes to read into memory. If a process is expected to require more
 #'     than this value, \code{\link[raster]{canProcessInMemory}} will return \code{FALSE.}
 #'
-#' @return L2A.grd file in \code{out_dir.}
+#' @return L2A.grd file in \code{out_dir}.
 #' @export
 #'
 #' @import raster

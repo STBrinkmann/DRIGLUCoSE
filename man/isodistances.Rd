@@ -27,7 +27,7 @@ isodistances(
 \item{cores}{the number of cores to use.}
 }
 \value{
-An \code{sf MULTILINESTRING} of isodistances is returned. The sf object contains two fields:
+An \code{sf MULTILINESTRING} of isodistances is returned. The sf object contains two fields:\cr
     tag (id of the original point feature) and time (range of the segments).
 }
 \description{
