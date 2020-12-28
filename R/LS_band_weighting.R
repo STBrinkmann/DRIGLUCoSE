@@ -59,7 +59,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   }
 
   # band
-  if (as.numeric(table(sapply(landsat_list, names))[band]) == length(landsat_list)) {
+  if (as.numeric(table(sapply(landsat_list, names))[band]) != length(landsat_list)) {
     stop("band must be a landsat band in all raster elements of landsat_list.")
   }
 
