@@ -1,7 +1,7 @@
 #' @title Download and clean road features
 #'
 #' @description Download road features using the OSM overpass API \code{\link[osmdata]{opq}}.
-#'     Simple topology cleaning is applyed using \code{\link[nngeo]{st_split_junctions}}.
+#'     Simple topology cleaning is applied using \code{\link[nngeo]{st_split_junctions}}.
 #'
 #' @param x object of class \code{sf}.
 #' @param dist numeric; maximum number of minutes of the isochrones.
@@ -93,7 +93,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
     })
     parallel::stopCluster(cl)
 
-    osm_roads <- DRI.GLUCoSE::rbind_parallel(osm_roads)
+    osm_roads <- DRIGLUCoSE::rbind_parallel(osm_roads)
 
     if ("result" %in% names(osm_roads)) {
       osm_roads <- osm_roads %>% dplyr::rename(geom = "result")
@@ -102,14 +102,14 @@ osm_roads <- function(x, dist, speed, cores = 1L,
   # ---- Linux and macOS ----
   else {
     osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200))) %>%
-      mclapply(function(x){
+      parallel::mclapply(function(x){
         x %>% st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
       },
       mc.cores = cores, mc.preschedule = TRUE) %>%
-      rbind.parallel(cores = cores)
+      DRIGLUCoSE::rbind.parallel(cores = cores)
 
     if ("result" %in% names(osm_roads)) {
-      osm_roads <- osm_roads %>% rename(geom = "result")
+      osm_roads <- osm_roads %>% dplyr::rename(geom = "result")
     }
   }
 

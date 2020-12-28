@@ -297,7 +297,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   }
 
   # Convert list to one tibble
-  output_tibble <- rbind.parallel(LS_band_weightes, cores = cores) %>%
+  output_tibble <- DRIGLUCoSE::rbind.parallel(LS_band_weightes, cores = cores) %>%
     as_tibble()
 
   invisible(gc())

@@ -28,7 +28,7 @@ object of class \code{sf} containing road features.
 }
 \description{
 Download road features using the OSM overpass API \code{\link[osmdata]{opq}}.
-    Simple topology cleaning is applyed using \code{\link[nngeo]{st_split_junctions}}.
+    Simple topology cleaning is applied using \code{\link[nngeo]{st_split_junctions}}.
 }
 \examples{
 \dontrun{
