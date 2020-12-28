@@ -103,8 +103,8 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   }
 
   # time
-  if (time %in% names(isochrones)) {
-    stop("speed must be a column of the sf object.")
+  if (!time %in% names(isochrones)) {
+    stop("time must be a column of the sf object.")
   }
 
   # cores
