@@ -46,8 +46,10 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
   if (is.null(out_dir)) stop("out_dir is NULL.")
 
   # proc_dir
+  rm_proc_dir <- FALSE
   if(is.null(proc_dir)) {
     proc_dir <- file.path(l1c_path, "Tmp")
+    rm_proc_dir <- TRUE
   }
   dir.create(file.path(proc_dir, l1c_name), recursive = T, showWarnings = F)
 
@@ -216,7 +218,12 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
   raster::writeRaster(LS_stack, file.path(out_dir, paste0(l1c_name, ".grd")), format = 'raster', overwrite = T)
 
   # Remove files from Rtmp
-  unlink(file.path(proc_dir, l1c_name), recursive = TRUE)
+  if (rm_proc_dir) {
+    unlink(file.path(proc_dir), recursive = TRUE)
+  } else {
+    unlink(file.path(proc_dir, l1c_name), recursive = TRUE)
+  }
+
   invisible(gc())
 
   return(LS_stack)
