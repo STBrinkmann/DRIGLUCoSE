@@ -48,7 +48,7 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
   # proc_dir
   rm_proc_dir <- FALSE
   if(is.null(proc_dir)) {
-    proc_dir <- file.path(l1c_path, "Tmp")
+    proc_dir <- file.path(dirname(l1c_path), l1c_name, "proc_dir")
     rm_proc_dir <- TRUE
   }
   dir.create(file.path(proc_dir, l1c_name), recursive = T, showWarnings = F)
