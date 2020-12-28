@@ -220,7 +220,7 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
 
   # Remove files from Rtmp
   if (rm_proc_dir) {
-    unlink(file.path(proc_dir), recursive = TRUE)
+    unlink(file.path(dirname(l1c_path), l1c_name), recursive = TRUE)
   } else {
     unlink(file.path(proc_dir, l1c_name), recursive = TRUE)
   }
