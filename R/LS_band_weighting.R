@@ -272,7 +272,9 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   # 3. Parallel apply function ---------------------------------------------
 
   # Convert isochrones to list to enable mclapply
-  isochrones_list <- suppressWarnings(split(isochrones, seq(nrow(isochrones))))
+  isochrones_list <- isochrones %>%
+    dplyr::group_by(tag) %>%
+    dplyr::group_split()
 
   # WINDWOS
   if (Sys.info()[["sysname"]] == "Windows") {
