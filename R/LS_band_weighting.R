@@ -156,11 +156,11 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     #### Distance weights ####
     # Assign distance weights to isochrones
     this_tag <- this_tag %>%
-      mutate(area = st_area(.)) %>%  # calulate area of isochrones
-      mutate(r = sqrt(area/pi)) %>%
-      select(-area) %>%
-      mutate(r_norm = as.numeric(r/max(r))) %>% # normalized mean radii
-      relocate(geom, .after = last_col())
+      dplyr::mutate(area = sf::st_area(.)) %>%  # calulate area of isochrones
+      dplyr::mutate(r = sqrt(area/pi)) %>%
+      dplyr::select(-area) %>%
+      dplyr::mutate(r_norm = as.numeric(r/max(r))) %>% # normalized mean radii
+      dplyr::relocate(geom, .after = last_col())
 
     # Define spatial weight function
     g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
