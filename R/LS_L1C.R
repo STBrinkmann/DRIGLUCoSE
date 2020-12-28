@@ -218,4 +218,6 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
   # Remove files from Rtmp
   unlink(file.path(proc_dir, l1c_name), recursive = TRUE)
   invisible(gc())
+
+  return(LS_stack)
 }
