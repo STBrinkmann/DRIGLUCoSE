@@ -19,10 +19,12 @@
 #' @param dark_pixel The Dark Object Subtraction method assumes that the darkest parts of an image
 #'     (water, artificial structures) should be black, if not for the effects of atmospheric scatter.
 #'     The lowest value of each band will therefore be subtracted.
-#' @param NDWI Modified Normalized Difference Water Index (MNDWI): \href{https://doi.org/10.1080/01431160600589179}{Xu H.}
-#' @param NDVI Normalized Difference Vegetation Index (NDVI): \href{https://gisgeography.com/ndvi-normalized-difference-vegetation-index/}{GIS Geography}
+#' @param indices (optional) Character string or vector of indices to calculate.\cr
+#'     \code{MNDWI}: Modified Normalized Difference Water Index: \href{https://doi.org/10.1080/01431160600589179}{Xu H.}\cr
+#'     \code{NDVI}: Normalized Difference Vegetation Index:
+#'     \href{https://gisgeography.com/ndvi-normalized-difference-vegetation-index/}{GIS Geography}
 #' @param cores The number of cores to use; only necessary if \code{sf_mask} is provided.
-#' @param maxmemory numeric. Maximum number of bytes to read into memory. If a process is expected to require more
+#' @param maxmemory numeric; Maximum number of bytes to read into memory. If a process is expected to require more
 #'     than this value, \code{\link[raster]{canProcessInMemory}} will return \code{FALSE.}
 #'
 #' @return L2A.grd file in \code{out_dir.}
@@ -32,7 +34,7 @@
 #' @importFrom dplyr if_else
 LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = NA,
                    bad_pixel = TRUE, dark_pixel = TRUE,
-                   NDWI = TRUE, NDVI = TRUE,
+                   indices = c("MNDWI", "NDVI"),
                    cores = 1L, maxmemory = 1e+08) {
 
   l1c_name <- basename(l1c_path)
@@ -179,14 +181,13 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
   # 3. Subtract dark pixel (subtract min value from each band respectively)
   cat("Subtract dark pixel"); cat("\n")
   for (band in names(LS_stack)) {
-    TOA_raster <- LS_stack[[band]]
-    LS_stack[[band]] <- TOA_raster - raster::minValue(TOA_raster)
-    rm(TOA_raster); invisible(gc())
+    LS_stack[[band]] <- LS_stack[[band]] - raster::minValue(LS_stack[[band]])
+    invisible(gc())
     Sys.sleep(0.1)
   }
 
   # Apply functions -----------------------------------------------
-  if (NDWI) {
+  if ("MNDWI" %in% indices) {
     # Calculate NDWI and remove false values
     calcMNDWI <- function(Green, NIR) return((Green - NIR) / (Green + NIR))
 
@@ -198,7 +199,7 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
     LS_stack <- raster::stack(LS_stack, NDWI_layer)
   }
 
-  if (NDVI) {
+  if ("NDVI" %in% indices) {
     # Calculate NDVI and remove false values
     calcNDVI <- function(NIR, VIS) return((NIR - VIS) / (NIR + VIS))
 

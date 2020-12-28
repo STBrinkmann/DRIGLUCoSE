@@ -11,8 +11,7 @@ LS_L1C(
   sf_mask = NA,
   bad_pixel = TRUE,
   dark_pixel = TRUE,
-  NDWI = TRUE,
-  NDVI = TRUE,
+  indices = c("MNDWI", "NDVI"),
   cores = 1L,
   maxmemory = 1e+08
 )
@@ -35,13 +34,14 @@ masked to the bounding box of the \code{sf_mask} object.}
 (water, artificial structures) should be black, if not for the effects of atmospheric scatter.
 The lowest value of each band will therefore be subtracted.}
 
-\item{NDWI}{Modified Normalized Difference Water Index (MNDWI): \href{https://doi.org/10.1080/01431160600589179}{Xu H.}}
-
-\item{NDVI}{Normalized Difference Vegetation Index (NDVI): \href{https://gisgeography.com/ndvi-normalized-difference-vegetation-index/}{GIS Geography}}
+\item{indices}{(optional) Character string or vector of indices to calculate.\cr
+\code{MNDWI}: Modified Normalized Difference Water Index: \href{https://doi.org/10.1080/01431160600589179}{Xu H.}\cr
+\code{NDVI}: Normalized Difference Vegetation Index:
+\href{https://gisgeography.com/ndvi-normalized-difference-vegetation-index/}{GIS Geography}}
 
 \item{cores}{The number of cores to use; only necessary if \code{sf_mask} is provided.}
 
-\item{maxmemory}{numeric. Maximum number of bytes to read into memory. If a process is expected to require more
+\item{maxmemory}{numeric; Maximum number of bytes to read into memory. If a process is expected to require more
 than this value, \code{\link[raster]{canProcessInMemory}} will return \code{FALSE.}}
 }
 \value{
