@@ -105,6 +105,8 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   # time
   if (!time %in% names(isochrones)) {
     stop("time must be a column of the sf object.")
+  } else if (is.factor(isochrones[[time]])) {
+    isochrones[[time]] <- as.numeric(levels(isochrones[[time]]))[isochrones[[time]]]
   }
 
   # cores
@@ -118,7 +120,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     } else if (i %in% c("sum", "mean", "min", "max",
                         "sd", "rms", "skew", "median")) TRUE
     else FALSE
-    }) %>% unlist()
+  }) %>% unlist()
 
   if (any(!stats_boolean)) stop("Not all entries of stat are supported.")
 
@@ -130,7 +132,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
 
     #### 1. Rings ####
     # Select this_tag from isochrones shapefile
-    this_tag <- isochrones[isochrones$tag == tag,] %>%
+    this_tag <- isochrones %>%
       dplyr::arrange(time)
 
     # Create empty sf for rings output
@@ -188,7 +190,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
 
     #### Landsat ####
     # Get isochrones that match with current tag-ID and select only the one with the highest range
-    max_isochrones <- isochrones[isochrones$tag == tag, ] %>%
+    max_isochrones <- isochrones %>%
       dplyr::filter(time == max(time))
 
     # Check which raster overlaps with max_isochrones
@@ -242,17 +244,17 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
       colSums()
 
     if (!is.na(tag)) {
-      output <- c(tag, ring_values)
+      output <- c(isochrones[[tag]] %>% unique(), ring_values)
       names(output) <- c(
         "tag",
         sapply(stats, function(i) {
           if (length(i) == 2) {
             if (i[[1]] == "percentile") {
               paste0("X", i[[2]]*100, "_percentile")
-              }
-            } else i
-          })
-        )
+            }
+          } else i
+        })
+      )
     } else {
       output <- ring_values
       names(output) <- c(
@@ -260,10 +262,10 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
           if (length(i) == 2) {
             if (i[[1]] == "percentile") {
               paste0("X", i[[2]]*100, "_percentile")
-              }
-            } else i
-          })
-        )
+            }
+          } else i
+        })
+      )
     }
 
     return(output)
