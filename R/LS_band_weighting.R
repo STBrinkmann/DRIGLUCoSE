@@ -164,7 +164,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
       dplyr::relocate(geom, .after = last_col())
 
     # Define spatial weight function
-    require(mosaic)
+    suppressMessages(require(mosaic))
     g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
 
     # Define integral
@@ -284,17 +284,17 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   # WINDWOS
   if (Sys.info()[["sysname"]] == "Windows") {
     # Use mclapply for paralleling the isodistance function
-    #cl <- parallel::makeCluster(cores)
-    #LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_LS_band_weighting,
-    #                                        .tag = tag, .time = time,
-    #                                        .landsat_list = landsat_list, .band = band,
-    #                                        b = b, m = m, .stats = stats)
-    #parallel::stopCluster(cl)
+    cl <- parallel::makeCluster(cores)
+    LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_LS_band_weighting,
+                                            .tag = tag, .time = time,
+                                            .landsat_list = landsat_list, .band = band,
+                                            b = b, m = m, .stats = stats)
+    parallel::stopCluster(cl)
 
-    LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
-                               .tag = tag, .time = time,
-                               .landsat_list = landsat_list, .band = band,
-                               b = b, m = m, .stats = stats)
+    #LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
+    #                           .tag = tag, .time = time,
+    #                           .landsat_list = landsat_list, .band = band,
+    #                           b = b, m = m, .stats = stats)
   }
   # Linux and macOS
   else {
@@ -308,7 +308,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   }
 
   # Convert list to one tibble
-  output_tibble <- DRIGLUCoSE::rbind.parallel(LS_band_weightes, cores = cores) %>%
+  output_tibble <- DRIGLUCoSE::rbind_parallel(LS_band_weightes, cores = cores) %>%
     as_tibble()
 
   invisible(gc())
