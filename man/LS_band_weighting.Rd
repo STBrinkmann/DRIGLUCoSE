@@ -34,7 +34,7 @@ to which distance-weighting should be applied.}
 
 \item{m}{numeric; x for g(x) = 0.5}
 
-\item{cores}{the number of cores to use.}
+\item{cores}{the number of cores to use. Parallel processing is currently only supported on Linux and macOS.}
 
 \item{stats}{The function to be applied. See Details}
 }

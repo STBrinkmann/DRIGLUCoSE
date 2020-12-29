@@ -11,7 +11,7 @@
 #'     to which distance-weighting should be applied.
 #' @param b numeric; slope of distance decay function
 #' @param m numeric; x for g(x) = 0.5
-#' @param cores the number of cores to use.
+#' @param cores the number of cores to use. Parallel processing is currently only supported on Linux and macOS.
 #' @param stats The function to be applied. See Details
 #'
 #' @details
