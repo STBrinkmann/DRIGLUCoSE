@@ -32,6 +32,7 @@
 #' @import sf
 #' @import dplyr
 #' @import rlang
+#' @import mosaic
 #'
 #' @importFrom mosaicCore makeFun
 #' @importFrom mosaicCalc antiD
