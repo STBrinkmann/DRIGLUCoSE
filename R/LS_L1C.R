@@ -1,231 +1,311 @@
-#' @title Correct Landsat L1C products
+#' @title Distance-weighting of Landsat variable
+#' @description To account for the diminishing effect of spatial variables (e.g. NDVI exposure) as
+#'     distance increases, we fitted a logit function to weight each incremental isochrone.
 #'
-#' @description The function corrects Landsat 1-8 L1C images to L2A.
-#'     For the digital number (DN) to top of atmosphere (TOA) reflectance I used the metadata
-#'     from the \code{MTL.txt} with the following equation:\cr
-#'     TOA_RAD = rawDN * RADIANCE_MULT_BAND + RADIANCE_ADD_BAND /sin(SUN_ELEVATION * 180)\cr
+#' @param isochrones object of class \code{sf} containing road features,
+#'     derived from the \code{\link[DRIGLUCoSE]{isodistances}} function.
+#' @param tag character or NA; string containing the column name, that indicates the unique tag column.
+#' @param time character; string containing the column name, that indicates the time column.
+#' @param landsat_list list of landsat products, derived from the \code{\link[DRIGLUCoSE]{LS_L1C}} function. See Details.
+#' @param band character; spectral band or index from the landsat object,
+#'     to which distance-weighting should be applied.
+#' @param b numeric; slope of distance decay function
+#' @param m numeric; x for g(x) = 0.5
+#' @param cores the number of cores to use.
+#' @param stats The function to be applied. See Details
+#'
+#' @details
+#'     All unique tags from the isochrones shapefile will be overlapped with the \code{landsat_list},
+#'     and only the first overlapping landsat image will be used. This allows you to analyze multiple
+#'     areas at once.\cr
 #'     \cr
-#'     At this point, only the following bands will be saved:\cr
-#'     Red, Green, Blue, NIR, SWIR1, SWIR2
+#'     Supported functions for the \code{stat} object:\cr
+#'     "sum", "mean", "min", "max", "sd", "rms", "skew", "median" and "percentile". When using "percentile",
+#'     provide a \code{list} as follows:\cr
+#'     \code{list("percentile", upper_lim)}, where \code{upper_lim} is the upper limit of the percentile (e.g. 0.95).
 #'
-#' @param l1c_path Full/relative path of L1C product. This can be both the original .tar.gz file or the unzipped file.
-#' @param out_dir Directory where output L2A products will be placed.
-#' @param proc_dir (optional) Directory where processing is applied. If NULL (default),
-#'     processing is done in \code{l1c_path}-directory and output L2A product is then moved to \code{out_dir}.
-#' @param sf_mask \code{sf} object; CRS from this sf object will be used to project all raster layers.
-#'     This process is computationally expensive, therefore parallel computation is applied. The raster will also be cropped and
-#'     masked to the bounding box of the \code{sf_mask} object.
-#' @param bad_pixel Remove pixels with values of <0.
-#' @param dark_pixel The Dark Object Subtraction method assumes that the darkest parts of an image
-#'     (water, artificial structures) should be black, if not for the effects of atmospheric scatter.
-#'     The lowest value of each band will therefore be subtracted.
-#' @param indices (optional) Character string or vector of indices to calculate.\cr
-#'     \code{MNDWI}: Modified Normalized Difference Water Index: \href{https://doi.org/10.1080/01431160600589179}{Xu H.}\cr
-#'     \code{NDVI}: Normalized Difference Vegetation Index:
-#'     \href{https://gisgeography.com/ndvi-normalized-difference-vegetation-index/}{GIS Geography}
-#' @param cores The number of cores to use; only necessary if \code{sf_mask} is provided.
-#' @param maxmemory numeric; Maximum number of bytes to read into memory. If a process is expected to require more
-#'     than this value, \code{\link[raster]{canProcessInMemory}} will return \code{FALSE.}
-#'
-#' @return L2A.grd file in \code{out_dir}.
+#' @return A \code{tibble} containing the spatially weighted statistics of the
+#'     intersects of the isochrone and Landsat objects.
 #' @export
 #'
 #' @import raster
-#' @importFrom dplyr if_else
-LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = NA,
-                   bad_pixel = TRUE, dark_pixel = TRUE,
-                   indices = c("MNDWI", "NDVI"),
-                   cores = 1L, maxmemory = 1e+08) {
-
-  l1c_name <- basename(l1c_path)
-  l1c_name <- dplyr::if_else(endsWith(l1c_name, ".tar.gz"),
-                             gsub(".tar.gz", "", l1c_name), l1c_name)
-
-  # l1c_path
-  if (is.null(l1c_path)) stop("l1c_path is NULL.")
-
-  # out_dir
-  if (is.null(out_dir)) stop("out_dir is NULL.")
-
-  # proc_dir
-  rm_proc_dir <- FALSE
-  if(is.null(proc_dir)) {
-    proc_dir <- file.path(dirname(l1c_path), l1c_name, "proc_dir")
-    rm_proc_dir <- TRUE
+#' @import sf
+#' @import dplyr
+#' @import rlang
+#'
+#' @importFrom mosaicCore makeFun
+#' @importFrom mosaicCalc antiD
+#' @importFrom stats quantile
+#' @importFrom stats median
+#' @importFrom parallel makeCluster
+#' @importFrom parallel parLapply
+#' @importFrom parallel stopCluster
+#' @importFrom parallel mclapply
+LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
+                              landsat_list, band = "NDVI",
+                              b = 8, m = 0.5, cores,
+                              stats = list("sd", "median",
+                                           list("percentile", 0.05),
+                                           list("percentile", 0.95),
+                                           "skew")){
+  # 1. Check input -------------------------------------------------------
+  # landsat_list
+  if (is.list(landsat_list)) {
+    landsat_list_class <- sapply(landsat_list, class) %>% unique()
+    if (!(landsat_list_class == "RasterStack" || landsat_list_class == "RasterBrick")) {
+      stop("landsat_list must be a list of RasterStack or RasterBrick objects.")
+    }
+  } else {
+    stop("landsat_list must be a list.")
   }
-  dir.create(file.path(proc_dir, l1c_name), recursive = T, showWarnings = F)
+
+  # band
+  if (as.numeric(table(sapply(landsat_list, names))[band]) != length(landsat_list)) {
+    stop("band must be a landsat band in all raster elements of landsat_list.")
+  }
+
+  # isochrones
+  if (!is(isochrones, "sf")) {
+    stop("isochrones must be sf object.")
+  } else if (nrow(isochrones) == 0) {
+    stop("isochrones musst contain at least one feature.")
+  } else {
+    # Check if geometry column only contains POINT features
+    sf_class <- isochrones %>%
+      dplyr::pull(geom) %>%
+      sf::st_geometry_type() %>%
+      as.character() %>%
+      unique()
+
+    if((length(sf_class) > 1) ||
+       !((sf_class == "MULTIPOLYGON" || sf_class == "POLYGON"))) {
+      stop("isochrones must only contain either MULTIPOLYGON or POLYGON features.")
+    }
+  }
+
+  # tag
+  if (is.na(tag)) {
+    message("No tag is specified. It is strongly recommend to specify a tag to join the input with the output.")
+
+    correct_input = TRUE
+    while (correct_input) {
+      message("Do you want to continue? (y/n)")
+      input <- readline(prompt="")
+      if (input == "n") {
+        stop("Process has been stoped.")
+      } else if (input == "y") {
+        correct_input = FALSE
+      } else {
+        message("Incorrect input.")
+      }
+    }
+  } else if (!tag %in% names(isochrones)) {
+    stop("Tag must be a column of the sf object.")
+  }
+
+  # time
+  if (!time %in% names(isochrones)) {
+    stop("time must be a column of the sf object.")
+  } else if (is.factor(isochrones[[time]])) {
+    isochrones[[time]] <- as.numeric(levels(isochrones[[time]]))[isochrones[[time]]]
+  }
 
   # cores
   if (cores < 1L) stop("Number of cores must be 1 or greater.")
 
-  # Raster options
-  raster::rasterOptions(tmpdir = file.path(proc_dir, l1c_name), datatype = 'FLT4S', overwrite = T)
-  raster::rasterOptions(maxmemory = maxmemory)
+  # stats
+  stats_boolean <- lapply(stats, function(i) {
+    if (length(i) == 2) {
+      if (i[[1]] == "percentile" && is.numeric(i[[2]])) TRUE
+      else FALSE
+    } else if (i %in% c("sum", "mean", "min", "max",
+                        "sd", "rms", "skew", "median")) TRUE
+    else FALSE
+  }) %>% unlist()
 
+  if (any(!stats_boolean)) stop("Not all entries of stat are supported.")
 
-  # LANDSAT Bands ---------------------------------------------------
-  LS_MSS <- data.frame(matrix(c(1:4), nrow = 1, ncol = 4))
-  names(LS_MSS) <- c("Green", "Red", "NIR", "NIR2")
+  # 2. Internal LS_band_weighting function ------------------------------
+  this_LS_band_weighting <- function(.isochrones, .tag, .time,
+                                     .landsat_list, .band,
+                                     .b, .m, .stats) {
 
-  LS_4 <- data.frame(matrix(c(1:7), nrow = 1, ncol = 7))
-  names(LS_4) <- c("Blue", "Green", "Red", "NIR", "SWIR1", "Thermal", "SWIR2")
+    #### 1. Rings ####
+    # Select this_tag from .isochrones shapefile
+    this_tag <- .isochrones %>%
+      dplyr::arrange(.time)
 
-  LS_5 <- LS_4
+    # Create empty sf for rings output
+    isoch_rings <- .isochrones[0,] %>% dplyr::select(!! rlang::parse_quosure(.tag), !! rlang::parse_quosure(.time))
 
-  LS_7 <- data.frame(matrix(c(1:8), nrow = 1, ncol = 8))
-  names(LS_7) <- c("Blue", "Green", "Red", "NIR", "SWIR1", "Thermal", "SWIR2", "Pan")
-
-  LS_8 <- data.frame(matrix(c(1:11), nrow = 1, ncol = 11))
-  names(LS_8) <- c("Coastal", "Blue", "Green", "Red", "NIR", "SWIR1", "SWIR2", "Pan", "Cirrus", "TIRS1", "TIRS2")
-
-  # Untar ----------------------------------------------------------
-  dir.create(file.path(proc_dir, l1c_name, "L1C"), recursive = T, showWarnings = F)
-
-  if (endsWith(l1c_path, ".tar.gz")) {
-    untar(l1c_path, exdir = file.path(proc_dir, l1c_name, "L1C"))
-  } else {
-    file.copy(from = dir(l1c_path, full.names = TRUE),
-              to = file.path(proc_dir, l1c_name, "L1C"))
-  }
-
-  # Read in Landsat Szene ------------------------------------------
-  # Get sensor from this_szene file name
-  sensor <- strsplit(l1c_name, "_")[[1]][1]
-
-  # Get Bands Blue, Green, Red, NIR, SWIR1, SWIR2
-  tif_vector <- dir(file.path(proc_dir, l1c_name, "L1C"), pattern = ".TIF$", recursive = T, full.names = T)
-  band_list = switch (
-    sensor,
-    "LC08" = tif_vector[4:9],
-    "LE07" = tif_vector[c(1:5, 8)],
-    "LT05" = tif_vector[c(1:5, 7)],
-    "LT04" = tif_vector[c(1:5, 7)],
-    "LM05" = tif_vector[1:4],
-    "LM02" = tif_vector[1:4]
-  )
-
-  # Metadata from _MTL.txt
-  meta_dat <- dir(file.path(proc_dir, l1c_name, "L1C"), pattern = "_MTL.txt$", full.names = T)
-  meta_matrix <- read.csv(meta_dat, sep = "=", stringsAsFactors=F) %>%
-    as.matrix()
-
-  # sf_mask --------------------------------------------------------
-  if(is(sf_mask, "sf")) {
-    if (nrow(sf_mask) == 0) {
-      stop("x musst contain at least one feature")
+    for(i in 1:nrow(this_tag)) {
+      if (i == 1) {
+        isoch_rings[1,] <- this_tag[i,] %>% dplyr::select(!! rlang::parse_quosure(.tag), !! rlang::parse_quosure(.time)) # first isochrone
+      } else {
+        # create subsequent rings and add subsequent to sf
+        isoch_rings <- sf::st_difference(this_tag[i,], this_tag[i-1,]) %>%
+          dplyr::select(!! rlang::parse_quosure(.tag), !! rlang::parse_quosure(.time)) %>%
+          dplyr::add_row(isoch_rings, .)
+      }
     }
-    proc_rast <-  function(x, shp, cores) {
-      raster::beginCluster(cores)
+    # Calculate ring areas
+    isoch_rings <- isoch_rings %>%
+      dplyr::mutate(area = sf::st_area(.)) %>%
+      dplyr::relocate(geom, .after = dplyr::last_col())
 
-      tmp_raster <- raster::raster(x) %>%
-        raster::projectRaster(crs = rgdal::make_EPSG() %>%
-                                dplyr::filter(code == sf::st_crs(shp)$epsg) %>%
-                                dplyr::pull(prj4)) %>%
-        raster::crop(raster::extent(shp)) %>%
-        raster::mask(sf::st_as_sf(sf::st_as_sfc(sf::st_bbox(shp))))
+    #### Distance weights ####
+    # Assign distance weights to isochrones
+    this_tag <- this_tag %>%
+      dplyr::mutate(area = sf::st_area(.)) %>%  # calulate area of isochrones
+      dplyr::mutate(r = sqrt(area/pi)) %>%
+      dplyr::select(-area) %>%
+      dplyr::mutate(r_norm = as.numeric(r/max(r))) %>% # normalized mean radii
+      dplyr::relocate(geom, .after = last_col())
 
-      raster::endCluster()
+    # Define spatial weight function
+    require(mosaic)
+    g <- mosaicCore::makeFun(1 / (1 + exp(.b * (x - .m))) ~ c(x, .b, .m))
 
-      return(tmp_raster)
+    # Define integral
+    G <- mosaicCalc::antiD(g(x, .b = .b, .m = .m)~x)
+
+
+    # calculate weights:
+    # For individual weights the above defined integral is calculated within the limits of the
+    # inner and outer radius of the normalized radii of each isocrone,
+    # and again normalized by the integral from 0 to the outermost isochrone boundary
+
+    # Empty distance weight matrix for outputs
+    dist_weights <- matrix(nrow = nrow(this_tag), ncol = 1)
+
+    for (i in 1:nrow(this_tag)) {
+      if (i == 1) {
+        # Weights for 5 min isochrone
+        dist_weights[i,] <- G(this_tag$r_norm[i]) / G(1)
+      } else {
+        # Weights for outer isochrones
+        dist_weights[i,] <- (G(this_tag$r_norm[i]) - G(this_tag$r_norm[i-1])) / G(1)
+      }
+    }
+    # Convert to vector
+    dist_weights <- dist_weights %>% t() %>% as.vector()
+
+    #### Landsat ####
+    # Get isochrones that match with current tag-ID and select only the one with the highest range
+    max_isochrones <- .isochrones %>%
+      dplyr::filter(!! rlang::parse_quosure(.time) == max(!! rlang::parse_quosure(.time)))
+
+    # Check which raster overlaps with max_isochrones
+    landsat_overlap <- lapply(.landsat_list, function(i) {
+      crop_error <- try(raster::crop(i, raster::extent(max_isochrones)), silent = T)
+
+      ifelse(class(crop_error) != "try-error", TRUE, FALSE)
+    }) %>% unlist()
+
+    if (any(landsat_overlap)) {
+      landsat_overlap <- .landsat_list[[dplyr::first(which(landsat_overlap == TRUE))]]
+    } else {
+      stop("landsat_list must completely overlap with isochrones.")
     }
 
-    cat("Project raster"); cat("\n")
-    LS_stack <- lapply(band_list, proc_rast, shp = sf_mask, cores = cores) %>%
-      raster::stack()
-  } else {
-    LS_stack <- raster::stack(band_list)
+    # Temporary output DataFrame for the Landsat-band statisticss
+    raster_stats <- as.data.frame(matrix(nrow = 0, ncol = length(.stats)))
+
+    # For every time / level-of-distance, repeat the buffer analysis and save to output DataFrame
+    for (this_time in isoch_rings[[.time]]) {
+      this_isoch <- isoch_rings %>%
+        dplyr::filter(!! rlang::parse_quosure(.time) == this_time)
+
+      # Select only band of interest, crop and mask with buffered of this_isoch
+      landsat_mask <- landsat_overlap[[.band]] %>%
+        raster::crop(raster::extent(this_isoch)) %>%
+        raster::mask(as(this_isoch, "Spatial"))
+
+
+      # Caculate statistics
+      raster_stats <- lapply(.stats, function(i) {
+        if (length(i) == 2) {
+          if (i[[1]] == "percentile") {
+            stats::quantile(raster::values(landsat_mask), i[[2]], na.rm = T) %>%
+              as.numeric()
+          }
+        } else if (i %in% c("sum", "mean", "min", "max", "sd", "rms", "skew")) {
+          raster::cellStats(landsat_mask, i)
+        } else if (i == "median") {
+          stats::median(raster::values(landsat_mask), na.rm = TRUE)
+        }
+      }) %>%
+        unlist() %>%
+        t() %>%
+        rbind(raster_stats, .)
+    }
+
+    #### Band-statstics * weigths ####
+    # Multiply areal weights with distance weights
+    ring_values <- (raster_stats * dist_weights) %>%
+      colSums()
+
+    if (!is.na(.tag)) {
+      output <- c(.isochrones[[.tag]] %>% unique(), ring_values)
+      names(output) <- c(
+        "tag",
+        sapply(.stats, function(i) {
+          if (length(i) == 2) {
+            if (i[[1]] == "percentile") {
+              paste0("X", i[[2]]*100, "_percentile")
+            }
+          } else i
+        })
+      )
+    } else {
+      output <- ring_values
+      names(output) <- c(
+        sapply(.stats, function(i) {
+          if (length(i) == 2) {
+            if (i[[1]] == "percentile") {
+              paste0("X", i[[2]]*100, "_percentile")
+            }
+          } else i
+        })
+      )
+    }
+
+    return(output)
   }
 
-  if (sensor == "LM02" || sensor == "LM05") {
-    names(LS_stack) <- c("Green", "Red", "NIR", "NIR2")
-  } else {
-    names(LS_stack) <- c("Blue", "Green", "Red", "NIR", "SWIR1", "SWIR2")
+  # 3. Parallel apply function ---------------------------------------------
+
+  # Convert isochrones to list to enable mclapply
+  isochrones_list <- isochrones %>%
+    dplyr::group_by(tag) %>%
+    dplyr::group_split()
+
+  # WINDWOS
+  if (Sys.info()[["sysname"]] == "Windows") {
+    # Use mclapply for paralleling the isodistance function
+    cl <- parallel::makeCluster(cores)
+    LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_LS_band_weighting,
+                                            .tag = tag, .time = time,
+                                            .landsat_list = landsat_list, .band = band,
+                                            .b = b, .m = m, .stats = stats)
+    parallel::stopCluster(cl)
+  }
+  # Linux and macOS
+  else {
+    # Use mclapply for paralleling the isodistance function
+    LS_band_weightes <- parallel::mclapply(isochrones_list, this_LS_band_weighting,
+                                           .tag = tag, .time = time,
+                                           .landsat_list = landsat_list, .band = band,
+                                           .b = b, .m = m, cores = cores,
+                                           .stats = stats,
+                                           mc.cores = cores, mc.preschedule = FALSE)
   }
 
-  # Preprocessing -------------------------------------------------
-  # 1. Eliminate bad pixel
-  cat("Eliminate bad pixel"); cat("\n")
-  for (band in names(LS_stack)) {
-    LS_stack[[band]] <- raster::reclassify(LS_stack[[band]], rcl=c(-Inf,0,NA), right=F)
-    Sys.sleep(0.1)
-  }
-
-  # 2. DN to TOA Reflectance - RAD = rawDN * RADIANCE_MULT_BAND + RADIANCE_ADD_BAND /sin(SEA)
-  cat("DN to TOA Reflectance"); cat("\n")
-  sensor_bands = switch (
-    sensor,
-    "LC08" = LS_8,
-    "LE07" = LS_7,
-    "LT05" = LS_5,
-    "LT04" = LS_4,
-    "LM02" = LS_MSS,
-    "LM05" = LS_MSS
-  )
-  tmp_stack <- raster::stack()
-  for (band in names(LS_stack)) {
-    ref_add_line <- grep(pattern = paste0('REFLECTANCE_ADD_BAND_', sensor_bands[[band]], sep = ""), meta_matrix)
-    ref_add <- as.numeric(meta_matrix[ref_add_line, 2])
-    ref_multi_line <- grep(pattern = paste0('REFLECTANCE_MULT_BAND_', sensor_bands[[band]], sep = ""), meta_matrix)
-    ref_multi <- as.numeric(meta_matrix[ref_multi_line, 2])
-    sea_line <- grep(pattern = "SUN_ELEVATION", meta_matrix)
-    sea <- as.numeric(meta_matrix[sea_line, 2])
-    TOA_raster <- (LS_stack[[band]] * ref_multi + ref_add) / sin(sea * pi/180)
-    tmp_stack <- raster::stack(tmp_stack, TOA_raster)
-    saz_line <- grep(pattern = "SUN_AZIMUTH", meta_matrix)
-    saz <- as.numeric(meta_matrix[saz_line, 2])
-    Sys.sleep(0.1)
-  }
-
-  LS_stack <- tmp_stack
-
-  # 3. Subtract dark pixel (subtract min value from each band respectively)
-  cat("Subtract dark pixel"); cat("\n")
-  for (band in names(LS_stack)) {
-    LS_stack[[band]] <- LS_stack[[band]] - raster::minValue(LS_stack[[band]])
-    invisible(gc())
-    Sys.sleep(0.1)
-  }
-
-  # Apply functions -----------------------------------------------
-  if ("MNDWI" %in% indices) {
-    # Calculate NDWI and remove false values
-    calcMNDWI <- function(Green, NIR) return((Green - NIR) / (Green + NIR))
-
-    NDWI_layer <- raster::overlay(LS_stack$Green, LS_stack$NIR, fun = calcMNDWI) %>%
-      raster::reclassify(rcl = c(-Inf, -1, NA), right = F) %>%
-      raster::reclassify(rcl = c(1, Inf, NA), right = T)
-
-    names(NDWI_layer) <- "NDWI"
-    LS_stack <- raster::stack(LS_stack, NDWI_layer)
-  }
-
-  if ("NDVI" %in% indices) {
-    # Calculate NDVI and remove false values
-    calcNDVI <- function(NIR, VIS) return((NIR - VIS) / (NIR + VIS))
-
-    NDVI_layer <- raster::overlay(LS_stack$NIR, LS_stack$Red, fun = calcNDVI) %>%
-      raster::reclassify(rcl = c(-Inf, -1, NA), right = F) %>%
-      raster::reclassify(rcl = c(1, Inf, NA), right = T)
-
-    names(NDVI_layer) <- "NDVI"
-    LS_stack <- raster::stack(LS_stack, NDVI_layer)
-  }
-
-  # Write raster -------------------------------------------------
-  if (!dir.exists(out_dir)) {
-    message("out_dir will be created.")
-    dir.create(out_dir, recursive = TRUE)
-  }
-  raster::writeRaster(LS_stack, file.path(out_dir, paste0(l1c_name, ".grd")), format = 'raster', overwrite = T)
-
-  # Remove files from Rtmp
-  if (rm_proc_dir) {
-    unlink(file.path(dirname(l1c_path), l1c_name), recursive = TRUE)
-  } else {
-    unlink(file.path(proc_dir, l1c_name), recursive = TRUE)
-  }
+  # Convert list to one tibble
+  output_tibble <- DRIGLUCoSE::rbind.parallel(LS_band_weightes, cores = cores) %>%
+    as_tibble()
 
   invisible(gc())
 
-  return(LS_stack)
+  return(output_tibble)
 }

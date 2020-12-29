@@ -16,6 +16,7 @@
 #'
 #' @import sf
 #' @import dplyr
+#' @import rlang
 #'
 #' @importFrom igraph neighbors
 #' @importFrom tidygraph activate
@@ -285,13 +286,13 @@ isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15
     if (!is.na(tag)) {
       this_tag <- x %>%
         dplyr::as_tibble() %>%
-        dplyr::select(tag) %>%
+        dplyr::select(!! rlang::parse_quosure(tag)) %>%
         unlist() %>%
         as.vector()
 
       star_network <- star_network %>%
-        dplyr::mutate(tag = this_tag) %>%
-        dplyr::select(tag, time)
+        dplyr::mutate(!! rlang::parse_quosure(tag) := this_tag) %>%
+        dplyr::select(!! rlang::parse_quosure(tag), time)
     }
 
     invisible(gc())
