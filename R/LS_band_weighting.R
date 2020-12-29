@@ -50,6 +50,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
                                            list("percentile", 0.95),
                                            "skew")){
   # 1. Check input -------------------------------------------------------
+  suppressMessages(require(mosaic))
   # landsat_list
   if (is.list(landsat_list)) {
     landsat_list_class <- sapply(landsat_list, class) %>% unique()
@@ -164,7 +165,6 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
       dplyr::relocate(geom, .after = last_col())
 
     # Define spatial weight function
-    suppressMessages(require(mosaic))
     g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
 
     # Define integral
@@ -291,6 +291,10 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
                                             b = b, m = m, .stats = stats)
     parallel::stopCluster(cl)
 
+    LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_LS_band_weighting,
+                                            .tag = tag, .time = time,
+                                            .landsat_list = landsat_list, .band = band,
+                                            b = b, m = m, .stats = stats)
   }
   # Linux and macOS
   else {
