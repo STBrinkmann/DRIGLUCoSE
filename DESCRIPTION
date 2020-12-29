@@ -20,7 +20,8 @@ Imports:
     methods,
     mosaicCore,
     mosaicCalc,
-    stats
+    stats,
+    mosaic
 Depends: 
     dplyr (>= 0.8.0),
     sf (>= 0.9.6),
