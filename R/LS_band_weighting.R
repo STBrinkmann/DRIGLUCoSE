@@ -164,7 +164,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
       dplyr::relocate(geom, .after = last_col())
 
     # Define spatial weight function
-    require(mosaic)
+    suppressMessages(require(mosaic))
     g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
 
     # Define integral
@@ -308,7 +308,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   }
 
   # Convert list to one tibble
-  output_tibble <- DRIGLUCoSE::rbind.parallel(LS_band_weightes, cores = cores) %>%
+  output_tibble <- DRIGLUCoSE::rbind_parallel(LS_band_weightes, cores = cores) %>%
     as_tibble()
 
   invisible(gc())
