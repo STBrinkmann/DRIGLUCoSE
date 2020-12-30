@@ -45,9 +45,11 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
   if (is.null(l1c_path)) {
     stop("l1c_path is NULL.")
   } else if (endsWith(basename(l1c_path), ".tar.gz")) {
-    if (file.exists(l1c_path)) {
+    if (!file.exists(l1c_path)) {
       stop("l1c_path is no valid file path to a .tar.gz file.")
-    } else if (dir.exists(l1c_path)) {
+    }
+  } else if(!endsWith(basename(l1c_path), ".tar.gz")) {
+    if (!dir.exists(l1c_path)) {
       stop("l1c_path is no valid directory.")
     }
   }
