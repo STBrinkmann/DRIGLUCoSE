@@ -130,7 +130,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   # 2. Internal LS_band_weighting function ------------------------------
   this_LS_band_weighting <- function(.isochrones, .tag, .time,
                                      .landsat_list, .band,
-                                     b, m, .stats) {
+                                     .b, .m, .stats) {
 
     #### 1. Rings ####
     # Select this_tag from .isochrones shapefile
@@ -168,7 +168,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
 
     # Define integral
-    G <- mosaicCalc::antiD(g(x, b = b, m = m)~x)
+    G <- mosaicCalc::antiD(g(x, b = .b, m = .m)~x)
 
 
     # calculate weights:
@@ -293,7 +293,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
                                .tag = tag, .time = time,
                                .landsat_list = landsat_list, .band = band,
-                               b = b, m = m, .stats = stats)
+                               b = .b, m = .m, .stats = stats)
   }
   # Linux and macOS
   else {
@@ -301,7 +301,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     LS_band_weightes <- parallel::mclapply(isochrones_list, this_LS_band_weighting,
                                            .tag = tag, .time = time,
                                            .landsat_list = landsat_list, .band = band,
-                                           b = b, m = m, .stats = stats,
+                                           b = .b, m = .m, .stats = stats,
                                            mc.cores = cores, mc.preschedule = FALSE)
   }
 
