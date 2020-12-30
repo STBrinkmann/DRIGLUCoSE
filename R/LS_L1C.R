@@ -144,11 +144,13 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
 
   # Preprocessing -------------------------------------------------
   # 1. Eliminate bad pixel
-  cat("Eliminate bad pixel"); cat("\n")
-  for (band in names(LS_stack)) {
-    LS_stack[[band]] <- raster::reclassify(LS_stack[[band]], rcl=c(-Inf,0,NA), right=F)
-    Sys.sleep(0.1)
+  if (bad_pixel) {
+    for (band in names(LS_stack)) {
+      LS_stack[[band]] <- raster::reclassify(LS_stack[[band]], rcl=c(-Inf,0,NA), right=F)
+      Sys.sleep(0.1)
+    }
   }
+
 
   # 2. DN to TOA Reflectance - RAD = rawDN * RADIANCE_MULT_BAND + RADIANCE_ADD_BAND /sin(SEA)
   cat("DN to TOA Reflectance"); cat("\n")
@@ -179,11 +181,12 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
   LS_stack <- tmp_stack
 
   # 3. Subtract dark pixel (subtract min value from each band respectively)
-  cat("Subtract dark pixel"); cat("\n")
-  for (band in names(LS_stack)) {
-    LS_stack[[band]] <- LS_stack[[band]] - raster::minValue(LS_stack[[band]])
-    invisible(gc())
-    Sys.sleep(0.1)
+  if (dark_pixel) {
+    for (band in names(LS_stack)) {
+      LS_stack[[band]] <- LS_stack[[band]] - raster::minValue(LS_stack[[band]])
+      invisible(gc())
+      Sys.sleep(0.1)
+    }
   }
 
   # Apply functions -----------------------------------------------
@@ -220,7 +223,7 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
 
   # Remove files from Rtmp
   if (rm_proc_dir) {
-    unlink(file.path(dirname(l1c_path), l1c_name), recursive = TRUE)
+    unlink(proc_dir, recursive = TRUE)
   } else {
     unlink(file.path(proc_dir, l1c_name), recursive = TRUE)
   }
