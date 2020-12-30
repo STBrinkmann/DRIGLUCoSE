@@ -227,14 +227,14 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
   # WINDWOS
   if (Sys.info()[["sysname"]] == "Windows") {
     # Use mclapply for paralleling the isodistance function
-    cl <- parallel::makeCluster(cores)
-    LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_census_weighting,
-                                            .tag = tag, .time = time,
-                                            .census = census, .b = b, .m = m)
-    parallel::stopCluster(cl)
-    #census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
-    #                          .tag = tag, .time = time,
-    #                          .census = census, .b = b, .m = m)
+    #cl <- parallel::makeCluster(cores)
+    #LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_census_weighting,
+    #                                        .tag = tag, .time = time,
+    #                                        .census = census, b = b, m = m)
+    #parallel::stopCluster(cl)
+    census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
+                              .tag = tag, .time = time,
+                              .census = census, .b = b, .m = m)
   }
   # Linux and macOS
   else {
