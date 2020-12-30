@@ -293,7 +293,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
                                .tag = tag, .time = time,
                                .landsat_list = landsat_list, .band = band,
-                               b = .b, m = .m, .stats = stats)
+                               .b = b, .m = m, .stats = stats)
   }
   # Linux and macOS
   else {
@@ -301,7 +301,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     LS_band_weightes <- parallel::mclapply(isochrones_list, this_LS_band_weighting,
                                            .tag = tag, .time = time,
                                            .landsat_list = landsat_list, .band = band,
-                                           b = .b, m = .m, .stats = stats,
+                                           .b = b, .m = m, .stats = stats,
                                            mc.cores = cores, mc.preschedule = FALSE)
   }
 
