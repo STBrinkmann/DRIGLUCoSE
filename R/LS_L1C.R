@@ -42,7 +42,15 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
                              gsub(".tar.gz", "", l1c_name), l1c_name)
 
   # l1c_path
-  if (is.null(l1c_path)) stop("l1c_path is NULL.")
+  if (is.null(l1c_path)) {
+    stop("l1c_path is NULL.")
+  } else if (endsWith(basename(l1c_path), ".tar.gz")) {
+    if (file.exists(l1c_path)) {
+      stop("l1c_path is no valid file path to a .tar.gz file.")
+    } else {
+      stop("l1c_path is no valid directory.")
+    }
+  }
 
   # out_dir
   if (is.null(out_dir)) stop("out_dir is NULL.")
@@ -50,7 +58,11 @@ LS_L1C <- function(l1c_path = NULL, out_dir = NULL, proc_dir = NULL, sf_mask = N
   # proc_dir
   rm_proc_dir <- FALSE
   if(is.null(proc_dir)) {
-    proc_dir <- file.path(dirname(l1c_path), l1c_name, "proc_dir")
+    if (endsWith(basename(l1c_path), ".tar.gz")) {
+      proc_dir <- file.path(dirname(l1c_path), "proc_dir")
+    } else {
+      proc_dir <- file.path(dirname(l1c_path), l1c_name, "proc_dir")
+    }
     rm_proc_dir <- TRUE
   }
   dir.create(file.path(proc_dir, l1c_name), recursive = T, showWarnings = F)
