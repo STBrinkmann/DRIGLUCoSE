@@ -2,6 +2,7 @@
 
 export("%>%")
 export(LS_band_weighting)
+export(census_weighting)
 export(isochrones)
 export(isodistances)
 export(osm_roads)
