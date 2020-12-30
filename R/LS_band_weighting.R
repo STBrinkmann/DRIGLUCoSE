@@ -244,7 +244,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     #### Band-statstics * weigths ####
     # Multiply areal weights with distance weights
     ring_values <- (raster_stats * dist_weights) %>%
-      colSums()
+      colSums(na.rm = T)
 
     if (!is.na(.tag)) {
       output <- c(.isochrones[[.tag]] %>% unique(), ring_values)
@@ -301,8 +301,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     LS_band_weightes <- parallel::mclapply(isochrones_list, this_LS_band_weighting,
                                            .tag = tag, .time = time,
                                            .landsat_list = landsat_list, .band = band,
-                                           b = b, m = m, cores = cores,
-                                           .stats = stats,
+                                           b = b, m = m, .stats = stats,
                                            mc.cores = cores, mc.preschedule = FALSE)
   }
 
