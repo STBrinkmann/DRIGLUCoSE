@@ -115,7 +115,11 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
 
   # 2. Internal census_weighting function ------------------------------
   this_census_weighting <- function(.isochrones, .tag, .time,
+<<<<<<< HEAD
                                     .census, .b, .m) {
+=======
+                                    .census, b, m) {
+>>>>>>> b39980ace3977aa2f1e66c94ad35171d7e7a26cf
 
     #### 1. Rings ####
     # Select this_tag from .isochrones shapefile
@@ -153,7 +157,11 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
 
     # Define integral
+<<<<<<< HEAD
     G <- mosaicCalc::antiD(g(x, b = .b, m = .m)~x)
+=======
+    G <- mosaicCalc::antiD(g(x, b = b, m = m)~x)
+>>>>>>> b39980ace3977aa2f1e66c94ad35171d7e7a26cf
 
 
     # calculate weights:
@@ -233,16 +241,27 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     #                                        .census = census, b = b, m = m)
     #parallel::stopCluster(cl)
     census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
+<<<<<<< HEAD
                               .tag = tag, .time = time,
                               .census = census, .b = b, .m = m)
+=======
+                               .tag = tag, .time = time,
+                               .census = census, b = b, m = m)
+>>>>>>> b39980ace3977aa2f1e66c94ad35171d7e7a26cf
   }
   # Linux and macOS
   else {
     # Use mclapply for paralleling the isodistance function
     census_weightes <- parallel::mclapply(isochrones_list, this_census_weighting,
+<<<<<<< HEAD
                                           .tag = tag, .time = time,
                                           .census = census, .b = b, .m = m,
                                           mc.cores = cores, mc.preschedule = FALSE)
+=======
+                                           .tag = tag, .time = time,
+                                           .census = census, b = b, m = m,
+                                           mc.cores = cores, mc.preschedule = FALSE)
+>>>>>>> b39980ace3977aa2f1e66c94ad35171d7e7a26cf
   }
 
   # Convert list to one tibble
