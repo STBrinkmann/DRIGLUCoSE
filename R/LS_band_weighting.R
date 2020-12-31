@@ -276,7 +276,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
 
   # 3. Parallel apply function ---------------------------------------------
 
-  # Convert isochrones to list to enable mclapply
+  # Convert isochrones to list to enable mclapply (work in progress)
   isochrones_list <- isochrones %>%
     dplyr::group_by(tag) %>%
     dplyr::group_split()
