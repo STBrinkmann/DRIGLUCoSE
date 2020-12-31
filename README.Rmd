@@ -261,10 +261,16 @@ dplyr::tibble(
   census_var = c(5374., 5535.)
 )
 ```
+\
+\
+\
+### Package contributors:
+Brinkmann, Sebastian Tobias (Package creator and author)\
+e-mail: sebastian.brinkmann@fau.de\
+Große, Tim (Contributor)
 
 
-
-## Authors:
+### Thesis authors:
 Walker, Blake Byron (1*)\
 Brinkmann, Sebastian Tobias (1)\
 Große, Tim (1)\
@@ -278,6 +284,5 @@ Lear, Scott A. (3)\
 3: \
 *corresponding author\
 
-### Package maintainer:
-Brinkmann, Sebastian Tobias\
-e-mail: sebastian.brinkmann@fau.de
+## Bibliography
+- work in progress -
