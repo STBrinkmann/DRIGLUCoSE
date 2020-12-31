@@ -1,6 +1,6 @@
 ## code to prepare `Erlangen` dataset goes here
 Erlangen <- dplyr::tibble(
-  id = c(1, 2),
+  tag = c(1, 2),
   age = c(26, 34),
   sex = c("Male", "Female"),
   X = c(35199.46, 36281.59),
@@ -23,7 +23,7 @@ Erlangen <- dplyr::tibble(
                                ifelse(age %in% 61:70, 4.59, 4.49)))))
   )) %>%
   dplyr::mutate(Speed = Speed / 3.6 * 60) %>%
-  dplyr::select(id, Speed, X, Y) %>%
+  dplyr::select(tag, Speed, X, Y) %>%
   sf::st_as_sf(coords = c("X", "Y"), crs = sf::st_crs(4839)) %>%
   dplyr::rename(geom = geometry)
 
