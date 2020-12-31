@@ -1,9 +1,15 @@
 Package: DRIGLUCoSE
 Type: Package
 Title: DRI-GLUCoSE
-Version: 0.1.0
-Author: Sebastian Brinkmann <sebastian.brinkmann@fau.de>
-Maintainer: Sebastian Brinkmann <sebastian.brinkmann@fau.de>
+Version: 0.2.0
+Authors@R: c(
+    person("Walker Byron", "Blake", role = c("ths")),
+    person("Sebastian Tobias", "Brinkmann", email = "sebastian.brinkmann@fau.de", role = c("ths", "aut", "cre")),
+    person("Tim", "Große", role = c("ths", "ctb")),
+    person("Sumathy", "Rangarajan", role = c("ths")),
+    person("Koon", "Teo",role = c("ths")),
+    person("Salim", "Yusuf",role = c("ths")),
+    person("Scott A.", "Lear",role = c("ths")))
 Description: Public package containing functions and code used in the development of the DRI-GLUCoSE Index.
 License: GPL-3
 Encoding: UTF-8
