@@ -13,7 +13,10 @@
 #' @export
 #'
 #' @import sf
-#' @import osmdata
+#' @importFrom osmdata opq
+#' @importFrom osmdata add_osm_feature
+#' @importFrom osmdata osmdata_sf
+#' @importFrom osmdata osm_poly2line
 #' @importFrom dplyr select
 #' @importFrom dplyr rename
 #' @importFrom dplyr filter
@@ -54,7 +57,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
 
   # Check if location CRS is cartesian. This is required for the buffer
   is_cartesian <- x %>%
-    st_crs() %>%
+    sf::st_crs() %>%
     .[[2]] %>%
     grepl("CS[Cartesian,", ., fixed = T)
 
@@ -64,22 +67,22 @@ osm_roads <- function(x, dist, speed, cores = 1L,
 
   # 2. Download OSM data -------------------------------------------------------
   x_bbox <- x %>%
-    st_buffer(dist * speed) %>%
-    st_transform(4326) %>%
-    st_union() %>%
-    st_bbox() %>%
+    sf::st_buffer(dist * speed) %>%
+    sf::st_transform(4326) %>%
+    sf::st_union() %>%
+    sf::st_bbox() %>%
     as.vector()
 
-  osm_roads <- opq(bbox = x_bbox) %>%
-    add_osm_feature(key = 'highway') %>%
-    osmdata_sf() %>%
-    osm_poly2line()
+  osm_roads <- osmdata::opq(bbox = x_bbox) %>%
+    osmdata::add_osm_feature(key = 'highway') %>%
+    osmdata::osmdata_sf() %>%
+    osmdata::osm_poly2line()
 
   osm_roads <- osm_roads$osm_lines %>%
     dplyr::select(highway) %>%
     dplyr::filter(!highway %in% remove_features) %>%
     dplyr::rename(geom = geometry) %>%
-    st_transform(crs = st_crs(x))
+    st_transform(crs = sf::st_crs(x))
 
   # 3. Topology cleaning -------------------------------------------------------
   # ---- WINDWOS ----
@@ -88,7 +91,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
     cl <- parallel::makeCluster(cores)
     osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200)))
     osm_roads <- parallel::parLapply(cl, osm_roads, fun = function(x){
-      x %>% st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
+      x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
     })
     parallel::stopCluster(cl)
 
@@ -102,7 +105,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
   else {
     osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200))) %>%
       parallel::mclapply(function(x){
-        x %>% st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
+        x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
       },
       mc.cores = cores, mc.preschedule = TRUE) %>%
       DRIGLUCoSE::rbind.parallel(cores = cores)

@@ -33,9 +33,10 @@
 #' @import raster
 #' @import sf
 #' @import dplyr
-#' @import rlang
+#'
 #' @import mosaic
 #'
+#' @importFrom rlang parse_quosure
 #' @importFrom mosaicCore makeFun
 #' @importFrom mosaicCalc antiD
 #' @importFrom stats quantile

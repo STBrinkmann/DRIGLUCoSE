@@ -1,9 +1,4 @@
 
-<style>
-body {
-text-align: justify}
-</style>
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # DRI-GLUCoSE
@@ -77,9 +72,9 @@ census <- sf::st_make_grid(
   Erlangen %>% dplyr::mutate(geom = sf::st_buffer(geom, Speed*25)),
   cellsize = 100
   ) %>% 
-  st_as_sf() %>% 
-  mutate(census_var = sample(1000:10000, n(), replace = TRUE)) %>% 
-  rename(geom = x)
+  sf::st_as_sf() %>% 
+  dplyr::mutate(census_var = sample(1000:10000, n(), replace = TRUE)) %>% 
+  dplyr::rename(geom = x)
 
 census
 #> Simple feature collection with 2142 features and 1 field
@@ -208,7 +203,7 @@ erlangen.isochrones
 Figure 1 shows isodistances of the two points of the sample data in
 Erlangen, Germany.
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.svg" width="100%" />
 
 ## (ii) Distance-weighting
 
@@ -231,7 +226,7 @@ variables.
 g(r)dr}, t=1\\\\&#10; \\cfrac{\\int\_{r\_{t-1}}^{r\_t} \\,
 g(r)dr}{\\int\_0^{r\_{t\_{max}}} \\, g(r)dr}, t\>1&#10;
 \\end{cases}&#10; &&
-\\text{(1)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20G_t%20%3D%0A%20%20%20%20%5Cbegin%7Bcases%7D%0A%20%20%20%20%20%20%5Ccfrac%7B%5Cint_0%5E%7Br_t%7D%20%5C%2C%20g%28r%29dr%7D%7B%5Cint_0%5E%7Br_%7Bt_%7Bmax%7D%7D%7D%20%5C%2C%20g%28r%29dr%7D%2C%20t%3D1%5C%5C%0A%20%20%20%20%20%20%5Ccfrac%7B%5Cint_%7Br_%7Bt-1%7D%7D%5E%7Br_t%7D%20%20%5C%2C%20g%28r%29dr%7D%7B%5Cint_0%5E%7Br_%7Bt_%7Bmax%7D%7D%7D%20%5C%2C%20g%28r%29dr%7D%2C%20t%3E1%0A%20%20%20%20%5Cend%7Bcases%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%281%29%7D%0A%5Cend%7Balign%2A%7D%0A
+\\text{(1)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20G_t%20%3D%0A%20%20%20%20%5Cbegin%7Bcases%7D%0A%20%20%20%20%20%20%5Ccfrac%7B%5Cint_0%5E%7Br_t%7D%20%5C%2C%20g%28r%29dr%7D%7B%5Cint_0%5E%7Br_%7Bt_%7Bmax%7D%7D%7D%20%5C%2C%20g%28r%29dr%7D%2C%20t%3D1%5C%5C%0A%20%20%20%20%20%20%5Ccfrac%7B%5Cint_%7Br_%7Bt-1%7D%7D%5E%7Br_t%7D%20%20%5C%2C%20g%28r%29dr%7D%7B%5Cint_0%5E%7Br_%7Bt_%7Bmax%7D%7D%7D%20%5C%2C%20g%28r%29dr%7D%2C%20t%3E1%0A%20%20%20%20%5Cend%7Bcases%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%281%29%7D%0A%5Cend%7Balign%2A%7D%0A
 "
 \\begin{align*}
   G_t =
@@ -243,16 +238,16 @@ g(r)dr}{\\int\_0^{r\_{t\_{max}}} \\, g(r)dr}, t\>1&#10;
 \\end{align*}
 ")  
 
-Each isochrone ![t](https://latex.codecogs.com/png.latex?t "t") is
+Each isochrone ![t](https://latex.codecogs.com/svg.latex?t "t") is
 assigned a distance weight
-![G\_T](https://latex.codecogs.com/png.latex?G_T "G_T"), calculated as
+![G\_T](https://latex.codecogs.com/svg.latex?G_T "G_T"), calculated as
 the integral of the logistic distance decay function
-![g(r)](https://latex.codecogs.com/png.latex?g%28r%29 "g(r)") (2)
+![g(r)](https://latex.codecogs.com/svg.latex?g%28r%29 "g(r)") (2)
 
   
 ![&#10;\\begin{align\*}&#10; g(r) =&#10; \\cfrac{1}{1 + e^{ \\,b
 \\,(r-m)}}&#10; &&
-\\text{(2)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20g%28r%29%20%3D%0A%20%20%20%20%5Ccfrac%7B1%7D%7B1%20%2B%20e%5E%7B%20%5C%2Cb%20%5C%2C%28r-m%29%7D%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%282%29%7D%0A%5Cend%7Balign%2A%7D%0A
+\\text{(2)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20g%28r%29%20%3D%0A%20%20%20%20%5Ccfrac%7B1%7D%7B1%20%2B%20e%5E%7B%20%5C%2Cb%20%5C%2C%28r-m%29%7D%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%282%29%7D%0A%5Cend%7Balign%2A%7D%0A
 "
 \\begin{align*}
   g(r) =
@@ -261,14 +256,14 @@ the integral of the logistic distance decay function
 \\end{align*}
 ")  
 
-with ![b = 8](https://latex.codecogs.com/png.latex?b%20%3D%208 "b = 8")
-and ![m = 0.6](https://latex.codecogs.com/png.latex?m%20%3D%200.6
+with ![b = 8](https://latex.codecogs.com/svg.latex?b%20%3D%208 "b = 8")
+and ![m = 0.6](https://latex.codecogs.com/svg.latex?m%20%3D%200.6
 "m = 0.6"), in the interval between the mean inner radius
-![r\_{t-1}](https://latex.codecogs.com/png.latex?r_%7Bt-1%7D "r_{t-1}")
-and mean outer radius ![r\_t](https://latex.codecogs.com/png.latex?r_t
+![r\_{t-1}](https://latex.codecogs.com/svg.latex?r_%7Bt-1%7D "r_{t-1}")
+and mean outer radius ![r\_t](https://latex.codecogs.com/svg.latex?r_t
 "r_t") of the isochrone (e.g. 2 to 4 minutes isochrones), normalized by
 the integral from 0 to the outermost isochrone boundary
-![r\_{t\_{max}}](https://latex.codecogs.com/png.latex?r_%7Bt_%7Bmax%7D%7D
+![r\_{t\_{max}}](https://latex.codecogs.com/svg.latex?r_%7Bt_%7Bmax%7D%7D
 "r_{t_{max}}") (e.g. 20 minutes isochrone). Weighted summary statistics
 to describe the greenspace (e.g. mean or minimum NDVI) are thus
 described as (3)
@@ -276,7 +271,7 @@ described as (3)
   
 ![&#10;\\begin{align\*}&#10; \\sum\_t G\_t \\, f(NDVI\_t \\, \\cap \\,
 I\_t)&#10; &&
-\\text{(3)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20%5Csum_t%20G_t%20%5C%2C%20f%28NDVI_t%20%5C%2C%20%5Ccap%20%5C%2C%20I_t%29%0A%20%20%20%20%26%26%20%5Ctext%7B%283%29%7D%0A%5Cend%7Balign%2A%7D%0A
+\\text{(3)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20%5Csum_t%20G_t%20%5C%2C%20f%28NDVI_t%20%5C%2C%20%5Ccap%20%5C%2C%20I_t%29%0A%20%20%20%20%26%26%20%5Ctext%7B%283%29%7D%0A%5Cend%7Balign%2A%7D%0A
 "
 \\begin{align*}
   \\sum_t G_t \\, f(NDVI_t \\, \\cap \\, I_t)
@@ -290,7 +285,7 @@ the isochrone are further defined as (4)
   
 ![&#10;\\begin{align\*}&#10; A\_{tj} =&#10; \\cfrac{A(C\_j \\, \\cap \\,
 I\_t)}&#10; {A(I\_t)}&#10; &&
-\\text{(4)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20A_%7Btj%7D%20%3D%0A%20%20%20%20%5Ccfrac%7BA%28C_j%20%5C%2C%20%5Ccap%20%5C%2C%20I_t%29%7D%0A%20%20%20%20%7BA%28I_t%29%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%284%29%7D%0A%5Cend%7Balign%2A%7D%0A
+\\text{(4)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20A_%7Btj%7D%20%3D%0A%20%20%20%20%5Ccfrac%7BA%28C_j%20%5C%2C%20%5Ccap%20%5C%2C%20I_t%29%7D%0A%20%20%20%20%7BA%28I_t%29%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%284%29%7D%0A%5Cend%7Balign%2A%7D%0A
 "
 \\begin{align*}
   A_{tj} =
@@ -301,19 +296,19 @@ I\_t)}&#10; {A(I\_t)}&#10; &&
 ")  
 
 with the proportion of the area of the intersection of the census area
-![C\_j](https://latex.codecogs.com/png.latex?C_j "C_j") and the
-isochrone ![I\_t](https://latex.codecogs.com/png.latex?I_t "I_t"), and
+![C\_j](https://latex.codecogs.com/svg.latex?C_j "C_j") and the
+isochrone ![I\_t](https://latex.codecogs.com/svg.latex?I_t "I_t"), and
 the area of the isochrone
-![I\_t](https://latex.codecogs.com/png.latex?I_t "I_t"). The weighted
+![I\_t](https://latex.codecogs.com/svg.latex?I_t "I_t"). The weighted
 value of the SES variable
-![x\_i](https://latex.codecogs.com/png.latex?x_i "x_i") in the census
-area ![j](https://latex.codecogs.com/png.latex?j "j") is then defined as
+![x\_i](https://latex.codecogs.com/svg.latex?x_i "x_i") in the census
+area ![j](https://latex.codecogs.com/svg.latex?j "j") is then defined as
 (5)
 
   
 ![&#10;\\begin{align\*}&#10; \\sum\_t \\left( \\ G\_t \\ \\sum\_j \\,
 x\_{ij} \\; A{tj} \\right)&#10; &&
-\\text{(5)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20%5Csum_t%20%5Cleft%28%20%5C%20G_t%20%5C%20%5Csum_j%20%5C%2C%20x_%7Bij%7D%20%5C%3B%20A%7Btj%7D%20%5Cright%29%0A%20%20%20%20%26%26%20%5Ctext%7B%285%29%7D%0A%5Cend%7Balign%2A%7D%0A
+\\text{(5)}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20%5Csum_t%20%5Cleft%28%20%5C%20G_t%20%5C%20%5Csum_j%20%5C%2C%20x_%7Bij%7D%20%5C%3B%20A%7Btj%7D%20%5Cright%29%0A%20%20%20%20%26%26%20%5Ctext%7B%285%29%7D%0A%5Cend%7Balign%2A%7D%0A
 "
 \\begin{align*}
   \\sum_t \\left( \\ G_t \\ \\sum_j \\, x_{ij} \\; A{tj} \\right)
@@ -385,15 +380,22 @@ census_weighted
 
 ## Authors:
 
-Walker, Blake Byron (1\*) Brinkmann, Sebastian Tobias (1) Große, Tim (1)
-Rangarajan, Sumathy (2) Teo, Koon (2) Yusuf, Salim (2) Lear, Scott A.
-(3)
+Walker, Blake Byron (1\*)  
+Brinkmann, Sebastian Tobias (1)  
+Große, Tim (1)  
+Rangarajan, Sumathy (2)  
+Teo, Koon (2)  
+Yusuf, Salim (2)  
+Lear, Scott A. (3)  
 
 1: Community Health Environments and Social Terrains (CHEST) Lab,
 Institut für Geographie, Friedrich-Alexander-Universität
-Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany 2: 3:
-\*corresponding author:
+Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany  
+2:  
+3:  
+\*corresponding author  
 
 ### Package maintainer:
 
-Brinkmann, Sebastian Tobias e-mail: <sebastian.brinkmann@fau.de>
+Brinkmann, Sebastian Tobias  
+e-mail: <sebastian.brinkmann@fau.de>

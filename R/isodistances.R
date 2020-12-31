@@ -16,8 +16,8 @@
 #'
 #' @import sf
 #' @import dplyr
-#' @import rlang
 #'
+#' @importFrom rlang parse_quosure
 #' @importFrom igraph neighbors
 #' @importFrom tidygraph activate
 #' @importFrom nabor knn

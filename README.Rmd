@@ -1,13 +1,8 @@
 ---
 output:
   github_document:
-    pandoc_args: --webtex
+    pandoc_args: --webtex=https://latex.codecogs.com/svg.latex?
 ---
-
-<style>
-body {
-text-align: justify}
-</style>
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -64,9 +59,9 @@ census <- sf::st_make_grid(
   Erlangen %>% dplyr::mutate(geom = sf::st_buffer(geom, Speed*25)),
   cellsize = 100
   ) %>% 
-  st_as_sf() %>% 
-  mutate(census_var = sample(1000:10000, n(), replace = TRUE)) %>% 
-  rename(geom = x)
+  sf::st_as_sf() %>% 
+  dplyr::mutate(census_var = sample(1000:10000, n(), replace = TRUE)) %>% 
+  dplyr::rename(geom = x)
 
 census
 ```
@@ -118,7 +113,7 @@ erlangen.isochrones
 
 Figure 1 shows isodistances of the two points of the sample data in Erlangen, Germany.
 
-```{r echo=FALSE, fig.height=7, fig.width=10, message=FALSE, warning=FALSE}
+```{r echo=FALSE, fig.height=7, fig.width=10, message=FALSE, warning=FALSE, dev='svg'}
 isorings <- function(tag, isochrone) {
   this_isochrone <- isochrone[isochrone$tag == tag, ]
   isoch_rings <- this_isochrone[0,]
@@ -143,17 +138,19 @@ erlangen.isorings <- lapply(c(1,2), FUN = isorings, erlangen.isodistances) %>%
 erlangen.isorings %>%
   dplyr::mutate(time = time %>% as.character() %>% as.numeric()) %>% 
   tmap::tm_shape() +
-  tmap::tm_lines(col = "time", lwd = 3, style = "cont",
+  tmap::tm_lines(col = "time", lwd = 3, #style = "cont",
                  palette = "-viridis", n = 10,
-                 title.col = "Walking-Distance (minutes)",
-                 legend.col.is.portrait = F) +
+                 title.col = "Walking-Distance\n(minutes)",
+                 legend.col.is.portrait = T) +
   tmap::tm_facets(by = "tag") +
   tmap::tm_shape(Erlangen) + 
   tmap::tm_dots(col = "black", size = 0.6, shape = 20) +
   tmap::tm_facets(by = "tag") +
-  tmap::tm_layout(legend.outside.position = "bottom",
-                  legend.position = c(0.4, 0),
-                  legend.outside.size = .1,
+  tmap::tm_layout(legend.outside.position = "right",
+                  legend.position = c(0.1, 0.4),
+                  legend.outside.size = .15,
+                  legend.title.size = 1.5,
+                  legend.text.size = 1,
                   panel.show = F)
 ```
 
@@ -268,19 +265,19 @@ dplyr::tibble(
 
 
 ## Authors:
-Walker, Blake Byron (1*)
-Brinkmann, Sebastian Tobias (1)
-Große, Tim (1)
-Rangarajan, Sumathy (2)
-Teo, Koon (2)
-Yusuf, Salim (2)
-Lear, Scott A. (3)
+Walker, Blake Byron (1*)\
+Brinkmann, Sebastian Tobias (1)\
+Große, Tim (1)\
+Rangarajan, Sumathy (2)\
+Teo, Koon (2)\
+Yusuf, Salim (2)\
+Lear, Scott A. (3)\
 
-1: Community Health Environments and Social Terrains (CHEST) Lab, Institut für Geographie, Friedrich-Alexander-Universität Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany
-2: 
-3: 
-*corresponding author: 
+1: Community Health Environments and Social Terrains (CHEST) Lab, Institut für Geographie, Friedrich-Alexander-Universität Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany\
+2: \
+3: \
+*corresponding author\
 
 ### Package maintainer:
-Brinkmann, Sebastian Tobias
+Brinkmann, Sebastian Tobias\
 e-mail: sebastian.brinkmann@fau.de
