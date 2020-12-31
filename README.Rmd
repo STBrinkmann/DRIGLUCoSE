@@ -261,9 +261,8 @@ dplyr::tibble(
   census_var = c(5374., 5535.)
 )
 ```
-\
-\
-\
+
+
 ### Package contributors:
 Brinkmann, Sebastian Tobias (Package creator and author)\
 e-mail: sebastian.brinkmann@fau.de\

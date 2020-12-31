@@ -155,7 +155,7 @@ minutes, using the A\*-algorithm (Hart, Nilsson & Raphael 1968). This
 therefore resulted in each participant having ten concentric isochrones,
 the sizes of which are a function of individual walking speed and road
 network.  
-Since the road network contains a lot of features (n=14061), this will
+Since the road network contains a lot of features (n=14292), this will
 take some time (\~15-30 minutes).
 
 ``` r
@@ -378,11 +378,9 @@ census_weighted
     #> 1     1       5374
     #> 2     2       5535
 
-  
-  
-  
-\#\#\# Package contributors: Brinkmann, Sebastian Tobias (Package
-creator and author)  
+### Package contributors:
+
+Brinkmann, Sebastian Tobias (Package creator and author)  
 e-mail: <sebastian.brinkmann@fau.de>  
 Große, Tim (Contributor)
 
