@@ -4,6 +4,11 @@ output:
     pandoc_args: --webtex
 ---
 
+<style>
+body {
+text-align: justify}
+</style>
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
@@ -42,7 +47,7 @@ library(DRIGLUCoSE)
 
 
 # Methods
-One key purpose of this package is, to provide functions for route networked derived isochrones. For that purpose we have provided a simple sf object of 2 points in Erlangen, Germany.
+One key purpose of this package is, to provide functions for route networked derived isochrones. For that purpose we have provided a sample sf object of 2 points in Erlangen, Germany.
 
 ```{r}
 data(Erlangen)
@@ -50,7 +55,7 @@ Erlangen
 ```
 
 ## Census variables
-In our analysis we acquired data of the Canadian census dissemination areas (DA, the smallest available census area with an average population of 400-800 residents) for the census year 2006 from the federal government agency Statistics Canada. It has been converted to a shapefile (sf) with one column per census variable. To demonstrate we use the following randomly generated data:
+In our analysis we acquired data of the Canadian census dissemination areas. It has been converted to a shapefile (sf) with one column per census variable. To demonstrate we use the following randomly generated data:
 
 ```{r message=FALSE, warning=FALSE}
 set.seed(1234)
@@ -67,7 +72,7 @@ census
 ```
 
 ## Greenspace
-In our analysis we acquired LANDSAT images through the United States Geological Survey’s EarthExplorer platform (https://earthexplorer.usgs.gov/). The Normalized Difference Vegetation Index (NDVI) is used as a metric to model greenspace exposure. Pre-processing of the LANDSAT images and NDVI calculation has been conducted using the _LS_L1C_ function:
+In our analysis we acquired LANDSAT images through the United States Geological Survey’s EarthExplorer platform (https://earthexplorer.usgs.gov/). The Normalized Difference Vegetation Index ([NDVI](https://gisgeography.com/ndvi-normalized-difference-vegetation-index/)) is used as a metric to model greenspace exposure. Pre-processing of the LANDSAT images and NDVI calculation has been conducted using the _LS_L1C_ function:
 
 ```{r message=FALSE, warning=FALSE}
 DRIGLUCoSE::LS_L1C(l1c_path = "docs/LC08_L1TP_193026_20200423_20200508_01_T1_small/", 
@@ -82,18 +87,16 @@ DRIGLUCoSE::LS_L1C(l1c_path = "docs/LC08_L1TP_193026_20200423_20200508_01_T1_sma
 In order to estimate each participant’s potential exposures to greenspace and local SES, we (i) mapped age- and sex-specific walkable zones around their residential address, and (ii) applied a negative logit weighting function, such that the estimated effect of greenspace or SES decreases as distance from the home increases.
 
 ### (i) Road network data and isochrones
-In order to compute network-based distance metrics, we acquired street data from OpenStreetMap using the R-package osmdata (Padgham et al. 2017). Road types not suitable for walking were removed (e.g., motorways). Network data were topologically corrected and split into ~30 metre-long segments using the R package _nngeo_ (Dorman 2020).
+In order to compute network-based distance metrics, we acquired street data from OpenStreetMap using the R-package _osmdata_ (Padgham et al. 2017). Road types not suitable for walking were removed (e.g., motorways). Network data were topologically corrected and split into ~20 metre-long segments using the R package _nngeo_ (Dorman 2020).
 
 ```{r message=FALSE, warning=FALSE}
 erlangen.osm <- DRIGLUCoSE::osm_roads(x = Erlangen, dist = 20, 
                                       speed = "Speed", cores = 2)
-erlangen.osm
 ```
 
 
-This network data was used to derive walking distance buffers for each participant, based on age- and sex-specific walking speed estimates derived from the literature (Dewulf 2012). Starting from each participant’s place of residence, we computed network-constrained buffers with an off-road width of 40 meters, running in 2-minute increments from 0 to 20 minutes, using the A*-algorithm (Hart, Nilsson & Raphael 1968). This therefore resulted in each participant having ten concentric isochrones, the sizes of which are a function of participant age and sex.\
-Since the road network contains a lot of features (n=14292), this will take some time (~15-30 minutes).\
-Figure 1 shows isodistances of the two points of the sample data in Erlangen, Germany.
+This network data was used to derive walking distance buffers for each participant, based on walking speed. Starting from each participant’s place of residence, we computed network-constrained buffers with an off-road width of 40 meters, running in 2-minute increments from 0 to 20 minutes, using the A*-algorithm (Hart, Nilsson & Raphael 1968). This therefore resulted in each participant having ten concentric isochrones, the sizes of which are a function of individual walking speed and road network.\
+Since the road network contains a lot of features (n=`r nrow(erlangen.osm)`), this will take some time (~15-30 minutes).
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE}
 erlangen.isodistances <- DRIGLUCoSE::isodistances(x = Erlangen, 
@@ -102,7 +105,6 @@ erlangen.isodistances <- DRIGLUCoSE::isodistances(x = Erlangen,
                                                   isochrones_seq = seq(2, 20, 2),
                                                   cores = 2)
 ```
-
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 data(erlangen.isodistances)
 ```
@@ -110,8 +112,11 @@ data(erlangen.isodistances)
 ```{r message=FALSE, warning=FALSE}
 erlangen.isochrones <- DRIGLUCoSE::isochrones(x = erlangen.isodistances, 
                                               buffer = 40, cores = 2)
+erlangen.isochrones
 ```
 
+
+Figure 1 shows isodistances of the two points of the sample data in Erlangen, Germany.
 
 ```{r echo=FALSE, fig.height=7, fig.width=10, message=FALSE, warning=FALSE}
 isorings <- function(tag, isochrone) {
@@ -153,7 +158,7 @@ erlangen.isorings %>%
 ```
 
 ## (ii) Distance-weighting
-In order to account for the diminishing effect of SES and greenspace exposure as distance increases, we fitted a logit function to weight each incremental isochrone, such that the influence of a variable decreases with increasing distance from the household, i.e., features that are farther away have less influence than nearby features, as illustrated in Figure 2. A logit function was selected as it heuristically approximates a suitable distance-decay function (Bauer and Groneberg 2016; Jia et al. 2019) and various parameterisations (parameters $b$ and $m$) of the logit function were assessed using sensitivity analysis.\
+In order to account for the diminishing effect of SES and greenspace exposure as distance increases, we fitted a logit function to weight each incremental isochrone, such that the influence of a variable decreases with increasing distance from the household, i.e., features that are farther away have less influence than nearby features, as illustrated in Figure 2. A logit function was selected as it heuristically approximates a suitable distance-decay function (Bauer and Groneberg 2016; Jia et al. 2019).\
 The distance-weighting is separated in two parts, first the logit function (1) that is used for both SES and greenspace variables, and second the proportional weights function (4) that is only applied on SES variables.
 
 $$
@@ -177,7 +182,7 @@ $$
 \end{align*}
 $$
 
-with $b = 8$ and $m = 0.6$, in the interval between the mean inner radius $r_{t-1}$ and mean outer radius $r_t$ of the isochrone (e.g. 2 to 4 minutes isochrones), normalized by the integral from 0 to the outermost isochrone boundary $r_{t_{max}}$ (e.g. 20 minutes isochrone). Weighted summary statistics like the mean NDVI to describe the greenspace are thus described as (3)
+with $b = 8$ and $m = 0.6$, in the interval between the mean inner radius $r_{t-1}$ and mean outer radius $r_t$ of the isochrone (e.g. 2 to 4 minutes isochrones), normalized by the integral from 0 to the outermost isochrone boundary $r_{t_{max}}$ (e.g. 20 minutes isochrone). Weighted summary statistics to describe the greenspace (e.g. mean or minimum NDVI) are thus described as (3)
 
 $$
 \begin{align*}
@@ -186,7 +191,7 @@ $$
 \end{align*}
 $$
 
-For SES variable the proportional weights of the census areas within the isochrone are further defined as (4)
+For SES variables the proportional weights of the census areas within the isochrone are further defined as (4)
 
 $$
 \begin{align*}
@@ -231,10 +236,11 @@ NDVI_weighted <-
 
 NDVI_weighted
 ```
-
 ```{r echo=FALSE}
 # This function does not work in the package-internal R Markdown.
 # However it works fine out of the package-internal documents.
+unlink("docs/LS_PreProcessed", recursive = T)
+
 dplyr::tibble(
   tag = c(1.0, 2.0),
   sd = c(0.205, 0.132),
@@ -261,11 +267,20 @@ dplyr::tibble(
 
 
 
+## Authors:
+Walker, Blake Byron (1*)
+Brinkmann, Sebastian Tobias (1)
+Große, Tim (1)
+Rangarajan, Sumathy (2)
+Teo, Koon (2)
+Yusuf, Salim (2)
+Lear, Scott A. (3)
 
+1: Community Health Environments and Social Terrains (CHEST) Lab, Institut für Geographie, Friedrich-Alexander-Universität Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany
+2: 
+3: 
+*corresponding author: 
 
-
-
-
-
-
-
+### Package maintainer:
+Brinkmann, Sebastian Tobias
+e-mail: sebastian.brinkmann@fau.de

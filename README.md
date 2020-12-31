@@ -1,4 +1,9 @@
 
+<style>
+body {
+text-align: justify}
+</style>
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # DRI-GLUCoSE
@@ -40,7 +45,7 @@ library(DRIGLUCoSE)
 # Methods
 
 One key purpose of this package is, to provide functions for route
-networked derived isochrones. For that purpose we have provided a simple
+networked derived isochrones. For that purpose we have provided a sample
 sf object of 2 points in Erlangen, Germany.
 
 ``` r
@@ -61,11 +66,9 @@ Erlangen
 ## Census variables
 
 In our analysis we acquired data of the Canadian census dissemination
-areas (DA, the smallest available census area with an average population
-of 400-800 residents) for the census year 2006 from the federal
-government agency Statistics Canada. It has been converted to a
-shapefile (sf) with one column per census variable. To demonstrate we
-use the following randomly generated data:
+areas. It has been converted to a shapefile (sf) with one column per
+census variable. To demonstrate we use the following randomly generated
+data:
 
 ``` r
 set.seed(1234)
@@ -103,9 +106,11 @@ census
 In our analysis we acquired LANDSAT images through the United States
 Geological Survey’s EarthExplorer platform
 (<https://earthexplorer.usgs.gov/>). The Normalized Difference
-Vegetation Index (NDVI) is used as a metric to model greenspace
-exposure. Pre-processing of the LANDSAT images and NDVI calculation has
-been conducted using the *LS\_L1C* function:
+Vegetation Index
+([NDVI](https://gisgeography.com/ndvi-normalized-difference-vegetation-index/))
+is used as a metric to model greenspace exposure. Pre-processing of the
+LANDSAT images and NDVI calculation has been conducted using the
+*LS\_L1C* function:
 
 ``` r
 DRIGLUCoSE::LS_L1C(l1c_path = "docs/LC08_L1TP_193026_20200423_20200508_01_T1_small/", 
@@ -137,47 +142,26 @@ or SES decreases as distance from the home increases.
 ### (i) Road network data and isochrones
 
 In order to compute network-based distance metrics, we acquired street
-data from OpenStreetMap using the R-package osmdata (Padgham et
+data from OpenStreetMap using the R-package *osmdata* (Padgham et
 al. 2017). Road types not suitable for walking were removed (e.g.,
 motorways). Network data were topologically corrected and split into
-\~30 metre-long segments using the R package *nngeo* (Dorman 2020).
+\~20 metre-long segments using the R package *nngeo* (Dorman 2020).
 
 ``` r
 erlangen.osm <- DRIGLUCoSE::osm_roads(x = Erlangen, dist = 20, 
                                       speed = "Speed", cores = 2)
-erlangen.osm
-#> Simple feature collection with 14302 features and 1 field
-#> geometry type:  LINESTRING
-#> dimension:      XY
-#> bbox:           xmin: 32165.93 ymin: -162084.9 xmax: 38358.49 ymax: -157095
-#> projected CRS:  ETRS89 / LCC Germany (N-E)
-#> First 10 features:
-#>         highway                           geom
-#> 1.1.1  tertiary LINESTRING (34087.99 -15828...
-#> 1.1.2  tertiary LINESTRING (34090.6 -158266...
-#> 1.1.3  tertiary LINESTRING (34093.22 -15825...
-#> 1.1.4  tertiary LINESTRING (34097.83 -15823...
-#> 1.1.5  tertiary LINESTRING (34099.78 -15823...
-#> 1.1.6  tertiary LINESTRING (34107.87 -15821...
-#> 1.1.7  tertiary LINESTRING (34115.54 -15820...
-#> 1.1.8  tertiary LINESTRING (34124.58 -15819...
-#> 1.1.9  tertiary LINESTRING (34133.9 -158191...
-#> 1.1.10 tertiary LINESTRING (34142.74 -15818...
 ```
 
 This network data was used to derive walking distance buffers for each
-participant, based on age- and sex-specific walking speed estimates
-derived from the literature (Dewulf 2012). Starting from each
-participant’s place of residence, we computed network-constrained
-buffers with an off-road width of 40 meters, running in 2-minute
-increments from 0 to 20 minutes, using the A\*-algorithm (Hart, Nilsson
-& Raphael 1968). This therefore resulted in each participant having ten
-concentric isochrones, the sizes of which are a function of participant
-age and sex.  
-Since the road network contains a lot of features (n=14292), this will
-take some time (\~15-30 minutes).  
-Figure 1 shows isodistances of the two points of the sample data in
-Erlangen, Germany.
+participant, based on walking speed. Starting from each participant’s
+place of residence, we computed network-constrained buffers with an
+off-road width of 40 meters, running in 2-minute increments from 0 to 20
+minutes, using the A\*-algorithm (Hart, Nilsson & Raphael 1968). This
+therefore resulted in each participant having ten concentric isochrones,
+the sizes of which are a function of individual walking speed and road
+network.  
+Since the road network contains a lot of features (n=14302), this will
+take some time (\~15-30 minutes).
 
 ``` r
 erlangen.isodistances <- DRIGLUCoSE::isodistances(x = Erlangen, 
@@ -190,7 +174,39 @@ erlangen.isodistances <- DRIGLUCoSE::isodistances(x = Erlangen,
 ``` r
 erlangen.isochrones <- DRIGLUCoSE::isochrones(x = erlangen.isodistances, 
                                               buffer = 40, cores = 2)
+erlangen.isochrones
+#> Simple feature collection with 20 features and 2 fields
+#> geometry type:  POLYGON
+#> dimension:      XY
+#> bbox:           xmin: 34033.6 ymin: -160836.2 xmax: 37706.61 ymax: -157758.7
+#> projected CRS:  ETRS89 / LCC Germany (N-E)
+#> # A tibble: 20 x 3
+#>      tag time                                                               geom
+#>  * <dbl> <chr>                                                     <POLYGON [m]>
+#>  1     1 2     ((35069.53 -159364.5, 35069.53 -159364.1, 35069.56 -159363.5, 35~
+#>  2     1 4     ((34939.85 -159373.8, 34940.23 -159373.4, 34940.61 -159372.9, 34~
+#>  3     1 6     ((34892.51 -159333.3, 34892.51 -159332.4, 34892.52 -159332.3, 34~
+#>  4     1 8     ((34892.51 -159333.3, 34892.51 -159332.4, 34892.52 -159332.3, 34~
+#>  5     1 10    ((34832.45 -159080.6, 34832.44 -159080, 34832.45 -159079.7, 3483~
+#>  6     1 12    ((34609.81 -159190.6, 34607.8 -159191.1, 34605.76 -159191.6, 346~
+#>  7     1 14    ((34491.75 -159216.3, 34491.53 -159216.4, 34489.45 -159216.6, 34~
+#>  8     1 16    ((34314.4 -159277.6, 34312.43 -159278.3, 34310.41 -159278.9, 343~
+#>  9     1 18    ((34137.69 -159298.2, 34136.14 -159296.8, 34134.67 -159295.3, 34~
+#> 10     1 20    ((34033.61 -159310, 34033.6 -159309.9, 34033.63 -159308.9, 34033~
+#> 11     2 2     ((36169.37 -159274.8, 36169.3 -159274.8, 36143.99 -159271.6, 361~
+#> 12     2 4     ((35937.49 -159174.3, 35937.53 -159174.1, 35937.8 -159173.3, 359~
+#> 13     2 6     ((35842.74 -159227.6, 35841.66 -159227.5, 35839.58 -159227.3, 35~
+#> 14     2 8     ((35660.08 -159105.1, 35659.91 -159105.1, 35654.15 -159102.5, 35~
+#> 15     2 10    ((36942.64 -159679.2, 36942.96 -159679.6, 36944.31 -159681.2, 36~
+#> 16     2 12    ((35368.96 -158950.9, 35368.23 -158950.5, 35366.45 -158949.4, 35~
+#> 17     2 14    ((35212.62 -158969.4, 35212.55 -158968.6, 35212.47 -158966.6, 35~
+#> 18     2 16    ((35503.8 -159156.6, 35503.85 -159156.6, 35504.41 -159157.4, 355~
+#> 19     2 18    ((34982.31 -158901.1, 34982.26 -158899, 34982.31 -158896.9, 3498~
+#> 20     2 20    ((34832.45 -159080.6, 34832.44 -159080, 34832.45 -159079.7, 3483~
 ```
+
+Figure 1 shows isodistances of the two points of the sample data in
+Erlangen, Germany.
 
 <img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
@@ -203,10 +219,7 @@ decreases with increasing distance from the household, i.e., features
 that are farther away have less influence than nearby features, as
 illustrated in Figure 2. A logit function was selected as it
 heuristically approximates a suitable distance-decay function (Bauer and
-Groneberg 2016; Jia et al. 2019) and various parameterisations
-(parameters ![b](https://latex.codecogs.com/png.latex?b "b") and
-![m](https://latex.codecogs.com/png.latex?m "m")) of the logit function
-were assessed using sensitivity analysis.  
+Groneberg 2016; Jia et al. 2019).  
 The distance-weighting is separated in two parts, first the logit
 function (1) that is used for both SES and greenspace variables, and
 second the proportional weights function (4) that is only applied on SES
@@ -257,7 +270,8 @@ and mean outer radius ![r\_t](https://latex.codecogs.com/png.latex?r_t
 the integral from 0 to the outermost isochrone boundary
 ![r\_{t\_{max}}](https://latex.codecogs.com/png.latex?r_%7Bt_%7Bmax%7D%7D
 "r_{t_{max}}") (e.g. 20 minutes isochrone). Weighted summary statistics
-like the mean NDVI to describe the greenspace are thus described as (3)
+to describe the greenspace (e.g. mean or minimum NDVI) are thus
+described as (3)
 
   
 ![&#10;\\begin{align\*}&#10; \\sum\_t G\_t \\, f(NDVI\_t \\, \\cap \\,
@@ -270,8 +284,8 @@ I\_t)&#10; &&
 \\end{align*}
 ")  
 
-For SES variable the proportional weights of the census areas within the
-isochrone are further defined as (4)
+For SES variables the proportional weights of the census areas within
+the isochrone are further defined as (4)
 
   
 ![&#10;\\begin{align\*}&#10; A\_{tj} =&#10; \\cfrac{A(C\_j \\, \\cap \\,
@@ -368,3 +382,18 @@ census_weighted
     #>   <dbl>      <dbl>
     #> 1     1       5374
     #> 2     2       5535
+
+## Authors:
+
+Walker, Blake Byron (1\*) Brinkmann, Sebastian Tobias (1) Große, Tim (1)
+Rangarajan, Sumathy (2) Teo, Koon (2) Yusuf, Salim (2) Lear, Scott A.
+(3)
+
+1: Community Health Environments and Social Terrains (CHEST) Lab,
+Institut für Geographie, Friedrich-Alexander-Universität
+Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany 2: 3:
+\*corresponding author:
+
+### Package maintainer:
+
+Brinkmann, Sebastian Tobias e-mail: <sebastian.brinkmann@fau.de>
