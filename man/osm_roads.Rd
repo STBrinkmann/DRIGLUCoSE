@@ -21,14 +21,14 @@ osm_roads(
 
 \item{cores}{the number of cores to use.}
 
-\item{remove_features}{character vector containing feature keys that should be exluded from the analysis (e.g. motorway)}
+\item{remove_features}{character vector containing feature keys that should be excluded from the analysis (e.g. motorway)}
 }
 \value{
 object of class \code{sf} containing road features.
 }
 \description{
 Download road features using the OSM overpass API \code{\link[osmdata]{opq}}.
-    Simple topology cleaning is applied using \code{\link[nngeo]{st_split_junctions}}.
+    Simple topology cleaning is applied using \code{\link[nngeo]{st_segments}}.
 }
 \examples{
 \dontrun{

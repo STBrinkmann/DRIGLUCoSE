@@ -1,13 +1,13 @@
 #' @title Download and clean road features
 #'
 #' @description Download road features using the OSM overpass API \code{\link[osmdata]{opq}}.
-#'     Simple topology cleaning is applied using \code{\link[nngeo]{st_split_junctions}}.
+#'     Simple topology cleaning is applied using \code{\link[nngeo]{st_segments}}.
 #'
 #' @param x object of class \code{sf}.
 #' @param dist numeric; maximum number of minutes of the isochrones.
 #' @param speed numeric or character; either numeric value of speed or string containing the column name, that indicates the walking speed.
 #' @param cores the number of cores to use.
-#' @param remove_features character vector containing feature keys that should be exluded from the analysis (e.g. motorway)
+#' @param remove_features character vector containing feature keys that should be excluded from the analysis (e.g. motorway)
 #'
 #' @return object of class \code{sf} containing road features.
 #' @export
@@ -17,7 +17,6 @@
 #' @importFrom dplyr select
 #' @importFrom dplyr rename
 #' @importFrom dplyr filter
-#' @importFrom nngeo st_split_junctions
 #' @importFrom nngeo st_segments
 #' @importFrom methods is
 #'
