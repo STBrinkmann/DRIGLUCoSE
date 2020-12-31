@@ -39,3 +39,6 @@ To account for the diminishing effect of spatial variables (e.g. SES exposure) a
     distance increases, we fitted a logit function to weight each incremental isochrone. From
     a census shapefile, the spatially weighted areal mean of the isochrones are calculated.
 }
+\details{
+For a detailed explanation of this method, see documentation on GitHub.
+}

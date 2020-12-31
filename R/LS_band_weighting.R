@@ -22,7 +22,9 @@
 #'     Supported functions for the \code{stat} object:\cr
 #'     "sum", "mean", "min", "max", "sd", "rms", "skew", "median" and "percentile". When using "percentile",
 #'     provide a \code{list} as follows:\cr
-#'     \code{list("percentile", upper_lim)}, where \code{upper_lim} is the upper limit of the percentile (e.g. 0.95).
+#'     \code{list("percentile", upper_lim)}, where \code{upper_lim} is the upper limit of the percentile (e.g. 0.95).\cr
+#'     \cr
+#'     For a detailed explanation of this method, see documentation on GitHub.
 #'
 #' @return A \code{tibble} containing the spatially weighted statistics of the
 #'     intersects of the isochrone and Landsat objects.

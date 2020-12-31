@@ -29,8 +29,6 @@ Depends:
     raster (>= 3.4.5)
 Suggests: 
     remotes,
-    ggplot2,
-    ggthemes,
-    forcats
+    tmap
 URL: https://github.com/STBrinkmann/DRIGLUCoSE
 BugReports: https://github.com/STBrinkmann/DRIGLUCoSE/issues

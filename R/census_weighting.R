@@ -12,6 +12,9 @@
 #' @param m numeric; x for g(x) = 0.5
 #' @param cores the number of cores to use. Parallel processing is currently only supported on Linux and macOS.
 #'
+#' @details
+#'     For a detailed explanation of this method, see documentation on GitHub.
+#'
 #' @return A \code{tibble} containing the spatially weighted census variable(s) of the
 #'     intersects of the isochrone and Landsat objects.
 #' @export
