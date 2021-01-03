@@ -155,7 +155,7 @@ minutes, using the A\*-algorithm (Hart, Nilsson & Raphael 1968). This
 therefore resulted in each participant having ten concentric isochrones,
 the sizes of which are a function of individual walking speed and road
 network.  
-Since the road network contains a lot of features (n=14292), this will
+Since the road network contains a lot of features (n=14391), this will
 take some time (\~15-30 minutes).
 
 ``` r
@@ -389,16 +389,10 @@ Große, Tim (Contributor)
 Walker, Blake Byron (1\*)  
 Brinkmann, Sebastian Tobias (1)  
 Große, Tim (1)  
-Rangarajan, Sumathy (2)  
-Teo, Koon (2)  
-Yusuf, Salim (2)  
-Lear, Scott A. (3)  
 
 1: Community Health Environments and Social Terrains (CHEST) Lab,
 Institut für Geographie, Friedrich-Alexander-Universität
 Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany  
-2:  
-3:  
 \*corresponding author  
 
 ## Bibliography
