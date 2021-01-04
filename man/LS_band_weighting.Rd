@@ -12,7 +12,6 @@ LS_band_weighting(
   band = "NDVI",
   b = 8,
   m = 0.5,
-  cores,
   stats = list("sd", "median", list("percentile", 0.05), list("percentile", 0.95),
     "skew")
 )
@@ -33,8 +32,6 @@ to which distance-weighting should be applied.}
 \item{b}{numeric; slope of distance decay function}
 
 \item{m}{numeric; x for g(x) = 0.5}
-
-\item{cores}{the number of cores to use. Parallel processing is currently only supported on Linux and macOS.}
 
 \item{stats}{The function to be applied. See Details}
 }

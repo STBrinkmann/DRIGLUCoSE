@@ -11,7 +11,6 @@
 #'     to which distance-weighting should be applied.
 #' @param b numeric; slope of distance decay function
 #' @param m numeric; x for g(x) = 0.5
-#' @param cores the number of cores to use. Parallel processing is currently only supported on Linux and macOS.
 #' @param stats The function to be applied. See Details
 #'
 #' @details
@@ -47,7 +46,7 @@
 #' @importFrom parallel mclapply
 LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
                               landsat_list, band = "NDVI",
-                              b = 8, m = 0.5, cores,
+                              b = 8, m = 0.5,
                               stats = list("sd", "median",
                                            list("percentile", 0.05),
                                            list("percentile", 0.95),
@@ -116,7 +115,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   }
 
   # cores
-  if (cores < 1L) stop("Number of cores must be 1 or greater.")
+  #if (cores < 1L) stop("Number of cores must be 1 or greater.")
 
   # stats
   stats_boolean <- lapply(stats, function(i) {
@@ -285,18 +284,14 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     dplyr::group_split()
 
   # WINDWOS
-  if (Sys.info()[["sysname"]] == "Windows") {
+  'if (Sys.info()[["sysname"]] == "Windows") {
     # Use mclapply for paralleling the isodistance function
-    #cl <- parallel::makeCluster(cores)
-    #LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_LS_band_weighting,
-    #                                        .tag = tag, .time = time,
-    #                                        .landsat_list = landsat_list, .band = band,
-    #                                        b = b, m = m, .stats = stats)
-    #parallel::stopCluster(cl)
-    LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
-                               .tag = tag, .time = time,
-                               .landsat_list = landsat_list, .band = band,
-                               .b = b, .m = m, .stats = stats)
+    cl <- parallel::makeCluster(cores)
+    LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_LS_band_weighting,
+                                            .tag = tag, .time = time,
+                                            .landsat_list = landsat_list, .band = band,
+                                            b = b, m = m, .stats = stats)
+    parallel::stopCluster(cl)
   }
   # Linux and macOS
   else {
@@ -306,7 +301,12 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
                                            .landsat_list = landsat_list, .band = band,
                                            .b = b, .m = m, .stats = stats,
                                            mc.cores = cores, mc.preschedule = FALSE)
-  }
+  }'
+
+  LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
+                             .tag = tag, .time = time,
+                             .landsat_list = landsat_list, .band = band,
+                             .b = b, .m = m, .stats = stats)
 
   # Convert list to one tibble
   output_tibble <- DRIGLUCoSE::rbind_parallel(LS_band_weightes, cores = cores) %>%

@@ -10,7 +10,6 @@
 #' @param census_sf object of class \code{sf} containing a census shapefile.
 #' @param b numeric; slope of distance decay function
 #' @param m numeric; x for g(x) = 0.5
-#' @param cores the number of cores to use. Parallel processing is currently only supported on Linux and macOS.
 #'
 #' @details
 #'     For a detailed explanation of this method, see documentation on GitHub.
@@ -31,7 +30,7 @@
 #' @importFrom parallel stopCluster
 #' @importFrom parallel mclapply
 census_weighting <- function(isochrones, tag = "tag", time = "time",
-                             census, b = 8, m = 0.5, cores){
+                             census, b = 8, m = 0.5){
   # 1. Check input -------------------------------------------------------
   suppressMessages(require(mosaic))
 
@@ -114,7 +113,7 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
   }
 
   # cores
-  if (cores < 1L) stop("Number of cores must be 1 or greater.")
+  #if (cores < 1L) stop("Number of cores must be 1 or greater.")
 
   # 2. Internal census_weighting function ------------------------------
   this_census_weighting <- function(.isochrones, .tag, .time,
@@ -228,16 +227,13 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     dplyr::group_split()
 
   # WINDWOS
-  if (Sys.info()[["sysname"]] == "Windows") {
+  'if (Sys.info()[["sysname"]] == "Windows") {
     # Use mclapply for paralleling the isodistance function
-    #cl <- parallel::makeCluster(cores)
-    #LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_census_weighting,
-    #                                        .tag = tag, .time = time,
-    #                                        .census = census, b = b, m = m)
-    #parallel::stopCluster(cl)
-    census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
-                              .tag = tag, .time = time,
-                              .census = census, .b = b, .m = m)
+    cl <- parallel::makeCluster(cores)
+    LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_census_weighting,
+                                            .tag = tag, .time = time,
+                                            .census = census, b = b, m = m)
+    parallel::stopCluster(cl)
   }
   # Linux and macOS
   else {
@@ -246,7 +242,11 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
                                           .tag = tag, .time = time,
                                           .census = census, .b = b, .m = m,
                                           mc.cores = cores, mc.preschedule = FALSE)
-  }
+  }'
+
+  census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
+                            .tag = tag, .time = time,
+                            .census = census, .b = b, .m = m)
 
   # Convert list to one tibble
   output_tibble <- DRIGLUCoSE::rbind_parallel(census_weightes, cores = cores) %>%
