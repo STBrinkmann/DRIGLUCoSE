@@ -94,12 +94,6 @@ osm_roads <- function(x, dist, speed, cores = 1L,
       x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
     })
     parallel::stopCluster(cl)
-
-    osm_roads <- DRIGLUCoSE::rbind_parallel(osm_roads)
-
-    if ("result" %in% names(osm_roads)) {
-      osm_roads <- osm_roads %>% dplyr::rename(geom = "result")
-    }
   }
   # ---- Linux and macOS ----
   else {
@@ -107,12 +101,13 @@ osm_roads <- function(x, dist, speed, cores = 1L,
       parallel::mclapply(function(x){
         x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
       },
-      mc.cores = cores, mc.preschedule = TRUE) %>%
-      DRIGLUCoSE::rbind.parallel(cores = cores)
+      mc.cores = cores, mc.preschedule = TRUE)
+  }
 
-    if ("result" %in% names(osm_roads)) {
-      osm_roads <- osm_roads %>% dplyr::rename(geom = "result")
-    }
+  osm_roads <- DRIGLUCoSE::rbind_parallel(osm_roads)
+
+  if ("result" %in% names(osm_roads)) {
+    osm_roads <- osm_roads %>% dplyr::rename(geom = "result")
   }
 
   invisible(gc())
