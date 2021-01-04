@@ -25,18 +25,22 @@ isochrones <- function(x, buffer = 30, cores = 1) {
   # Convert x to list to enable parLapply/mclapply
   x_list <- suppressWarnings(split(x, seq(nrow(x))))
 
-  # ---- WINDWOS ----
-  if (Sys.info()[["sysname"]] == "Windows") {
-    # Use mclapply for paralleling the isochrones function
-    cl <- parallel::makeCluster(cores)
-    isochs <- parallel::parLapply(cl, x_list, fun = this_isochrones, buffer = buffer)
-    parallel::stopCluster(cl)
-  }
-  # ---- Linux and macOS ----
-  else {
-    # Use mclapply for paralleling the isochrones function
-    isochs <- mclapply(x_list, this_isochrones, buffer = buffer,
-                       mc.cores = cores, mc.preschedule = TRUE)
+  if (cores > 1) {
+    # ---- WINDWOS ----
+    if (Sys.info()[["sysname"]] == "Windows") {
+      # Use mclapply for paralleling the isochrones function
+      cl <- parallel::makeCluster(cores)
+      isochs <- parallel::parLapply(cl, x_list, fun = this_isochrones, buffer = buffer)
+      parallel::stopCluster(cl)
+    }
+    # ---- Linux and macOS ----
+    else {
+      # Use mclapply for paralleling the isochrones function
+      isochs <- mclapply(x_list, this_isochrones, buffer = buffer,
+                         mc.cores = cores, mc.preschedule = TRUE)
+    }
+  } else {
+    isochs <- lapply(x_list, FUN = this_isochrones, buffer = buffer)
   }
 
   isochs <- do.call(rbind, isochs)

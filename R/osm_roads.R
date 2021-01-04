@@ -85,23 +85,30 @@ osm_roads <- function(x, dist, speed, cores = 1L,
     st_transform(crs = sf::st_crs(x))
 
   # 3. Topology cleaning -------------------------------------------------------
-  # ---- WINDWOS ----
-  if (Sys.info()[["sysname"]] == "Windows") {
+  if (cores > 1) {
+    # ---- WINDWOS ----
+    if (Sys.info()[["sysname"]] == "Windows") {
 
-    cl <- parallel::makeCluster(cores)
+      cl <- parallel::makeCluster(cores)
+      osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200)))
+      osm_roads <- parallel::parLapply(cl, osm_roads, fun = function(x){
+        x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
+      })
+      parallel::stopCluster(cl)
+    }
+    # ---- Linux and macOS ----
+    else {
+      osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200))) %>%
+        parallel::mclapply(function(x){
+          x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
+        },
+        mc.cores = cores, mc.preschedule = TRUE)
+    }
+  } else {
     osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200)))
-    osm_roads <- parallel::parLapply(cl, osm_roads, fun = function(x){
+    osm_roads <- lapply(osm_roads, FUN = function(x){
       x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
     })
-    parallel::stopCluster(cl)
-  }
-  # ---- Linux and macOS ----
-  else {
-    osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200))) %>%
-      parallel::mclapply(function(x){
-        x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
-      },
-      mc.cores = cores, mc.preschedule = TRUE)
   }
 
   osm_roads <- DRIGLUCoSE::rbind_parallel(osm_roads)

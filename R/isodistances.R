@@ -304,20 +304,25 @@ isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15
   # Convert x to list to enable mclapply
   x_list <- suppressWarnings(split(x, seq(nrow(x))))
 
-  # ---- WINDWOS ----
-  if (Sys.info()[["sysname"]] == "Windows") {
-    # Use mclapply for paralleling the isodistance function
-    cl <- parallel::makeCluster(cores)
-    isodistances <- parallel::parLapply(cl, x_list, fun = this_isodistance,
-                                        road_network = road_network, isochrones_seq = isochrones_seq, speed = speed, tag = tag)
-    parallel::stopCluster(cl)
-  }
-  # ---- Linux and macOS ----
-  else {
-    # Use mclapply for paralleling the isodistance function
-    isodistances <- parallel::mclapply(x_list, this_isodistance,
-                                       road_network = road_network, isochrones_seq = isochrones_seq, speed = speed, tag = tag,
-                                       mc.cores = cores, mc.preschedule = FALSE)
+  if (cores > 1) {
+    # ---- WINDWOS ----
+    if (Sys.info()[["sysname"]] == "Windows") {
+      # Use mclapply for paralleling the isodistance function
+      cl <- parallel::makeCluster(cores)
+      isodistances <- parallel::parLapply(cl, x_list, fun = this_isodistance,
+                                          road_network = road_network, isochrones_seq = isochrones_seq, speed = speed, tag = tag)
+      parallel::stopCluster(cl)
+    }
+    # ---- Linux and macOS ----
+    else {
+      # Use mclapply for paralleling the isodistance function
+      isodistances <- parallel::mclapply(x_list, this_isodistance,
+                                         road_network = road_network, isochrones_seq = isochrones_seq, speed = speed, tag = tag,
+                                         mc.cores = cores, mc.preschedule = FALSE)
+    }
+  } else {
+    isodistances <- lapply(x_list, FUN = this_isodistance,
+                           road_network = road_network, isochrones_seq = isochrones_seq, speed = speed, tag = tag)
   }
 
 
