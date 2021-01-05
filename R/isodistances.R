@@ -49,7 +49,7 @@ isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15
 
     # Check if geometry column only contains POINT features
     sf_class <- x %>%
-      dplyr::pull(geometry_col_name) %>%
+      dplyr::pull(geom) %>%
       sf::st_geometry_type() %>%
       as.character() %>%
       unique()
@@ -86,11 +86,9 @@ isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15
 
   # speed
   if (is.character(speed)) {
-    if (speed %in% names(x)) {
-      message("speed will be used from sf object")
-    } else (
+    if (!speed %in% names(x)) {
       stop("speed must be either numeric or a column of the sf object")
-    )
+    }
   }
 
   # cores
@@ -123,9 +121,12 @@ isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15
     this_buffer <- x %>%
       sf::st_buffer(max(isochrones_seq) * speed)
 
+    st_agr(road_network) = "constant"
+
     edges <- road_network %>%
       sf::st_intersection(this_buffer$geom) %>%
-      sf::st_cast("LINESTRING") %>%
+      sf::st_cast("MULTILINESTRING") %>%
+      sf::st_cast("LINESTRING", warn = F) %>%
       dplyr::mutate(edgeID = c(1:n()))
 
 
@@ -278,9 +279,11 @@ isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15
       dplyr::summarize(geom = sf::st_union(geom)) %>%
       dplyr::select(time)
 
-    for (j in 1:nrow(star_network)) {
-      star_network[j,]$geom <- star_network[1:j,] %>%
-        sf::st_union()
+    if (nrow(star_network) > 0) {
+      for (j in 1:nrow(star_network)) {
+        star_network[j,]$geom <- star_network[1:j,] %>%
+          sf::st_union()
+      }
     }
 
     if (!is.na(tag)) {
