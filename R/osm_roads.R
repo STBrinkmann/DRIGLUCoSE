@@ -93,7 +93,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
   }
 
   if (class(.error) == "try-error") stop("Runtime error.")
-  if (is.na(location.osm)) stop("No features downloaded from www.openstreetmap.org.")
+  if (is.na(osm_roads)) stop("No features downloaded from www.openstreetmap.org.")
 
   osm_roads <- osm_roads$osm_lines %>%
     dplyr::select(highway) %>%
