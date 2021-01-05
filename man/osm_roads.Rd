@@ -9,7 +9,8 @@ osm_roads(
   dist,
   speed,
   cores = 1L,
-  remove_features = c("motorway", "motorway_link", "trunk", "trunk_link", "raceway")
+  remove_features = c("motorway", "motorway_link", "trunk", "trunk_link", "raceway"),
+  split_segments = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ osm_roads(
 \item{cores}{the number of cores to use.}
 
 \item{remove_features}{character vector containing feature keys that should be excluded from the analysis (e.g. motorway)}
+
+\item{split_segments}{logical; should topology cleaning with \code{\link[nngeo]{st_segments}} be used.}
 }
 \value{
 object of class \code{sf} containing road features.
