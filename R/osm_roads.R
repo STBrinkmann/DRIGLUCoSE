@@ -92,14 +92,8 @@ osm_roads <- function(x, dist, speed, cores = 1L,
     invisible(gc()); Sys.sleep(c(1, 5, 10, 10, 15, 30)[error_count])
   }
 
-  if (class(error) == "try-error") stop("Runtime error.")
+  if (class(.error) == "try-error") stop("Runtime error.")
   if (is.na(location.osm)) stop("No features downloaded from www.openstreetmap.org.")
-
-
-  osm_roads <- osmdata::opq(bbox = x_bbox) %>%
-    osmdata::add_osm_feature(key = 'highway') %>%
-    osmdata::osmdata_sf() %>%
-    osmdata::osm_poly2line()
 
   osm_roads <- osm_roads$osm_lines %>%
     dplyr::select(highway) %>%
