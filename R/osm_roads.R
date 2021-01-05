@@ -98,8 +98,16 @@ osm_roads <- function(x, dist, speed, cores = 1L,
   osm_roads <- osm_roads$osm_lines %>%
     dplyr::select(highway) %>%
     dplyr::filter(!highway %in% remove_features) %>%
-    dplyr::rename(geom = geometry) %>%
+    #dplyr::rename(geom = geometry) %>%
     st_transform(crs = sf::st_crs(x))
+
+  # Get geometry column name
+  geometry_col_name <- lapply(osm_roads, is, "sfc") %>%
+    unlist() %>%
+    which() %>%
+    names()
+
+  osm_roads <- dplyr::rename(osm_roads, geom = geometry_col_name)
 
   # 3. Topology cleaning -------------------------------------------------------
   if (split_segments) {
