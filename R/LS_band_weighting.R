@@ -170,7 +170,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
 
     # Define integral
-    G <- mosaicCalc::antiD(g(x, b = .b, m = .m)~x)
+    G <- mosaicCalc::antiD(g(x, b = !! rlang::parse_quosure(.b), m = !! rlang::parse_quosure(.m))~x)
 
 
     # calculate weights:
