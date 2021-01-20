@@ -1,11 +1,8 @@
+DRI-GLUCoSE
+================
+Sebastian Brinkmann
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# DRI-GLUCoSE
-
-<!-- badges: start -->
-
-<!-- badges: end -->
+# Work in Progress
 
 As elaborated in our recent analyses (Walker et al. 2019; Scarpone et
 al. 2020), nearly all previous studies in the literature use either
@@ -155,7 +152,7 @@ minutes, using the A\*-algorithm (Hart, Nilsson & Raphael 1968). This
 therefore resulted in each participant having ten concentric isochrones,
 the sizes of which are a function of individual walking speed and road
 network.  
-Since the road network contains a lot of features (n=14391), this will
+Since the road network contains a lot of features (n=14403), this will
 take some time (\~15-30 minutes).
 
 ``` r
