@@ -223,7 +223,7 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
 
   # Convert isochrones to list to enable mclapply
   isochrones_list <- isochrones %>%
-    dplyr::group_by(tag) %>%
+    dplyr::group_by(!! rlang::parse_quosure(tag)) %>%
     dplyr::group_split()
 
   # WINDWOS

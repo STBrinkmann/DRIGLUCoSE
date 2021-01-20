@@ -280,7 +280,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
 
   # Convert isochrones to list to enable mclapply (work in progress)
   isochrones_list <- isochrones %>%
-    dplyr::group_by(tag) %>%
+    dplyr::group_by(!! rlang::parse_quosure(tag)) %>%
     dplyr::group_split()
 
   # WINDWOS
