@@ -45,7 +45,9 @@ isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15
       geometry_col_name <- dplyr::first(geometry_col_name)
     }
 
-    x <- dplyr::rename(x, geom = geometry_col_name)
+    if (geometry_col_name != "geom") {
+      st_geometry(x) <- "geom"
+    }
 
     # Check if geometry column only contains POINT features
     sf_class <- x %>%

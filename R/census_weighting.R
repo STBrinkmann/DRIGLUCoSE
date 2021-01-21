@@ -100,7 +100,9 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
       geometry_col_name <- dplyr::first(geometry_col_name)
     }
 
-    census <- dplyr::rename(census, geom = geometry_col_name)
+    if (geometry_col_name != "geom") {
+      st_geometry(census) <- "geom"
+    }
 
     # Check if geometry column only contains POINT features
     sf_class <- census %>%

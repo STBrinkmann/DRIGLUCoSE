@@ -107,7 +107,15 @@ osm_roads <- function(x, dist, speed, cores = 1L,
     which() %>%
     names()
 
-  osm_roads <- dplyr::rename(osm_roads, geom = geometry_col_name)
+  if (length(geometry_col_name) > 1) {
+    warning("x contains more than one geometry column. Only the first one will be used.")
+    geometry_col_name <- dplyr::first(geometry_col_name)
+  }
+
+  if (geometry_col_name != "geom") {
+    st_geometry(osm_roads) <- "geom"
+  }
+
 
   # 3. Topology cleaning -------------------------------------------------------
   if (split_segments) {
