@@ -88,6 +88,20 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
   } else if (nrow(census) == 0) {
     stop("census musst contain at least one feature.")
   } else {
+
+    # Get geometry column name
+    geometry_col_name <- lapply(census, is, "sfc") %>%
+      unlist() %>%
+      which() %>%
+      names()
+
+    if (length(geometry_col_name) > 1) {
+      warning("x contains more than one geometry column. Only the first one will be used.")
+      geometry_col_name <- dplyr::first(geometry_col_name)
+    }
+
+    census <- dplyr::rename(census, geom = all_of(geometry_col_name))
+
     # Check if geometry column only contains POINT features
     sf_class <- census %>%
       dplyr::pull(geom) %>%
@@ -98,19 +112,6 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     if((length(sf_class) > 1) ||
        !((sf_class == "MULTIPOLYGON" || sf_class == "POLYGON"))) {
       stop("isochrones must only contain either MULTIPOLYGON or POLYGON features.")
-    } else {
-      # Get geometry column name
-      geometry_col_name <- lapply(census, is, "sfc") %>%
-        unlist() %>%
-        which() %>%
-        names()
-
-      if (length(geometry_col_name) > 1) {
-        warning("x contains more than one geometry column. Only the first one will be used.")
-        geometry_col_name <- dplyr::first(geometry_col_name)
-      }
-
-      census <- dplyr::rename(census, geom = all_of(geometry_col_name))
     }
   }
 
@@ -200,7 +201,7 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
 
     for(x in 1:nrow(isoch_rings)){
       # Intersect CDA and isochrone rings and calculate area and proportions of individual CDA of total area
-      cda_int <- sf::st_intersection(census, sf::st_buffer(isoch_rings[x,], 0.01)) %>%
+      cda_int <- sf::st_intersection(.census, sf::st_buffer(isoch_rings[x,], 0.01)) %>%
         na.omit() %>%
         dplyr::mutate(area_cd = sf::st_area(.),
                       weight = as.numeric(area_cd/area))
