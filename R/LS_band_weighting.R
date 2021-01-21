@@ -292,7 +292,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   .b <<- b
   .m <<- m
 
-  if (cores > 1) {
+  'if (cores > 1) {
     # WINDWOS
     if (Sys.info()[["sysname"]] == "Windows") {
       # Use mclapply for paralleling the isodistance function
@@ -312,12 +312,12 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
                                              .b = b, .m = m, .stats = stats,
                                              mc.cores = cores, mc.preschedule = FALSE)
     }
-  } else {
-    LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
-                               .tag = tag, .time = time,
-                               .landsat_list = landsat_list, .band = band,
-                               .b = b, .m = m, .stats = stats)
-  }
+  }'
+
+  LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
+                             .tag = tag, .time = time,
+                             .landsat_list = landsat_list, .band = band,
+                             .b = b, .m = m, .stats = stats)
 
 
   # Convert list to one tibble

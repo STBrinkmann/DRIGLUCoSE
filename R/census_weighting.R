@@ -241,7 +241,7 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
   .b <<- b
   .m <<- m
 
-  if (cores > 1) {
+  'if (cores > 1) {
     # WINDWOS
     if (Sys.info()[["sysname"]] == "Windows") {
       # Use mclapply for paralleling the isodistance function
@@ -259,11 +259,11 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
                                             .census = census, .b = b, .m = m,
                                             mc.cores = cores, mc.preschedule = FALSE)
     }
-  } else {
-    census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
-                              .tag = tag, .time = time,
-                              .census = census, .b = b, .m = m)
-  }
+  }'
+
+  census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
+                            .tag = tag, .time = time,
+                            .census = census, .b = b, .m = m)
 
 
   # Convert list to one tibble
