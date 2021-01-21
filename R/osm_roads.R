@@ -99,7 +99,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
     dplyr::select(highway) %>%
     dplyr::filter(!highway %in% remove_features) %>%
     #dplyr::rename(geom = geometry) %>%
-    st_transform(crs = sf::st_crs(x))
+    sf::st_transform(crs = sf::st_crs(x))
 
   # Get geometry column name
   geometry_col_name <- lapply(osm_roads, is, "sfc") %>%
@@ -113,7 +113,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
   }
 
   if (geometry_col_name != "geom") {
-    st_geometry(osm_roads) <- "geom"
+    osm_roads <- rename(osm_roads, geom = geometry_col_name)
   }
 
 

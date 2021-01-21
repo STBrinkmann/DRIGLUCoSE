@@ -10,7 +10,8 @@ census_weighting(
   time = "time",
   census,
   b = 8,
-  m = 0.5
+  m = 0.5,
+  cores = 1
 )
 }
 \arguments{
@@ -24,6 +25,8 @@ derived from the \code{\link[DRIGLUCoSE]{isodistances}} function.}
 \item{b}{numeric; slope of distance decay function}
 
 \item{m}{numeric; x for g(x) = 0.5}
+
+\item{cores}{the number of cores to use.}
 
 \item{census_sf}{object of class \code{sf} containing a census shapefile.}
 }

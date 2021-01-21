@@ -13,7 +13,8 @@ LS_band_weighting(
   b = 8,
   m = 0.5,
   stats = list("sd", "median", list("percentile", 0.05), list("percentile", 0.95),
-    "skew")
+    "skew"),
+  cores = 1
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ to which distance-weighting should be applied.}
 \item{m}{numeric; x for g(x) = 0.5}
 
 \item{stats}{The function to be applied. See Details}
+
+\item{cores}{the number of cores to use.}
 }
 \value{
 A \code{tibble} containing the spatially weighted statistics of the
