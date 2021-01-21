@@ -351,7 +351,7 @@ knitr::include_graphics("docs/roc_auc.svg")
 ```
 
 ## Summary Statistics
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>% 
   kableExtra::kbl(format = "html", escape = FALSE, caption = "Table A.3: Baseline characteristics of the study population by diabetes status.") %>% 
   kable_paper("striped", full_width = F) %>%
@@ -382,6 +382,7 @@ readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>%
   pack_rows("Education - No degree (%)", 50, 51) %>%
   pack_rows("Private Dwellings - Owned (%)", 52, 53) %>%
   pack_rows("Private Dwellings - Rented (%)", 54, 55) %>%
+  pack_rows("NDVI", 56, 63) %>% 
   pack_rows("NDVI - Median", 56, 57) %>%
   pack_rows("NDVI - Standard Deviation", 58, 59) %>%
   pack_rows("NDVI - Min", 60, 61) %>%

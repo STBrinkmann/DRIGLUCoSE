@@ -1112,51 +1112,6 @@ multivariable logistic models.
 
 ## Summary Statistics
 
-``` r
-readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>% 
-  kableExtra::kbl(format = "html", escape = FALSE, caption = "Table A.3: Baseline characteristics of the study population by diabetes status.") %>% 
-  kable_paper("striped", full_width = F) %>%
-  pack_rows("City", 2, 3) %>%
-  pack_rows("Participant data", 4, 27) %>%
-  pack_rows("BMI", 4, 5) %>%
-  pack_rows("Waist to hip ratio", 6, 7) %>%
-  pack_rows("Obesity (WHR)", 8, 9) %>%
-  pack_rows("Age (years)", 10, 11) %>%
-  pack_rows("Sex", 12, 13) %>%
-  pack_rows("Household Income Range", 14, 19) %>%
-  pack_rows("AHEI Score", 20, 21) %>%
-  pack_rows("Physical Activity MET Score", 22, 23) %>%
-  pack_rows("Ever smoked", 24, 25) %>%
-  pack_rows("Daily Drinker", 26, 27) %>%
-  pack_rows("Census variables", 28, 55) %>%
-  pack_rows("Neighbourhood type", 28, 29) %>%
-  pack_rows("Individual mean income (CAD/1000)", 30, 31) %>%
-  pack_rows("Household mean income (CAD/1000)", 32, 33) %>%
-  pack_rows("Individual median income (CAD/1000)", 34, 35) %>%
-  pack_rows("Household median income (CAD/1000)", 36, 37) %>%
-  pack_rows("Prevalence of low income (%)", 38, 39) %>%
-  pack_rows("Commute Walking/Bicycle (%)", 40, 41) %>%
-  pack_rows("Labour force participation rate (%)", 42, 43) %>%
-  pack_rows("Gov’t transfer payments (%)", 44, 45) %>%
-  pack_rows("Unemployment rate (%)", 46, 47) %>%
-  pack_rows("Lone parent families (%)", 48, 49) %>%
-  pack_rows("Education - No degree (%)", 50, 51) %>%
-  pack_rows("Private Dwellings - Owned (%)", 52, 53) %>%
-  pack_rows("Private Dwellings - Rented (%)", 54, 55) %>%
-  pack_rows("NDVI - Median", 56, 57) %>%
-  pack_rows("NDVI - Standard Deviation", 58, 59) %>%
-  pack_rows("NDVI - Min", 60, 61) %>%
-  pack_rows("NDVI - max", 62, 63)
-#> 
-#> -- Column specification --------------------------------------------------------
-#> cols(
-#>   Parameter = col_character(),
-#>   `No Diabetes (N=4481)` = col_character(),
-#>   `Diabetes (N=497)` = col_character(),
-#>   `Total (N=4978)` = col_character()
-#> )
-```
-
 <table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
 
 <caption>
@@ -3010,6 +2965,16 @@ Median (Q1, Q3)
 
 </tr>
 
+<tr grouplength="8">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>NDVI</strong>
+
+</td>
+
+</tr>
+
 <tr grouplength="2">
 
 <td colspan="4" style="border-bottom: 1px solid;">
@@ -3022,7 +2987,7 @@ Median (Q1, Q3)
 
 <tr>
 
-<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
 Mean (SD)
 
@@ -3050,7 +3015,7 @@ Mean (SD)
 
 <tr>
 
-<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
 Median (Q1, Q3)
 
@@ -3088,7 +3053,7 @@ Median (Q1, Q3)
 
 <tr>
 
-<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
 Mean (SD)
 
@@ -3116,7 +3081,7 @@ Mean (SD)
 
 <tr>
 
-<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
 Median (Q1, Q3)
 
@@ -3154,7 +3119,7 @@ Median (Q1, Q3)
 
 <tr>
 
-<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
 Mean (SD)
 
@@ -3182,7 +3147,7 @@ Mean (SD)
 
 <tr>
 
-<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
 Median (Q1, Q3)
 
@@ -3220,7 +3185,7 @@ Median (Q1, Q3)
 
 <tr>
 
-<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
 Mean (SD)
 
@@ -3248,7 +3213,7 @@ Mean (SD)
 
 <tr>
 
-<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
 Median (Q1, Q3)
 
