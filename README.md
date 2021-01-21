@@ -1,22 +1,22 @@
-DRI-GLUCoSE
+DRI-GLUCoSE — Work in Progress
 ================
-Sebastian Brinkmann
 
-  - [Work in Progress](#work-in-progress)
-      - [Installation](#install)
-      - [Usage](#usage)
+  - [Installation](#installation)
   - [Methods](#methods)
       - [Census variables](#census-variables)
       - [Greenspace](#greenspace)
       - [Exposure Model](#exposure-model)
           - [(i) Road network data and
             isochrones](#i-road-network-data-and-isochrones)
-      - [(ii) Distance-weighting](#ii-distance-weighting)
-          - [Package contributors:](#package-contributors)
-          - [Thesis authors:](#thesis-authors)
-      - [Bibliography](#bibliography)
-
-# Work in Progress
+          - [(ii) Distance-weighting](#ii-distance-weighting)
+  - [Appendix](#appendix)
+      - [Tables](#tables)
+      - [Figures](#figures)
+      - [Summary Statistics](#summary-statistics)
+  - [About](#about)
+      - [Package contributors:](#package-contributors)
+      - [Thesis authors:](#thesis-authors)
+  - [Bibliography](#bibliography)
 
 As elaborated in our recent analyses (Walker et al. 2019; Scarpone et
 al. 2020), nearly all previous studies in the literature use either
@@ -31,7 +31,7 @@ The goal of the DRIGLUCoSE package is to provide a public package
 containing functions and code used in the development of the DRI-GLUCoSE
 Index.
 
-## Installation
+# Installation
 
 You can install the latest version of DRIGLUCoSE from
 [GitHub](https://CRAN.R-project.org) with:
@@ -39,8 +39,6 @@ You can install the latest version of DRIGLUCoSE from
 ``` r
 devtools::install_git("https://github.com/STBrinkmann/DRIGLUCoSE")
 ```
-
-## Usage
 
 Once installed, the library can be loaded as follows:
 
@@ -84,27 +82,29 @@ census <- sf::st_make_grid(
   cellsize = 100
   ) %>% 
   sf::st_as_sf() %>% 
-  dplyr::mutate(census_var = sample(1000:10000, n(), replace = TRUE)) %>% 
+  dplyr::mutate(census_var_a = sample(1:1000, n(), replace = TRUE),
+                census_var_b = sample(1000:10000, n(), replace = TRUE),
+                census_var_c = sample(100000:150000, n(), replace = TRUE)) %>% 
   dplyr::rename(geom = x)
 
 census
-#> Simple feature collection with 2142 features and 1 field
+#> Simple feature collection with 2142 features and 3 fields
 #> geometry type:  POLYGON
 #> dimension:      XY
 #> bbox:           xmin: 33236.96 ymin: -161396 xmax: 38336.96 ymax: -157196
 #> projected CRS:  ETRS89 / LCC Germany (N-E)
 #> First 10 features:
-#>    census_var                           geom
-#> 1        8451 POLYGON ((33236.96 -161396,...
-#> 2        9015 POLYGON ((33336.96 -161396,...
-#> 3        8161 POLYGON ((33436.96 -161396,...
-#> 4        9085 POLYGON ((33536.96 -161396,...
-#> 5        8268 POLYGON ((33636.96 -161396,...
-#> 6        1622 POLYGON ((33736.96 -161396,...
-#> 7        1933 POLYGON ((33836.96 -161396,...
-#> 8        3947 POLYGON ((33936.96 -161396,...
-#> 9        3145 POLYGON ((34036.96 -161396,...
-#> 10       3773 POLYGON ((34136.96 -161396,...
+#>    census_var_a census_var_b census_var_c                           geom
+#> 1           284         2009       114811 POLYGON ((33236.96 -161396,...
+#> 2           848         3318       139961 POLYGON ((33336.96 -161396,...
+#> 3           918         3954       112673 POLYGON ((33436.96 -161396,...
+#> 4           101         3359       137505 POLYGON ((33536.96 -161396,...
+#> 5           623         3107       109201 POLYGON ((33636.96 -161396,...
+#> 6           905         2630       131656 POLYGON ((33736.96 -161396,...
+#> 7           645         6512       135789 POLYGON ((33836.96 -161396,...
+#> 8           934         9945       115006 POLYGON ((33936.96 -161396,...
+#> 9           400         3583       111379 POLYGON ((34036.96 -161396,...
+#> 10          900         7778       137576 POLYGON ((34136.96 -161396,...
 ```
 
 ## Greenspace
@@ -166,7 +166,7 @@ minutes, using the A\*-algorithm (Hart, Nilsson & Raphael 1968). This
 therefore resulted in each participant having ten concentric isochrones,
 the sizes of which are a function of individual walking speed and road
 network.  
-Since the road network contains a lot of features (n=14403), this will
+Since the road network contains a lot of features (n=14420), this will
 take some time (\~15-30 minutes).
 
 ``` r
@@ -216,7 +216,7 @@ Erlangen, Germany.
 
 <img src="man/figures/README-unnamed-chunk-11-1.svg" width="100%" />
 
-## (ii) Distance-weighting
+### (ii) Distance-weighting
 
 In order to account for the diminishing effect of SES and greenspace
 exposure as distance increases, we fitted a logit function to weight
@@ -365,29 +365,2920 @@ NDVI_weighted <-
                                              list("percentile", 0.05), 
                                              list("percentile", 0.95),
                                              "skew"), 
-                                b = 8, m = 0.6, cores = 2) 
+                                b = 8, m = 0.6)
 
 NDVI_weighted
+#> # A tibble: 2 x 6
+#>     tag    sd median X5_percentile X95_percentile    skew
+#>   <dbl> <dbl>  <dbl>         <dbl>          <dbl>   <dbl>
+#> 1     1 0.204  0.597         0.261          0.906 -0.133 
+#> 2     2 0.143  0.561         0.321          0.790 -0.0302
 ```
-
-    #> # A tibble: 2 x 6
-    #>     tag    sd medain X5_percentile X95_percentile   skew
-    #>   <dbl> <dbl>  <dbl>         <dbl>          <dbl>  <dbl>
-    #> 1     1 0.205  0.597         0.259          0.905 -0.136
-    #> 2     2 0.132  0.558         0.336          0.772 -0.215
 
 ``` r
 census_weighted <- DRIGLUCoSE::census_weighting(isochrones = erlangen.isochrones, 
                                                 tag = "tag", census = census, 
-                                                b = 8, m = 0.6, cores = 2)
+                                                b = 8, m = 0.6)
 census_weighted
+#> # A tibble: 2 x 4
+#>     tag census_var_a census_var_b census_var_c
+#>   <dbl>        <dbl>        <dbl>        <dbl>
+#> 1     1         522.        5215.      128452.
+#> 2     2         521.        5477.      124588.
 ```
 
-    #> # A tibble: 2 x 2
-    #>     tag census_var
-    #>   <dbl>      <dbl>
-    #> 1     1       5374
-    #> 2     2       5535
+# Appendix
+
+## Tables
+
+<table style='width:90%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;' class=" lightable-classic lightable-striped">
+
+<caption>
+
+Table A.1: Logistic models for all multivariable models with odds
+ratios, 95% CI, and p-values.
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="empty-cells: hide;" colspan="2">
+
+</th>
+
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+
+<div style="TRUE">
+
+Semi-Adjusted
+
+</div>
+
+</th>
+
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+
+<div style="TRUE">
+
+Fully-Adjusted
+
+</div>
+
+</th>
+
+</tr>
+
+<tr>
+
+<th style="text-align:left;">
+
+Parameter
+
+</th>
+
+<th style="text-align:center;">
+
+OR<br>(bivariate)
+
+</th>
+
+<th style="text-align:center;">
+
+OR<br>(WHR-adjusted)
+
+</th>
+
+<th style="text-align:center;">
+
+OR<br>(BMI-adjusted)
+
+</th>
+
+<th style="text-align:center;">
+
+OR<br>(WHR-adjusted)
+
+</th>
+
+<th style="text-align:center;">
+
+OR<br>(BMI-adjusted)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+DRI-GLUCoSE Score
+
+</td>
+
+<td style="text-align:center;">
+
+0.4 (0.3-0.54,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.55 (0.43-0.7,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.59 (0.46-0.76,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.5 (0.38-0.64,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.57 (0.43-0.75,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Age (5 year-interval)
+
+</td>
+
+<td style="text-align:center;">
+
+1.27 (1.19-1.36,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.2 (1.14-1.26,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.26 (1.2-1.32,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.19 (1.13-1.26,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.23 (1.17-1.3,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Sex: female
+
+</td>
+
+<td style="text-align:center;">
+
+0.61 (0.48-0.76,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.89 (0.74-1.06,<br>p-value=0.19)
+
+</td>
+
+<td style="text-align:center;">
+
+0.46 (0.38-0.54,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.83 (0.67-1.02,<br>p-value=0.078)
+
+</td>
+
+<td style="text-align:center;">
+
+0.43 (0.35-0.52,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Obese (WHR)
+
+</td>
+
+<td style="text-align:center;">
+
+5.54 (4.24-7.33,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+5.96 (4.97-7.16,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+5.02 (4.08-6.19,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+BMI
+
+</td>
+
+<td style="text-align:center;">
+
+1.14 (1.12-1.16,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+1.15 (1.13-1.17,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+1.14 (1.12-1.16,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Household income range
+
+</td>
+
+<td style="text-align:center;">
+
+0.74 (0.69-0.8,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.87 (0.82-0.92,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.85 (0.8-0.9,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.84 (0.79-0.9,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.82 (0.77-0.88,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Neighbourhood type: urban
+
+</td>
+
+<td style="text-align:center;">
+
+0.88 (0.67-1.16,<br>p-value=0.385)
+
+</td>
+
+<td style="text-align:center;">
+
+0.69 (0.56-0.86,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.72 (0.58-0.9,<br>p-value=0.003)
+
+</td>
+
+<td style="text-align:center;">
+
+0.54 (0.42-0.69,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.64 (0.5-0.82,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+AHEI Score (E^1)
+
+</td>
+
+<td style="text-align:center;">
+
+0.76 (0.68-0.85,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+0.87 (0.79-0.96,<br>p-value=0.005)
+
+</td>
+
+<td style="text-align:center;">
+
+0.92 (0.84-1.02,<br>p-value=0.126)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Physical Activity MET Score
+
+</td>
+
+<td style="text-align:center;">
+
+0.74 (0.63-0.88,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+0.9 (0.78-1.03,<br>p-value=0.134)
+
+</td>
+
+<td style="text-align:center;">
+
+0.92 (0.8-1.06,<br>p-value=0.272)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Current/Former smoker: yes
+
+</td>
+
+<td style="text-align:center;">
+
+1.66 (1.32-2.09,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+1.43 (1.18-1.74,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.27 (1.04-1.54,<br>p-value=0.018)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Alcohol: \<1 drink/day
+
+</td>
+
+<td style="text-align:center;">
+
+1.19 (0.92-1.54,<br>p-value=0.184)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+2.11 (1.69-2.64,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.81 (1.45-2.26,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+  
+
+<table style='width:80%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;' class=" lightable-classic">
+
+<caption>
+
+Table A.2: Model Performance for all multivariable models.
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="empty-cells: hide;" colspan="1">
+
+</th>
+
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+
+<div style="border-bottom: 1px solid #111111; margin-bottom: -1px; ">
+
+Semi-Adjusted
+
+</div>
+
+</th>
+
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+
+<div style="border-bottom: 1px solid #111111; margin-bottom: -1px; ">
+
+Fully-Adjusted
+
+</div>
+
+</th>
+
+</tr>
+
+<tr>
+
+<th style="text-align:left;">
+
+Metric
+
+</th>
+
+<th style="text-align:center;">
+
+OR<br>(WHR-adjusted)
+
+</th>
+
+<th style="text-align:center;">
+
+OR<br>(BMI-adjusted)
+
+</th>
+
+<th style="text-align:center;">
+
+OR<br>(WHR-adjusted)
+
+</th>
+
+<th style="text-align:left;">
+
+OR<br>(BMI-adjusted)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Sensitivity
+
+</td>
+
+<td style="text-align:center;">
+
+0.67
+
+</td>
+
+<td style="text-align:center;">
+
+0.76
+
+</td>
+
+<td style="text-align:center;">
+
+0.69
+
+</td>
+
+<td style="text-align:left;">
+
+0.78
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Specificity
+
+</td>
+
+<td style="text-align:center;">
+
+0.71
+
+</td>
+
+<td style="text-align:center;">
+
+0.64
+
+</td>
+
+<td style="text-align:center;">
+
+0.72
+
+</td>
+
+<td style="text-align:left;">
+
+0.66
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Youden index
+
+</td>
+
+<td style="text-align:center;">
+
+0.38
+
+</td>
+
+<td style="text-align:center;">
+
+0.41
+
+</td>
+
+<td style="text-align:center;">
+
+0.41
+
+</td>
+
+<td style="text-align:left;">
+
+0.44
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+  
+
+## Figures
+
+<div class="figure">
+
+<img src="docs/forest_plot_whr.svg" alt="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models." width="90%" />
+
+<p class="caption">
+
+Figure A.1: Forest plot showing significant effects for both BMI- and
+WHR-controlled multivariable logistic models.
+
+</p>
+
+</div>
+
+  
+
+<div class="figure">
+
+<img src="docs/roc_auc.svg" alt="Figure A.2: The ROC curves for both BMI- and WHR-controlled multivariable logistic models." width="90%" />
+
+<p class="caption">
+
+Figure A.2: The ROC curves for both BMI- and WHR-controlled
+multivariable logistic models.
+
+</p>
+
+</div>
+
+## Summary Statistics
+
+``` r
+readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>% 
+  kableExtra::kbl(format = "html", escape = FALSE, caption = "Table A.3: Baseline characteristics of the study population by diabetes status.") %>% 
+  kable_paper("striped", full_width = F) %>%
+  pack_rows("City", 2, 3) %>%
+  pack_rows("Participant data", 4, 27) %>%
+  pack_rows("BMI", 4, 5) %>%
+  pack_rows("Waist to hip ratio", 6, 7) %>%
+  pack_rows("Obesity (WHR)", 8, 9) %>%
+  pack_rows("Age (years)", 10, 11) %>%
+  pack_rows("Sex", 12, 13) %>%
+  pack_rows("Household Income Range", 14, 19) %>%
+  pack_rows("AHEI Score", 20, 21) %>%
+  pack_rows("Physical Activity MET Score", 22, 23) %>%
+  pack_rows("Ever smoked", 24, 25) %>%
+  pack_rows("Daily Drinker", 26, 27) %>%
+  pack_rows("Census variables", 28, 55) %>%
+  pack_rows("Neighbourhood type", 28, 29) %>%
+  pack_rows("Individual mean income (CAD/1000)", 30, 31) %>%
+  pack_rows("Household mean income (CAD/1000)", 32, 33) %>%
+  pack_rows("Individual median income (CAD/1000)", 34, 35) %>%
+  pack_rows("Household median income (CAD/1000)", 36, 37) %>%
+  pack_rows("Prevalence of low income (%)", 38, 39) %>%
+  pack_rows("Commute Walking/Bicycle (%)", 40, 41) %>%
+  pack_rows("Labour force participation rate (%)", 42, 43) %>%
+  pack_rows("Gov’t transfer payments (%)", 44, 45) %>%
+  pack_rows("Unemployment rate (%)", 46, 47) %>%
+  pack_rows("Lone parent families (%)", 48, 49) %>%
+  pack_rows("Education - No degree (%)", 50, 51) %>%
+  pack_rows("Private Dwellings - Owned (%)", 52, 53) %>%
+  pack_rows("Private Dwellings - Rented (%)", 54, 55) %>%
+  pack_rows("NDVI - Median", 56, 57) %>%
+  pack_rows("NDVI - Standard Deviation", 58, 59) %>%
+  pack_rows("NDVI - Min", 60, 61) %>%
+  pack_rows("NDVI - max", 62, 63)
+#> 
+#> -- Column specification --------------------------------------------------------
+#> cols(
+#>   Parameter = col_character(),
+#>   `No Diabetes (N=4481)` = col_character(),
+#>   `Diabetes (N=497)` = col_character(),
+#>   `Total (N=4978)` = col_character()
+#> )
+```
+
+<table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+
+<caption>
+
+Table A.3: Baseline characteristics of the study population by diabetes
+status.
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Parameter
+
+</th>
+
+<th style="text-align:left;">
+
+No Diabetes (N=4481)
+
+</th>
+
+<th style="text-align:left;">
+
+Diabetes (N=497)
+
+</th>
+
+<th style="text-align:left;">
+
+Total (N=4978)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Total included
+
+</td>
+
+<td style="text-align:left;">
+
+4481 (90.0%)
+
+</td>
+
+<td style="text-align:left;">
+
+497 (10.0%)
+
+</td>
+
+<td style="text-align:left;">
+
+4978
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>City</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Hamilton
+
+</td>
+
+<td style="text-align:left;">
+
+2255 (50.3%)
+
+</td>
+
+<td style="text-align:left;">
+
+324 (65.2%)
+
+</td>
+
+<td style="text-align:left;">
+
+2579 (51.8%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Vancouver
+
+</td>
+
+<td style="text-align:left;">
+
+2226 (49.7%)
+
+</td>
+
+<td style="text-align:left;">
+
+173 (34.8%)
+
+</td>
+
+<td style="text-align:left;">
+
+2399 (48.2%)
+
+</td>
+
+</tr>
+
+<tr grouplength="24">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Participant data</strong>
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>BMI</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+27.3 (5.3)
+
+</td>
+
+<td style="text-align:left;">
+
+32.1 (6.4)
+
+</td>
+
+<td style="text-align:left;">
+
+27.8 (5.6)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+26.4 (23.8, 29.9)
+
+</td>
+
+<td style="text-align:left;">
+
+30.9 (27.4, 35.8)
+
+</td>
+
+<td style="text-align:left;">
+
+26.8 (24.0, 30.4)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Waist to hip ratio</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+85.2 (9.0)
+
+</td>
+
+<td style="text-align:left;">
+
+93.6 (8.5)
+
+</td>
+
+<td style="text-align:left;">
+
+86.1 (9.3)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+85.2 (78.6, 91.6)
+
+</td>
+
+<td style="text-align:left;">
+
+94.2 (87.8, 99.6)
+
+</td>
+
+<td style="text-align:left;">
+
+86.0 (79.3, 92.6)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Obesity (WHR)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+No
+
+</td>
+
+<td style="text-align:left;">
+
+2696 (60.2%)
+
+</td>
+
+<td style="text-align:left;">
+
+112 (22.5%)
+
+</td>
+
+<td style="text-align:left;">
+
+2808 (56.4%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Yes
+
+</td>
+
+<td style="text-align:left;">
+
+1785 (39.8%)
+
+</td>
+
+<td style="text-align:left;">
+
+385 (77.5%)
+
+</td>
+
+<td style="text-align:left;">
+
+2170 (43.6%)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Age (years)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+52.7 (9.3)
+
+</td>
+
+<td style="text-align:left;">
+
+56.9 (8.4)
+
+</td>
+
+<td style="text-align:left;">
+
+53.1 (9.3)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+53.0 (45.0, 60.0)
+
+</td>
+
+<td style="text-align:left;">
+
+57.0 (51.0, 63.0)
+
+</td>
+
+<td style="text-align:left;">
+
+53.0 (46.0, 61.0)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Sex</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Male
+
+</td>
+
+<td style="text-align:left;">
+
+2011 (44.9%)
+
+</td>
+
+<td style="text-align:left;">
+
+286 (57.5%)
+
+</td>
+
+<td style="text-align:left;">
+
+2297 (46.1%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Female
+
+</td>
+
+<td style="text-align:left;">
+
+2470 (55.1%)
+
+</td>
+
+<td style="text-align:left;">
+
+211 (42.5%)
+
+</td>
+
+<td style="text-align:left;">
+
+2681 (53.9%)
+
+</td>
+
+</tr>
+
+<tr grouplength="6">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Household Income Range</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+\>90k
+
+</td>
+
+<td style="text-align:left;">
+
+1751 (39.1%)
+
+</td>
+
+<td style="text-align:left;">
+
+127 (25.6%)
+
+</td>
+
+<td style="text-align:left;">
+
+1878 (37.7%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+45k-65k
+
+</td>
+
+<td style="text-align:left;">
+
+730 (16.3%)
+
+</td>
+
+<td style="text-align:left;">
+
+85 (17.1%)
+
+</td>
+
+<td style="text-align:left;">
+
+815 (16.4%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+30k-45k
+
+</td>
+
+<td style="text-align:left;">
+
+548 (12.2%)
+
+</td>
+
+<td style="text-align:left;">
+
+96 (19.3%)
+
+</td>
+
+<td style="text-align:left;">
+
+644 (12.9%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+65k-90k
+
+</td>
+
+<td style="text-align:left;">
+
+973 (21.7%)
+
+</td>
+
+<td style="text-align:left;">
+
+79 (15.9%)
+
+</td>
+
+<td style="text-align:left;">
+
+1052 (21.1%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+20k-30k
+
+</td>
+
+<td style="text-align:left;">
+
+299 (6.7%)
+
+</td>
+
+<td style="text-align:left;">
+
+65 (13.1%)
+
+</td>
+
+<td style="text-align:left;">
+
+364 (7.3%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+\<20k
+
+</td>
+
+<td style="text-align:left;">
+
+180 (4.0%)
+
+</td>
+
+<td style="text-align:left;">
+
+45 (9.1%)
+
+</td>
+
+<td style="text-align:left;">
+
+225 (4.5%)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>AHEI Score</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+37.7 (10.0)
+
+</td>
+
+<td style="text-align:left;">
+
+35.0 (9.5)
+
+</td>
+
+<td style="text-align:left;">
+
+37.4 (10.0)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+37.7 (30.7, 44.8)
+
+</td>
+
+<td style="text-align:left;">
+
+34.8 (28.0, 41.4)
+
+</td>
+
+<td style="text-align:left;">
+
+37.4 (30.4, 44.5)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Physical Activity MET Score</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+2.5 (0.6)
+
+</td>
+
+<td style="text-align:left;">
+
+2.4 (0.7)
+
+</td>
+
+<td style="text-align:left;">
+
+2.5 (0.6)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+3.0 (2.0, 3.0)
+
+</td>
+
+<td style="text-align:left;">
+
+2.0 (2.0, 3.0)
+
+</td>
+
+<td style="text-align:left;">
+
+3.0 (2.0, 3.0)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Ever smoked</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+No
+
+</td>
+
+<td style="text-align:left;">
+
+2048 (55.2%)
+
+</td>
+
+<td style="text-align:left;">
+
+172 (41.2%)
+
+</td>
+
+<td style="text-align:left;">
+
+2220 (53.8%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Yes
+
+</td>
+
+<td style="text-align:left;">
+
+1664 (44.8%)
+
+</td>
+
+<td style="text-align:left;">
+
+245 (58.8%)
+
+</td>
+
+<td style="text-align:left;">
+
+1909 (46.2%)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Daily Drinker</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+\>=1 drinks/day
+
+</td>
+
+<td style="text-align:left;">
+
+1140 (30.7%)
+
+</td>
+
+<td style="text-align:left;">
+
+112 (26.9%)
+
+</td>
+
+<td style="text-align:left;">
+
+1252 (30.3%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+\<1 drink/day
+
+</td>
+
+<td style="text-align:left;">
+
+2572 (69.3%)
+
+</td>
+
+<td style="text-align:left;">
+
+305 (73.1%)
+
+</td>
+
+<td style="text-align:left;">
+
+2877 (69.7%)
+
+</td>
+
+</tr>
+
+<tr grouplength="28">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Census variables</strong>
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Neighbourhood type</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+suburban/rural
+
+</td>
+
+<td style="text-align:left;">
+
+3489 (77.9%)
+
+</td>
+
+<td style="text-align:left;">
+
+398 (80.1%)
+
+</td>
+
+<td style="text-align:left;">
+
+3887 (78.1%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+urban
+
+</td>
+
+<td style="text-align:left;">
+
+992 (22.1%)
+
+</td>
+
+<td style="text-align:left;">
+
+99 (19.9%)
+
+</td>
+
+<td style="text-align:left;">
+
+1091 (21.9%)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Individual mean income (CAD/1000)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+38.1 (13.2)
+
+</td>
+
+<td style="text-align:left;">
+
+34.4 (11.5)
+
+</td>
+
+<td style="text-align:left;">
+
+37.7 (13.1)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+35.0 (30.0, 42.0)
+
+</td>
+
+<td style="text-align:left;">
+
+32.0 (27.0, 39.0)
+
+</td>
+
+<td style="text-align:left;">
+
+34.0 (30.0, 42.0)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Household mean income (CAD/1000)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+78.8 (27.3)
+
+</td>
+
+<td style="text-align:left;">
+
+71.6 (25.6)
+
+</td>
+
+<td style="text-align:left;">
+
+78.1 (27.2)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+73.0 (61.0, 91.0)
+
+</td>
+
+<td style="text-align:left;">
+
+66.0 (53.0, 82.0)
+
+</td>
+
+<td style="text-align:left;">
+
+72.0 (60.0, 90.0)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Individual median income (CAD/1000)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+28.1 (6.0)
+
+</td>
+
+<td style="text-align:left;">
+
+26.6 (5.9)
+
+</td>
+
+<td style="text-align:left;">
+
+27.9 (6.0)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+28.0 (23.0, 32.0)
+
+</td>
+
+<td style="text-align:left;">
+
+25.0 (22.0, 31.0)
+
+</td>
+
+<td style="text-align:left;">
+
+28.0 (23.0, 32.0)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Household median income (CAD/1000)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+65.5 (20.1)
+
+</td>
+
+<td style="text-align:left;">
+
+60.9 (19.6)
+
+</td>
+
+<td style="text-align:left;">
+
+65.0 (20.1)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+62.0 (52.0, 76.0)
+
+</td>
+
+<td style="text-align:left;">
+
+57.0 (46.0, 71.0)
+
+</td>
+
+<td style="text-align:left;">
+
+61.0 (52.0, 75.0)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Prevalence of low income (%)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+9.6 (6.4)
+
+</td>
+
+<td style="text-align:left;">
+
+11.2 (7.0)
+
+</td>
+
+<td style="text-align:left;">
+
+9.8 (6.5)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+8.4 (5.0, 13.9)
+
+</td>
+
+<td style="text-align:left;">
+
+9.9 (5.7, 16.4)
+
+</td>
+
+<td style="text-align:left;">
+
+8.5 (5.0, 14.2)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Commute Walking/Bicycle (%)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+7.6 (6.8)
+
+</td>
+
+<td style="text-align:left;">
+
+6.9 (5.8)
+
+</td>
+
+<td style="text-align:left;">
+
+7.6 (6.7)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+5.2 (3.1, 9.9)
+
+</td>
+
+<td style="text-align:left;">
+
+5.4 (3.2, 8.6)
+
+</td>
+
+<td style="text-align:left;">
+
+5.3 (3.1, 9.8)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Labour force participation rate (%)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+66.8 (7.3)
+
+</td>
+
+<td style="text-align:left;">
+
+65.4 (6.9)
+
+</td>
+
+<td style="text-align:left;">
+
+66.7 (7.2)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+66.8 (61.9, 71.7)
+
+</td>
+
+<td style="text-align:left;">
+
+64.8 (60.8, 69.7)
+
+</td>
+
+<td style="text-align:left;">
+
+66.7 (61.8, 71.4)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Gov’t transfer payments (%)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+10.0 (5.0)
+
+</td>
+
+<td style="text-align:left;">
+
+12.3 (5.9)
+
+</td>
+
+<td style="text-align:left;">
+
+10.2 (5.1)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+9.1 (6.0, 12.9)
+
+</td>
+
+<td style="text-align:left;">
+
+11.4 (7.5, 16.0)
+
+</td>
+
+<td style="text-align:left;">
+
+9.3 (6.1, 13.3)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Unemployment rate (%)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+5.6 (2.2)
+
+</td>
+
+<td style="text-align:left;">
+
+6.3 (2.5)
+
+</td>
+
+<td style="text-align:left;">
+
+5.6 (2.2)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+5.5 (4.0, 6.8)
+
+</td>
+
+<td style="text-align:left;">
+
+6.0 (4.8, 7.6)
+
+</td>
+
+<td style="text-align:left;">
+
+5.6 (4.1, 6.9)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Lone parent families (%)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+15.0 (5.8)
+
+</td>
+
+<td style="text-align:left;">
+
+17.3 (6.9)
+
+</td>
+
+<td style="text-align:left;">
+
+15.2 (6.0)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+14.4 (11.5, 18.0)
+
+</td>
+
+<td style="text-align:left;">
+
+16.1 (12.7, 21.2)
+
+</td>
+
+<td style="text-align:left;">
+
+14.5 (11.6, 18.3)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Education - No degree (%)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+19.7 (9.0)
+
+</td>
+
+<td style="text-align:left;">
+
+23.8 (10.0)
+
+</td>
+
+<td style="text-align:left;">
+
+20.1 (9.2)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+17.7 (13.1, 25.2)
+
+</td>
+
+<td style="text-align:left;">
+
+20.9 (16.0, 31.6)
+
+</td>
+
+<td style="text-align:left;">
+
+17.9 (13.3, 26.0)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Private Dwellings - Owned (%)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+74.0 (16.3)
+
+</td>
+
+<td style="text-align:left;">
+
+73.2 (15.8)
+
+</td>
+
+<td style="text-align:left;">
+
+73.9 (16.3)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+76.5 (62.6, 87.4)
+
+</td>
+
+<td style="text-align:left;">
+
+74.6 (63.0, 85.7)
+
+</td>
+
+<td style="text-align:left;">
+
+76.3 (62.6, 87.3)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>Private Dwellings - Rented (%)</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+25.7 (16.0)
+
+</td>
+
+<td style="text-align:left;">
+
+26.4 (15.3)
+
+</td>
+
+<td style="text-align:left;">
+
+25.8 (15.9)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="2">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+23.2 (12.5, 37.2)
+
+</td>
+
+<td style="text-align:left;">
+
+25.3 (14.0, 36.9)
+
+</td>
+
+<td style="text-align:left;">
+
+23.5 (12.6, 37.2)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>NDVI - Median</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+0.344 (0.087)
+
+</td>
+
+<td style="text-align:left;">
+
+0.318 (0.081)
+
+</td>
+
+<td style="text-align:left;">
+
+0.341 (0.087)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+0.337 (0.294, 0.377)
+
+</td>
+
+<td style="text-align:left;">
+
+0.315 (0.270, 0.359)
+
+</td>
+
+<td style="text-align:left;">
+
+0.335 (0.291, 0.375)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>NDVI - Standard Deviation</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+0.098 (0.024)
+
+</td>
+
+<td style="text-align:left;">
+
+0.096 (0.023)
+
+</td>
+
+<td style="text-align:left;">
+
+0.098 (0.024)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+0.095 (0.082, 0.111)
+
+</td>
+
+<td style="text-align:left;">
+
+0.092 (0.081, 0.106)
+
+</td>
+
+<td style="text-align:left;">
+
+0.095 (0.081, 0.111)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>NDVI - Min</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+0.193 (0.095)
+
+</td>
+
+<td style="text-align:left;">
+
+0.170 (0.082)
+
+</td>
+
+<td style="text-align:left;">
+
+0.191 (0.094)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+0.180 (0.125, 0.243)
+
+</td>
+
+<td style="text-align:left;">
+
+0.153 (0.110, 0.227)
+
+</td>
+
+<td style="text-align:left;">
+
+0.177 (0.124, 0.241)
+
+</td>
+
+</tr>
+
+<tr grouplength="2">
+
+<td colspan="4" style="border-bottom: 1px solid;">
+
+<strong>NDVI - max</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Mean (SD)
+
+</td>
+
+<td style="text-align:left;">
+
+0.510 (0.087)
+
+</td>
+
+<td style="text-align:left;">
+
+0.479 (0.089)
+
+</td>
+
+<td style="text-align:left;">
+
+0.507 (0.087)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left:  2em;" indentlevel="1">
+
+Median (Q1, Q3)
+
+</td>
+
+<td style="text-align:left;">
+
+0.503 (0.457, 0.552)
+
+</td>
+
+<td style="text-align:left;">
+
+0.474 (0.425, 0.527)
+
+</td>
+
+<td style="text-align:left;">
+
+0.501 (0.452, 0.550)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+# About
 
 ### Package contributors:
 
@@ -406,6 +3297,6 @@ Institut für Geographie, Friedrich-Alexander-Universität
 Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany  
 \*corresponding author  
 
-## Bibliography
+# Bibliography
 
   - work in progress -
