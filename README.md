@@ -391,7 +391,7 @@ census_weighted
 
 ## Tables
 
-<table style='width:90%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;' class=" lightable-classic lightable-striped">
+<table style='width:90%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic lightable-striped">
 
 <caption>
 
@@ -408,7 +408,7 @@ ratios, 95% CI, and p-values.
 
 </th>
 
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
 
 <div style="TRUE">
 
@@ -418,7 +418,7 @@ Semi-Adjusted
 
 </th>
 
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
 
 <div style="TRUE">
 
@@ -432,37 +432,37 @@ Fully-Adjusted
 
 <tr>
 
-<th style="text-align:left;">
+<th style="text-align:left;font-weight: bold;">
 
 Parameter
 
 </th>
 
-<th style="text-align:center;">
+<th style="text-align:center;font-weight: bold;">
 
 OR<br>(bivariate)
 
 </th>
 
-<th style="text-align:center;">
+<th style="text-align:center;font-weight: bold;">
 
 OR<br>(WHR-adjusted)
 
 </th>
 
-<th style="text-align:center;">
+<th style="text-align:center;font-weight: bold;">
 
 OR<br>(BMI-adjusted)
 
 </th>
 
-<th style="text-align:center;">
+<th style="text-align:center;font-weight: bold;">
 
 OR<br>(WHR-adjusted)
 
 </th>
 
-<th style="text-align:center;">
+<th style="text-align:center;font-weight: bold;">
 
 OR<br>(BMI-adjusted)
 
@@ -896,7 +896,7 @@ Alcohol: \<1 drink/day
 
   
 
-<table style='width:80%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;' class=" lightable-classic">
+<table style='width:90%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic">
 
 <caption>
 
@@ -912,7 +912,7 @@ Table A.2: Model Performance for all multivariable models.
 
 </th>
 
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
 
 <div style="border-bottom: 1px solid #111111; margin-bottom: -1px; ">
 
@@ -922,7 +922,7 @@ Semi-Adjusted
 
 </th>
 
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
 
 <div style="border-bottom: 1px solid #111111; margin-bottom: -1px; ">
 
@@ -936,31 +936,31 @@ Fully-Adjusted
 
 <tr>
 
-<th style="text-align:left;">
+<th style="text-align:left;font-weight: bold;">
 
 Metric
 
 </th>
 
-<th style="text-align:center;">
+<th style="text-align:center;font-weight: bold;">
 
 OR<br>(WHR-adjusted)
 
 </th>
 
-<th style="text-align:center;">
+<th style="text-align:center;font-weight: bold;">
 
 OR<br>(BMI-adjusted)
 
 </th>
 
-<th style="text-align:center;">
+<th style="text-align:center;font-weight: bold;">
 
 OR<br>(WHR-adjusted)
 
 </th>
 
-<th style="text-align:left;">
+<th style="text-align:center;font-weight: bold;">
 
 OR<br>(BMI-adjusted)
 
@@ -998,7 +998,7 @@ Sensitivity
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:center;">
 
 0.78
 
@@ -1032,7 +1032,7 @@ Specificity
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:center;">
 
 0.66
 
@@ -1066,7 +1066,7 @@ Youden index
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:center;">
 
 0.44
 
@@ -1112,7 +1112,7 @@ multivariable logistic models.
 
 ## Summary Statistics
 
-<table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<table style='width:90%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic">
 
 <caption>
 
@@ -1125,25 +1125,25 @@ status.
 
 <tr>
 
-<th style="text-align:left;">
+<th style="text-align:left;font-weight: bold;">
 
 Parameter
 
 </th>
 
-<th style="text-align:left;">
+<th style="text-align:left;font-weight: bold;">
 
 No Diabetes (N=4481)
 
 </th>
 
-<th style="text-align:left;">
+<th style="text-align:left;font-weight: bold;">
 
 Diabetes (N=497)
 
 </th>
 
-<th style="text-align:left;">
+<th style="text-align:left;font-weight: bold;">
 
 Total (N=4978)
 
@@ -1185,7 +1185,7 @@ Total included
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>City</strong>
 
@@ -1251,7 +1251,7 @@ Vancouver
 
 <tr grouplength="24">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="background-color: #666; color: #fff;">
 
 <strong>Participant data</strong>
 
@@ -1261,7 +1261,7 @@ Vancouver
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>BMI</strong>
 
@@ -1327,7 +1327,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Waist to hip ratio</strong>
 
@@ -1393,7 +1393,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Obesity (WHR)</strong>
 
@@ -1459,7 +1459,7 @@ Yes
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Age (years)</strong>
 
@@ -1525,7 +1525,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Sex</strong>
 
@@ -1591,7 +1591,7 @@ Female
 
 <tr grouplength="6">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Household Income Range</strong>
 
@@ -1769,7 +1769,7 @@ Female
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>AHEI Score</strong>
 
@@ -1835,7 +1835,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Physical Activity MET Score</strong>
 
@@ -1901,7 +1901,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Ever smoked</strong>
 
@@ -1967,7 +1967,7 @@ Yes
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Daily Drinker</strong>
 
@@ -2033,7 +2033,7 @@ Yes
 
 <tr grouplength="28">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="background-color: #666; color: #fff;">
 
 <strong>Census variables</strong>
 
@@ -2043,7 +2043,7 @@ Yes
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Neighbourhood type</strong>
 
@@ -2109,7 +2109,7 @@ urban
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Individual mean income (CAD/1000)</strong>
 
@@ -2175,7 +2175,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Household mean income (CAD/1000)</strong>
 
@@ -2241,7 +2241,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Individual median income (CAD/1000)</strong>
 
@@ -2307,7 +2307,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Household median income (CAD/1000)</strong>
 
@@ -2373,7 +2373,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Prevalence of low income (%)</strong>
 
@@ -2439,7 +2439,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Commute Walking/Bicycle (%)</strong>
 
@@ -2505,7 +2505,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Labour force participation rate (%)</strong>
 
@@ -2571,7 +2571,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Gov’t transfer payments (%)</strong>
 
@@ -2637,7 +2637,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Unemployment rate (%)</strong>
 
@@ -2703,7 +2703,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Lone parent families (%)</strong>
 
@@ -2769,7 +2769,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Education - No degree (%)</strong>
 
@@ -2835,7 +2835,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Private Dwellings - Owned (%)</strong>
 
@@ -2901,7 +2901,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>Private Dwellings - Rented (%)</strong>
 
@@ -2967,9 +2967,9 @@ Median (Q1, Q3)
 
 <tr grouplength="8">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="background-color: #666; color: #fff;">
 
-<strong>NDVI</strong>
+<strong>Normalized Difference Vegetation Index (NDVI)</strong>
 
 </td>
 
@@ -2977,7 +2977,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>NDVI - Median</strong>
 
@@ -3043,7 +3043,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>NDVI - Standard Deviation</strong>
 
@@ -3109,7 +3109,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>NDVI - Min</strong>
 
@@ -3175,7 +3175,7 @@ Median (Q1, Q3)
 
 <tr grouplength="2">
 
-<td colspan="4" style="border-bottom: 1px solid;">
+<td colspan="4" style="border-bottom: 0;">
 
 <strong>NDVI - max</strong>
 

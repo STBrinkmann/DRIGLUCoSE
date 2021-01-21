@@ -312,8 +312,9 @@ dplyr::tibble(
 ) %>% kbl(caption = "Table A.1: Logistic models for all multivariable models with odds ratios, 95% CI, and p-values.",
             format = "html", col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c", "c"),
             table.attr = "style='width:90%;'") %>% 
-  kable_classic("striped") %>%
-  add_header_above(c(" " = 2, "Semi-Adjusted" = 2, "Fully-Adjusted" = 2))
+  kable_classic("striped", full_width = F) %>%
+  row_spec(0, bold = T) %>%
+  add_header_above(c(" " = 2, "Semi-Adjusted" = 2, "Fully-Adjusted" = 2), italic = T)
 ```
 \
 
@@ -333,10 +334,11 @@ dplyr::tibble(
     "OR (WHR-adjusted) " = c(0.69, 0.72, 0.41),
     "OR (BMI-adjusted) " = c(0.78, 0.66, 0.44)
 ) %>% kbl(caption = "Table A.2: Model Performance for all multivariable models.",
-            format = "html", col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c"),
-            table.attr = "style='width:80%;'") %>% 
-  kable_classic() %>%
-  add_header_above(c(" " = 1, "Semi-Adjusted" = 2, "Fully-Adjusted" = 2))
+            format = "html", col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c"),
+            table.attr = "style='width:90%;'") %>% 
+  kable_classic(full_width = F) %>%
+  row_spec(0, bold = T) %>%
+  add_header_above(c(" " = 1, "Semi-Adjusted" = 2, "Fully-Adjusted" = 2), italic = T)
 ```
 \
 
@@ -353,10 +355,15 @@ knitr::include_graphics("docs/roc_auc.svg")
 ## Summary Statistics
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>% 
-  kableExtra::kbl(format = "html", escape = FALSE, caption = "Table A.3: Baseline characteristics of the study population by diabetes status.") %>% 
-  kable_paper("striped", full_width = F) %>%
+  kableExtra::kbl(format = "html", escape = FALSE, table.attr = "style='width:90%;'",
+                  caption = "Table A.3: Baseline characteristics of the study population by diabetes status.") %>% 
+  kableExtra::kable_classic(full_width = F) %>%
+  kableExtra::pack_rows(index = c(" " = 3, "Participant data" = 24, "Census variables" = 28,
+                                  "Normalized Difference Vegetation Index (NDVI)" = 8), 
+                        label_row_css = "background-color: #666; color: #fff;") %>% 
+  row_spec(0, bold = T) %>%
   pack_rows("City", 2, 3) %>%
-  pack_rows("Participant data", 4, 27) %>%
+  #pack_rows("Participant data", 4, 4, italic = TRUE, latex_align = "c") %>%
   pack_rows("BMI", 4, 5) %>%
   pack_rows("Waist to hip ratio", 6, 7) %>%
   pack_rows("Obesity (WHR)", 8, 9) %>%
@@ -366,8 +373,8 @@ readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>%
   pack_rows("AHEI Score", 20, 21) %>%
   pack_rows("Physical Activity MET Score", 22, 23) %>%
   pack_rows("Ever smoked", 24, 25) %>%
-  pack_rows("Daily Drinker", 26, 27) %>%
-  pack_rows("Census variables", 28, 55) %>%
+  pack_rows("Daily Drinker", 26, 27) %>% 
+  #pack_rows("Census variables", 28, 55) %>%
   pack_rows("Neighbourhood type", 28, 29) %>%
   pack_rows("Individual mean income (CAD/1000)", 30, 31) %>%
   pack_rows("Household mean income (CAD/1000)", 32, 33) %>%
@@ -382,7 +389,7 @@ readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>%
   pack_rows("Education - No degree (%)", 50, 51) %>%
   pack_rows("Private Dwellings - Owned (%)", 52, 53) %>%
   pack_rows("Private Dwellings - Rented (%)", 54, 55) %>%
-  pack_rows("NDVI", 56, 63) %>% 
+  #pack_rows("NDVI", 56, 63) %>% 
   pack_rows("NDVI - Median", 56, 57) %>%
   pack_rows("NDVI - Standard Deviation", 58, 59) %>%
   pack_rows("NDVI - Min", 60, 61) %>%
