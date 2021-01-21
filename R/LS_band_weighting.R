@@ -12,6 +12,7 @@
 #' @param b numeric; slope of distance decay function
 #' @param m numeric; x for g(x) = 0.5
 #' @param stats The function to be applied. See Details
+#' @param cores the number of cores to use.
 #'
 #' @details
 #'     All unique tags from the isochrones shapefile will be overlapped with the \code{landsat_list},
@@ -50,9 +51,9 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
                               stats = list("sd", "median",
                                            list("percentile", 0.05),
                                            list("percentile", 0.95),
-                                           "skew")){
+                                           "skew"),
+                              cores = 1){
   # 1. Check input -------------------------------------------------------
-  suppressMessages(require(mosaic))
   # landsat_list
   if (is.list(landsat_list)) {
     landsat_list_class <- sapply(landsat_list, class) %>% unique()
@@ -110,6 +111,9 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   # time
   if (!time %in% names(isochrones)) {
     stop("time must be a column of the sf object.")
+  }
+  if (is.character(isochrones[[time]])) {
+    isochrones[[time]] <- as.numeric(isochrones[[time]])
   } else if (is.factor(isochrones[[time]])) {
     isochrones[[time]] <- as.numeric(levels(isochrones[[time]]))[isochrones[[time]]]
   }
@@ -138,6 +142,8 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     # Select this_tag from .isochrones shapefile
     this_tag <- .isochrones %>%
       dplyr::arrange(.time)
+
+    sf::st_agr(this_tag) = "constant"
 
     # Create empty sf for rings output
     isoch_rings <- .isochrones[0,] %>% dplyr::select(!! rlang::parse_quosure(.tag), !! rlang::parse_quosure(.time))
@@ -170,7 +176,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
 
     # Define integral
-    G <- mosaicCalc::antiD(g(x, b = !! rlang::parse_quosure(.b), m = !! rlang::parse_quosure(.m))~x)
+    G <- mosaicCalc::antiD(g(x, b = .b, m = .m)~x)
 
 
     # calculate weights:
@@ -283,30 +289,36 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     dplyr::group_by(!! rlang::parse_quosure(tag)) %>%
     dplyr::group_split()
 
-  # WINDWOS
-  'if (Sys.info()[["sysname"]] == "Windows") {
-    # Use mclapply for paralleling the isodistance function
-    cl <- parallel::makeCluster(cores)
-    LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_LS_band_weighting,
-                                            .tag = tag, .time = time,
-                                            .landsat_list = landsat_list, .band = band,
-                                            b = b, m = m, .stats = stats)
-    parallel::stopCluster(cl)
-  }
-  # Linux and macOS
-  else {
-    # Use mclapply for paralleling the isodistance function
-    LS_band_weightes <- parallel::mclapply(isochrones_list, this_LS_band_weighting,
-                                           .tag = tag, .time = time,
-                                           .landsat_list = landsat_list, .band = band,
-                                           .b = b, .m = m, .stats = stats,
-                                           mc.cores = cores, mc.preschedule = FALSE)
-  }'
+  .b <<- b
+  .m <<- m
 
-  LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
-                             .tag = tag, .time = time,
-                             .landsat_list = landsat_list, .band = band,
-                             .b = b, .m = m, .stats = stats)
+  if (cores > 1) {
+    # WINDWOS
+    if (Sys.info()[["sysname"]] == "Windows") {
+      # Use mclapply for paralleling the isodistance function
+      cl <- parallel::makeCluster(cores)
+      LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_LS_band_weighting,
+                                              .tag = tag, .time = time,
+                                              .landsat_list = landsat_list, .band = band,
+                                              .b = b, .m = m, .stats = stats)
+      parallel::stopCluster(cl)
+    }
+    # Linux and macOS
+    else {
+      # Use mclapply for paralleling the isodistance function
+      LS_band_weightes <- parallel::mclapply(isochrones_list, this_LS_band_weighting,
+                                             .tag = tag, .time = time,
+                                             .landsat_list = landsat_list, .band = band,
+                                             .b = b, .m = m, .stats = stats,
+                                             mc.cores = cores, mc.preschedule = FALSE)
+    }
+  } else {
+    LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
+                               .tag = tag, .time = time,
+                               .landsat_list = landsat_list, .band = band,
+                               .b = b, .m = m, .stats = stats)
+  }
+
 
   # Convert list to one tibble
   output_tibble <- DRIGLUCoSE::rbind_parallel(LS_band_weightes, cores = cores) %>%

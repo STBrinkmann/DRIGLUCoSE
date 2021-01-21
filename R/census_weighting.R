@@ -10,6 +10,7 @@
 #' @param census_sf object of class \code{sf} containing a census shapefile.
 #' @param b numeric; slope of distance decay function
 #' @param m numeric; x for g(x) = 0.5
+#' @param cores the number of cores to use.
 #'
 #' @details
 #'     For a detailed explanation of this method, see documentation on GitHub.
@@ -30,10 +31,8 @@
 #' @importFrom parallel stopCluster
 #' @importFrom parallel mclapply
 census_weighting <- function(isochrones, tag = "tag", time = "time",
-                             census, b = 8, m = 0.5){
+                             census, b = 8, m = 0.5, cores = 1){
   # 1. Check input -------------------------------------------------------
-  suppressMessages(require(mosaic))
-
   # isochrones
   if (!is(isochrones, "sf")) {
     stop("isochrones must be sf object.")
@@ -76,6 +75,9 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
   # time
   if (!time %in% names(isochrones)) {
     stop("time must be a column of the sf object.")
+  }
+  if (is.character(isochrones[[time]])) {
+    isochrones[[time]] <- as.numeric(isochrones[[time]])
   } else if (is.factor(isochrones[[time]])) {
     isochrones[[time]] <- as.numeric(levels(isochrones[[time]]))[isochrones[[time]]]
   }
@@ -112,6 +114,10 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     }
   }
 
+  if (any(!sapply(census %>% dplyr::as_tibble() %>% dplyr::select(-geom), is.numeric))) {
+    stop("census must contain only numeric features.")
+  }
+
   # cores
   #if (cores < 1L) stop("Number of cores must be 1 or greater.")
 
@@ -123,6 +129,8 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     # Select this_tag from .isochrones shapefile
     this_tag <- .isochrones %>%
       dplyr::arrange(.time)
+
+    sf::st_agr(this_tag) = "constant"
 
     # Create empty sf for rings output
     isoch_rings <- .isochrones[0,] %>% dplyr::select(!! rlang::parse_quosure(.tag), !! rlang::parse_quosure(.time))
@@ -184,6 +192,9 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     var_names <- names(census)
     var_names <- var_names[!var_names %in% "geom"] # remove "geometry" from names vector
 
+    sf::st_agr(.census) = "constant"
+    sf::st_agr(isoch_rings) = "constant"
+
     # Empty matrix for areal weighted values
     areal_weights <- matrix(nrow = nrow(this_tag), ncol = length(var_names))
 
@@ -226,27 +237,33 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     dplyr::group_by(!! rlang::parse_quosure(tag)) %>%
     dplyr::group_split()
 
-  # WINDWOS
-  'if (Sys.info()[["sysname"]] == "Windows") {
-    # Use mclapply for paralleling the isodistance function
-    cl <- parallel::makeCluster(cores)
-    LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_census_weighting,
-                                            .tag = tag, .time = time,
-                                            .census = census, b = b, m = m)
-    parallel::stopCluster(cl)
-  }
-  # Linux and macOS
-  else {
-    # Use mclapply for paralleling the isodistance function
-    census_weightes <- parallel::mclapply(isochrones_list, this_census_weighting,
-                                          .tag = tag, .time = time,
-                                          .census = census, .b = b, .m = m,
-                                          mc.cores = cores, mc.preschedule = FALSE)
-  }'
+  .b <<- b
+  .m <<- m
 
-  census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
-                            .tag = tag, .time = time,
-                            .census = census, .b = b, .m = m)
+  if (cores > 1) {
+    # WINDWOS
+    if (Sys.info()[["sysname"]] == "Windows") {
+      # Use mclapply for paralleling the isodistance function
+      cl <- parallel::makeCluster(cores)
+      LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_census_weighting,
+                                              .tag = tag, .time = time,
+                                              .census = census, .b = b, .m = m)
+      parallel::stopCluster(cl)
+    }
+    # Linux and macOS
+    else {
+      # Use mclapply for paralleling the isodistance function
+      census_weightes <- parallel::mclapply(isochrones_list, this_census_weighting,
+                                            .tag = tag, .time = time,
+                                            .census = census, .b = b, .m = m,
+                                            mc.cores = cores, mc.preschedule = FALSE)
+    }
+  } else {
+    census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
+                              .tag = tag, .time = time,
+                              .census = census, .b = b, .m = m)
+  }
+
 
   # Convert list to one tibble
   output_tibble <- DRIGLUCoSE::rbind_parallel(census_weightes, cores = cores) %>%
