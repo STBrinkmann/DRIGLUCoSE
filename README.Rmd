@@ -4,6 +4,7 @@ author: Sebastian Brinkmann
 output:
   github_document:
     pandoc_args: --webtex=https://latex.codecogs.com/svg.latex?
+    toc: true
 ---
 
 
@@ -20,7 +21,8 @@ knitr::opts_chunk$set(
 As elaborated in our recent analyses (Walker et al. 2019; Scarpone et al. 2020), nearly all previous studies in the literature use either census unit boundaries or simple buffer zones to measure an individual’s built environment (BE) exposures or to characterize their local socioeconomic status (SES) (Rhew et al. 2011, Gong et al. 2014, Fuertes et al. 2014). Therefore, we present a distance-weighted, network-based model for quantifying the combined effects of local greenspace and SES on diabetes risk, from which we derive an area-based Diabetes Risk Index of Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE).\
 The goal of the DRIGLUCoSE package is to provide a public package containing functions and code used in the development of the DRI-GLUCoSE Index.
 
-## Installation
+
+## Installation {#install}
 
 You can install the latest version of DRIGLUCoSE from [GitHub](https://CRAN.R-project.org) with:
 

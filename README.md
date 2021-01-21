@@ -2,6 +2,20 @@ DRI-GLUCoSE
 ================
 Sebastian Brinkmann
 
+  - [Work in Progress](#work-in-progress)
+      - [Installation](#install)
+      - [Usage](#usage)
+  - [Methods](#methods)
+      - [Census variables](#census-variables)
+      - [Greenspace](#greenspace)
+      - [Exposure Model](#exposure-model)
+          - [(i) Road network data and
+            isochrones](#i-road-network-data-and-isochrones)
+      - [(ii) Distance-weighting](#ii-distance-weighting)
+          - [Package contributors:](#package-contributors)
+          - [Thesis authors:](#thesis-authors)
+      - [Bibliography](#bibliography)
+
 # Work in Progress
 
 As elaborated in our recent analyses (Walker et al. 2019; Scarpone et
