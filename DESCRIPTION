@@ -27,7 +27,9 @@ Imports:
     mosaicCore,
     mosaicCalc,
     stats,
-    mosaic
+    mosaic,
+    sfnetworks,
+    units
 Depends: 
     dplyr (>= 0.8.0),
     sf (>= 0.9.6),
