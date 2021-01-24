@@ -1,8 +1,8 @@
 #' @title Calculate isochrones
 #'
-#' @description Calculates isochrones from \code{\link[DRIGLUCoSE]{isodistance}} by applying a off-road buffer to all polyline segments.
+#' @description Calculates isochrones from \code{\link[DRIGLUCoSE]{isodistances}} by applying a off-road buffer to all polyline segments.
 #'
-#' @param x object of class \code{sf} containing isodistances, derived from the \code{\link[DRIGLUCoSE]{isodistance}} function.
+#' @param x object of class \code{sf} containing isodistances, derived from the \code{\link[DRIGLUCoSE]{isodistances}} function.
 #' @param buffer numeric; buffer distance to be applied on the polyline features of the isodistance object.
 #' @param cores the number of cores to use.
 #'

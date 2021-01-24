@@ -337,9 +337,7 @@ isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15
     dplyr::as_tibble() %>%
     dplyr::mutate(row = 1:n()) %>%
     dplyr::filter(value == TRUE) %>%
-    dplyr::select(row) %>%
-    unlist() %>%
-    as.vector()
+    dplyr::pull(row)
 
   # Convert list to one sf
   isodistances <- isodistances[is_sf_indices] %>%

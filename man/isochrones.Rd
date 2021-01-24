@@ -7,7 +7,7 @@
 isochrones(x, buffer = 30, cores = 1)
 }
 \arguments{
-\item{x}{object of class \code{sf} containing isodistances, derived from the \code{\link[DRIGLUCoSE]{isodistance}} function.}
+\item{x}{object of class \code{sf} containing isodistances, derived from the \code{\link[DRIGLUCoSE]{isodistances}} function.}
 
 \item{buffer}{numeric; buffer distance to be applied on the polyline features of the isodistance object.}
 
@@ -18,5 +18,5 @@ An \code{sf MULTIPOLYGON} of isodistances is returned. The sf object contains tw
     tag (id of the original point feature) and time (range of the segments).
 }
 \description{
-Calculates isochrones from \code{\link[DRIGLUCoSE]{isodistance}} by applying a off-road buffer to all polyline segments.
+Calculates isochrones from \code{\link[DRIGLUCoSE]{isodistances}} by applying a off-road buffer to all polyline segments.
 }
