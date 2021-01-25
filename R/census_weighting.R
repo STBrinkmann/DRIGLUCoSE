@@ -34,20 +34,22 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
                              census, b = 8, m = 0.5, cores = 1){
   # 1. Check input -------------------------------------------------------
   # isochrones
-  if (!is(isochrones, "sf")) {
-    stop("isochrones must be sf object.")
+  if (!is(isochrones, "isochrone")) {
+    stop("isochrones must be isochrone object.")
   } else if (nrow(isochrones) == 0) {
     stop("isochrones musst contain at least one feature.")
   } else {
-    # Check if geometry column only contains POINT features
-    sf_class <- isochrones %>%
+
+    class(isochrones) <- class(isochrones)[class(isochrones) != "isochrone"]
+
+    # Check if geometry column only contains MULTIPOLYGON or POLYGON features
+    sf_class <- census %>%
       dplyr::pull(geom) %>%
       sf::st_geometry_type() %>%
       as.character() %>%
       unique()
 
-    if((length(sf_class) > 1) ||
-       !((sf_class == "MULTIPOLYGON" || sf_class == "POLYGON"))) {
+    if(!(sf_class == "MULTIPOLYGON" || sf_class == "POLYGON")) {
       stop("isochrones must only contain either MULTIPOLYGON or POLYGON features.")
     }
   }
@@ -104,15 +106,14 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
       census <- rename(census, geom = geometry_col_name)
     }
 
-    # Check if geometry column only contains POINT features
+    # Check if geometry column only contains MULTIPOLYGON or POLYGON features
     sf_class <- census %>%
       dplyr::pull(geom) %>%
       sf::st_geometry_type() %>%
       as.character() %>%
       unique()
 
-    if((length(sf_class) > 1) ||
-       !((sf_class == "MULTIPOLYGON" || sf_class == "POLYGON"))) {
+    if(!(sf_class == "MULTIPOLYGON" || sf_class == "POLYGON")) {
       stop("isochrones must only contain either MULTIPOLYGON or POLYGON features.")
     }
   }
@@ -163,11 +164,10 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
       dplyr::relocate(geom, .after = last_col())
 
     # Define spatial weight function
-    g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
+    g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b = .b, m = .m))
 
     # Define integral
-    G <- mosaicCalc::antiD(g(x, b = .b, m = .m)~x)
-
+    G <- mosaicCalc::antiD(g(x, b, m)~x)
 
     # calculate weights:
     # For individual weights the above defined integral is calculated within the limits of the
@@ -240,15 +240,13 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     dplyr::group_by(!! rlang::parse_quosure(tag)) %>%
     dplyr::group_split()
 
-  .b <<- b
-  .m <<- m
-
-  'if (cores > 1) {
+  if (cores > 1) {
     # WINDWOS
     if (Sys.info()[["sysname"]] == "Windows") {
       # Use mclapply for paralleling the isodistance function
       cl <- parallel::makeCluster(cores)
-      LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_census_weighting,
+      parallel::clusterExport(cl, c("b", "m"), envir = environment())
+      census_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_census_weighting,
                                               .tag = tag, .time = time,
                                               .census = census, .b = b, .m = m)
       parallel::stopCluster(cl)
@@ -261,12 +259,11 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
                                             .census = census, .b = b, .m = m,
                                             mc.cores = cores, mc.preschedule = FALSE)
     }
-  }'
-
-  census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
-                            .tag = tag, .time = time,
-                            .census = census, .b = b, .m = m)
-
+  } else {
+    census_weightes <- lapply(isochrones_list, FUN = this_census_weighting,
+                              .tag = tag, .time = time,
+                              .census = census, .b = b, .m = m)
+    }
 
   # Convert list to one tibble
   output_tibble <- DRIGLUCoSE::rbind_parallel(census_weightes, cores = cores) %>%

@@ -70,20 +70,20 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   }
 
   # isochrones
-  if (!is(isochrones, "sf")) {
-    stop("isochrones must be sf object.")
+  if (!is(isochrones, "isochrone")) {
+    stop("isochrones must be isochrone object.")
   } else if (nrow(isochrones) == 0) {
     stop("isochrones musst contain at least one feature.")
   } else {
-    # Check if geometry column only contains POINT features
-    sf_class <- isochrones %>%
+
+    # Check if geometry column only contains MULTIPOLYGON or POLYGON features
+    sf_class <- census %>%
       dplyr::pull(geom) %>%
       sf::st_geometry_type() %>%
       as.character() %>%
       unique()
 
-    if((length(sf_class) > 1) ||
-       !((sf_class == "MULTIPOLYGON" || sf_class == "POLYGON"))) {
+    if(!(sf_class == "MULTIPOLYGON" || sf_class == "POLYGON")) {
       stop("isochrones must only contain either MULTIPOLYGON or POLYGON features.")
     }
   }
@@ -173,10 +173,10 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
       dplyr::relocate(geom, .after = last_col())
 
     # Define spatial weight function
-    g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b, m))
+    g <- mosaicCore::makeFun(1 / (1 + exp(b * (x - m))) ~ c(x, b = .b, m = .m))
 
     # Define integral
-    G <- mosaicCalc::antiD(g(x, b = .b, m = .m)~x)
+    G <- mosaicCalc::antiD(g(x, b, m)~x)
 
 
     # calculate weights:
@@ -289,14 +289,12 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
     dplyr::group_by(!! rlang::parse_quosure(tag)) %>%
     dplyr::group_split()
 
-  .b <<- b
-  .m <<- m
-
-  'if (cores > 1) {
+  if (cores > 1) {
     # WINDWOS
     if (Sys.info()[["sysname"]] == "Windows") {
       # Use mclapply for paralleling the isodistance function
       cl <- parallel::makeCluster(cores)
+      parallel::clusterExport(cl, c("b", "m"), envir = environment())
       LS_band_weightes <- parallel::parLapply(cl, isochrones_list, fun = this_LS_band_weighting,
                                               .tag = tag, .time = time,
                                               .landsat_list = landsat_list, .band = band,
@@ -312,13 +310,12 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
                                              .b = b, .m = m, .stats = stats,
                                              mc.cores = cores, mc.preschedule = FALSE)
     }
-  }'
-
-  LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
-                             .tag = tag, .time = time,
-                             .landsat_list = landsat_list, .band = band,
-                             .b = b, .m = m, .stats = stats)
-
+  } else {
+    LS_band_weightes <- lapply(isochrones_list, FUN = this_LS_band_weighting,
+                               .tag = tag, .time = time,
+                               .landsat_list = landsat_list, .band = band,
+                               .b = b, .m = m, .stats = stats)
+  }
 
   # Convert list to one tibble
   output_tibble <- DRIGLUCoSE::rbind_parallel(LS_band_weightes, cores = cores) %>%
