@@ -10,20 +10,25 @@
 #'     tag (id of the original point feature) and time (range of the segments).
 #' @export
 #'
+#' @importFrom rlang parse_quosure
 #' @importFrom sf st_buffer
 #' @importFrom sf st_union
+#' @importFrom dplyr group_by
+#' @importFrom dplyr group_split
 #' @importFrom parallel makeCluster
 #' @importFrom parallel parLapply
 #' @importFrom parallel stopCluster
 #' @importFrom parallel mclapply
-isochrones <- function(x, buffer = 30, cores = 1) {
+isochrones <- function(x, tag = "tag", buffer = 30, cores = 1) {
 
   this_isochrones <- function(x, buffer) {
     x %>% sf::st_buffer(buffer) %>% sf::st_union(by_feature = TRUE) #%>% nngeo::st_remove_holes()
   }
 
   # Convert x to list to enable parLapply/mclapply
-  x_list <- suppressWarnings(split(x, seq(nrow(x))))
+  x_list <- x %>%
+    dplyr::group_by(!! rlang::parse_quosure(tag)) %>%
+    dplyr::group_split()
 
   if (cores > 1) {
     # ---- WINDWOS ----
@@ -43,8 +48,8 @@ isochrones <- function(x, buffer = 30, cores = 1) {
     isochs <- lapply(x_list, FUN = this_isochrones, buffer = buffer)
   }
 
-  isochs <- DRIGLUCoSE::rbind_parallel(isochs, cores = cores) %>%
-    as_tibble()
+  isochs <- DRIGLUCoSE::rbind_parallel(isochs, cores = cores)
+  class(isochs) <- c(class(isochs), "isochrone")
 
   invisible(gc())
   return(isochs)
