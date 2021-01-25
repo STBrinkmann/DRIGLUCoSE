@@ -43,8 +43,7 @@ R.
 remotes::install_github("luukvdmeer/sfnetworks")
 ```
 
-You can install the latest version of `DRIGLUCoSE` from
-[GitHub](https://CRAN.R-project.org) with:
+You can install the latest version of `DRIGLUCoSE` from GitHub with:
 
 ``` r
 remotes::install_git("https://github.com/STBrinkmann/DRIGLUCoSE")
@@ -175,9 +174,7 @@ off-road width of 40 meters, running in 2-minute increments from 0 to 20
 minutes, using the A\*-algorithm (Hart, Nilsson & Raphael 1968). This
 therefore resulted in each participant having ten concentric isochrones,
 the sizes of which are a function of individual walking speed and road
-network.  
-Since the road network contains a lot of features (n=14436), this will
-take some time (\~15-30 minutes).
+network.
 
 ``` r
 erlangen.isodistances <- DRIGLUCoSE::isodistances(x = Erlangen, 
@@ -241,6 +238,8 @@ function (1) that is used for both SES and greenspace variables, and
 second the proportional weights function (4) that is only applied on SES
 variables.
 
+<center>
+
   
 ![&#10;\\begin{align\*}&#10; G\_t =&#10; \\begin{cases}&#10;
 \\cfrac{\\int\_0^{r\_t} \\, g(r)dr}{\\int\_0^{r\_{t\_{max}}} \\,
@@ -259,11 +258,15 @@ g(r)dr}{\\int\_0^{r\_{t\_{max}}} \\, g(r)dr}, t\>1&#10;
 \\end{align*}
 ")  
 
+</center>
+
 Each isochrone ![t](https://latex.codecogs.com/svg.latex?t "t") is
 assigned a distance weight
 ![G\_T](https://latex.codecogs.com/svg.latex?G_T "G_T"), calculated as
 the integral of the logistic distance decay function
 ![g(r)](https://latex.codecogs.com/svg.latex?g%28r%29 "g(r)") (2)
+
+<center>
 
   
 ![&#10;\\begin{align\*}&#10; g(r) =&#10; \\cfrac{1}{1 + e^{ \\,b
@@ -277,6 +280,8 @@ the integral of the logistic distance decay function
 \\end{align*}
 ")  
 
+</center>
+
 with ![b = 8](https://latex.codecogs.com/svg.latex?b%20%3D%208 "b = 8")
 and ![m = 0.6](https://latex.codecogs.com/svg.latex?m%20%3D%200.6
 "m = 0.6"), in the interval between the mean inner radius
@@ -289,6 +294,8 @@ the integral from 0 to the outermost isochrone boundary
 to describe the greenspace (e.g. mean or minimum NDVI) are thus
 described as (3)
 
+<center>
+
   
 ![&#10;\\begin{align\*}&#10; \\sum\_t G\_t \\, f(NDVI\_t \\, \\cap \\,
 I\_t)&#10; &&
@@ -300,8 +307,12 @@ I\_t)&#10; &&
 \\end{align*}
 ")  
 
+</center>
+
 For SES variables the proportional weights of the census areas within
 the isochrone are further defined as (4)
+
+<center>
 
   
 ![&#10;\\begin{align\*}&#10; A\_{tj} =&#10; \\cfrac{A(C\_j \\, \\cap \\,
@@ -316,6 +327,8 @@ I\_t)}&#10; {A(I\_t)}&#10; &&
 \\end{align*}
 ")  
 
+</center>
+
 with the proportion of the area of the intersection of the census area
 ![C\_j](https://latex.codecogs.com/svg.latex?C_j "C_j") and the
 isochrone ![I\_t](https://latex.codecogs.com/svg.latex?I_t "I_t"), and
@@ -325,6 +338,8 @@ value of the SES variable
 ![x\_i](https://latex.codecogs.com/svg.latex?x_i "x_i") in the census
 area ![j](https://latex.codecogs.com/svg.latex?j "j") is then defined as
 (5)
+
+<center>
 
   
 ![&#10;\\begin{align\*}&#10; \\sum\_t \\left( \\ G\_t \\ \\sum\_j \\,
@@ -336,6 +351,8 @@ x\_{ij} \\; A{tj} \\right)&#10; &&
     && \\text{(5)}
 \\end{align*}
 ")  
+
+</center>
 
 Figure 2 visualizes the different submodels used for distance-weighting
 SES and greenspace. Fig. 2a shows the unweighted values of a SES
@@ -401,692 +418,12 @@ census_weighted
 
 ## Tables
 
-<table style='width:90%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic lightable-striped">
+\\begin{table}
 
-<caption>
+\\caption{Table A.1: Logistic models for all multivariable models with
+odds ratios, 95% CI, and p-values.} 
 
-Table A.1: Logistic models for all multivariable models with odds
-ratios, 95% CI, and p-values.
-
-</caption>
-
-<thead>
-
-<tr>
-
-<th style="empty-cells: hide;" colspan="2">
-
-</th>
-
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
-
-<div style="TRUE">
-
-Semi-Adjusted
-
-</div>
-
-</th>
-
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
-
-<div style="TRUE">
-
-Fully-Adjusted
-
-</div>
-
-</th>
-
-</tr>
-
-<tr>
-
-<th style="text-align:left;font-weight: bold;">
-
-Parameter
-
-</th>
-
-<th style="text-align:center;font-weight: bold;">
-
-OR<br>(bivariate)
-
-</th>
-
-<th style="text-align:center;font-weight: bold;">
-
-OR<br>(WHR-adjusted)
-
-</th>
-
-<th style="text-align:center;font-weight: bold;">
-
-OR<br>(BMI-adjusted)
-
-</th>
-
-<th style="text-align:center;font-weight: bold;">
-
-OR<br>(WHR-adjusted)
-
-</th>
-
-<th style="text-align:center;font-weight: bold;">
-
-OR<br>(BMI-adjusted)
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="text-align:left;">
-
-DRI-GLUCoSE Score
-
-</td>
-
-<td style="text-align:center;">
-
-0.40 (0.30-0.54,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.55 (0.43-0.70,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.59 (0.46-0.76,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.50 (0.38-0.64,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.57 (0.43-0.75,<br>p-value\<0.001)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Age (5 year-interval)
-
-</td>
-
-<td style="text-align:center;">
-
-1.27 (1.19-1.36,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-1.20 (1.14-1.26,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-1.26 (1.20-1.32,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-1.19 (1.13-1.26,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-1.23 (1.17-1.3,<br>p-value\<0.001)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Sex: female
-
-</td>
-
-<td style="text-align:center;">
-
-0.61 (0.48-0.76,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.89 (0.74-1.06,<br>p-value=0.19)
-
-</td>
-
-<td style="text-align:center;">
-
-0.46 (0.38-0.54,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.83 (0.67-1.02,<br>p-value=0.078)
-
-</td>
-
-<td style="text-align:center;">
-
-0.43 (0.35-0.52,<br>p-value\<0.001)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Obese (WHR)
-
-</td>
-
-<td style="text-align:center;">
-
-5.54 (4.24-7.33,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-5.96 (4.97-7.16,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-5.02 (4.08-6.19,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-BMI
-
-</td>
-
-<td style="text-align:center;">
-
-1.14 (1.12-1.16,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-1.15 (1.13-1.17,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-1.14 (1.12-1.16,<br>p-value\<0.001)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Household income range
-
-</td>
-
-<td style="text-align:center;">
-
-0.74 (0.69-0.80,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.87 (0.82-0.92,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.85 (0.80-0.90,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.84 (0.79-0.90,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.82 (0.77-0.88,<br>p-value\<0.001)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Neighbourhood type: urban
-
-</td>
-
-<td style="text-align:center;">
-
-0.88 (0.67-1.16,<br>p-value=0.385)
-
-</td>
-
-<td style="text-align:center;">
-
-0.69 (0.56-0.86,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.72 (0.58-0.90,<br>p-value=0.003)
-
-</td>
-
-<td style="text-align:center;">
-
-0.54 (0.42-0.69,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-0.64 (0.50-0.82,<br>p-value\<0.001)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-AHEI Score (E^1)
-
-</td>
-
-<td style="text-align:center;">
-
-0.76 (0.68-0.85,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-0.87 (0.79-0.96,<br>p-value=0.005)
-
-</td>
-
-<td style="text-align:center;">
-
-0.92 (0.84-1.02,<br>p-value=0.126)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Physical Activity MET Score
-
-</td>
-
-<td style="text-align:center;">
-
-0.74 (0.63-0.88,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-0.90 (0.78-1.03,<br>p-value=0.134)
-
-</td>
-
-<td style="text-align:center;">
-
-0.92 (0.80-1.06,<br>p-value=0.272)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Current/Former smoker: yes
-
-</td>
-
-<td style="text-align:center;">
-
-1.66 (1.32-2.09,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-1.43 (1.18-1.74,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-1.27 (1.04-1.54,<br>p-value=0.018)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Alcohol: \<1 drink/day
-
-</td>
-
-<td style="text-align:center;">
-
-1.19 (0.92-1.54,<br>p-value=0.184)
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-</td>
-
-<td style="text-align:center;">
-
-2.11 (1.69-2.64,<br>p-value\<0.001)
-
-</td>
-
-<td style="text-align:center;">
-
-1.81 (1.45-2.26,<br>p-value\<0.001)
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-  
-
-<table style='width:90%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic">
-
-<caption>
-
-Table A.2: Model Performance for all multivariable models.
-
-</caption>
-
-<thead>
-
-<tr>
-
-<th style="empty-cells: hide;" colspan="1">
-
-</th>
-
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
-
-<div style="border-bottom: 1px solid #111111; margin-bottom: -1px; ">
-
-Semi-Adjusted
-
-</div>
-
-</th>
-
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
-
-<div style="border-bottom: 1px solid #111111; margin-bottom: -1px; ">
-
-Fully-Adjusted
-
-</div>
-
-</th>
-
-</tr>
-
-<tr>
-
-<th style="text-align:left;font-weight: bold;">
-
-Metric
-
-</th>
-
-<th style="text-align:center;font-weight: bold;">
-
-OR<br>(WHR-adjusted)
-
-</th>
-
-<th style="text-align:center;font-weight: bold;">
-
-OR<br>(BMI-adjusted)
-
-</th>
-
-<th style="text-align:center;font-weight: bold;">
-
-OR<br>(WHR-adjusted)
-
-</th>
-
-<th style="text-align:center;font-weight: bold;">
-
-OR<br>(BMI-adjusted)
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="text-align:left;">
-
-Sensitivity
-
-</td>
-
-<td style="text-align:center;">
-
-0.67
-
-</td>
-
-<td style="text-align:center;">
-
-0.76
-
-</td>
-
-<td style="text-align:center;">
-
-0.69
-
-</td>
-
-<td style="text-align:center;">
-
-0.78
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Specificity
-
-</td>
-
-<td style="text-align:center;">
-
-0.71
-
-</td>
-
-<td style="text-align:center;">
-
-0.64
-
-</td>
-
-<td style="text-align:center;">
-
-0.72
-
-</td>
-
-<td style="text-align:center;">
-
-0.66
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Youden index
-
-</td>
-
-<td style="text-align:center;">
-
-0.38
-
-</td>
-
-<td style="text-align:center;">
-
-0.41
-
-</td>
-
-<td style="text-align:center;">
-
-0.41
-
-</td>
-
-<td style="text-align:center;">
-
-0.44
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
+\\end{table}  
 
   
 

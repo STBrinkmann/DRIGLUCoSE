@@ -31,7 +31,7 @@ remotes::install_github("luukvdmeer/sfnetworks")
 ```
 
 
-You can install the latest version of `DRIGLUCoSE` from [GitHub](https://CRAN.R-project.org) with:
+You can install the latest version of `DRIGLUCoSE` from GitHub with:
 
 ```{r eval=FALSE, include=TRUE}
 remotes::install_git("https://github.com/STBrinkmann/DRIGLUCoSE")
@@ -96,8 +96,7 @@ erlangen.osm <- DRIGLUCoSE::osm_roads(x = Erlangen, dist = 20,
 ```
 
 
-This network data was used to derive walking distance buffers for each participant, based on walking speed. Starting from each participant’s place of residence, we computed network-constrained buffers with an off-road width of 40 meters, running in 2-minute increments from 0 to 20 minutes, using the A*-algorithm (Hart, Nilsson & Raphael 1968). This therefore resulted in each participant having ten concentric isochrones, the sizes of which are a function of individual walking speed and road network.\
-Since the road network contains a lot of features (n=`r nrow(erlangen.osm)`), this will take some time (~15-30 minutes).
+This network data was used to derive walking distance buffers for each participant, based on walking speed. Starting from each participant’s place of residence, we computed network-constrained buffers with an off-road width of 40 meters, running in 2-minute increments from 0 to 20 minutes, using the A*-algorithm (Hart, Nilsson & Raphael 1968). This therefore resulted in each participant having ten concentric isochrones, the sizes of which are a function of individual walking speed and road network.
 
 ```{r message=FALSE, warning=FALSE}
 erlangen.isodistances <- DRIGLUCoSE::isodistances(x = Erlangen, 
@@ -161,6 +160,7 @@ erlangen.isorings %>%
 In order to account for the diminishing effect of SES and greenspace exposure as distance increases, we fitted a logit function to weight each incremental isochrone, such that the influence of a variable decreases with increasing distance from the household, i.e., features that are farther away have less influence than nearby features, as illustrated in Figure 2. A logit function was selected as it heuristically approximates a suitable distance-decay function (Bauer and Groneberg 2016; Jia et al. 2019).\
 The distance-weighting is separated in two parts, first the logit function (1) that is used for both SES and greenspace variables, and second the proportional weights function (4) that is only applied on SES variables.
 
+<center>
 $$
 \begin{align*}
   G_t =
@@ -171,9 +171,11 @@ $$
     && \text{(1)}
 \end{align*}
 $$
+</center>
 
 Each isochrone $t$ is assigned a distance weight $G_T$, calculated as the integral of the logistic distance decay function $g(r)$ (2)
 
+<center>
 $$
 \begin{align*}
   g(r) =
@@ -181,18 +183,22 @@ $$
     && \text{(2)}
 \end{align*}
 $$
+</center>
 
 with $b = 8$ and $m = 0.6$, in the interval between the mean inner radius $r_{t-1}$ and mean outer radius $r_t$ of the isochrone (e.g. 2 to 4 minutes isochrones), normalized by the integral from 0 to the outermost isochrone boundary $r_{t_{max}}$ (e.g. 20 minutes isochrone). Weighted summary statistics to describe the greenspace (e.g. mean or minimum NDVI) are thus described as (3)
 
+<center>
 $$
 \begin{align*}
   \sum_t G_t \, f(NDVI_t \, \cap \, I_t)
     && \text{(3)}
 \end{align*}
 $$
+</center>
 
 For SES variables the proportional weights of the census areas within the isochrone are further defined as (4)
 
+<center>
 $$
 \begin{align*}
   A_{tj} =
@@ -201,15 +207,18 @@ $$
     && \text{(4)}
 \end{align*}
 $$
+</center>
 
 with the proportion of the area of the intersection of the census area $C_j$ and the isochrone $I_t$, and the area of the isochrone $I_t$. The weighted value of the SES variable $x_i$ in the census area $j$ is then defined as (5)
 
+<center>
 $$
 \begin{align*}
   \sum_t \left( \ G_t \ \sum_j \, x_{ij} \; A{tj} \right)
     && \text{(5)}
 \end{align*}
 $$
+</center>
 
 Figure 2 visualizes the different submodels used for distance-weighting SES and greenspace. Fig. 2a shows the unweighted values of a SES variable and fig. 2b has been calculated using (5), thus representing the proportional weights of all intersections with the census areas and isochrones. Greenspace is weighted as shown in fig. 2c using (3).
 
@@ -312,8 +321,8 @@ dplyr::tibble(
       "1.81 (1.45-2.26,<br/>p-value<0.001)"
     )
 ) %>% kbl(caption = "Table A.1: Logistic models for all multivariable models with odds ratios, 95% CI, and p-values.",
-            format = "html", col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c", "c"),
-            table.attr = "style='width:90%;'") %>% 
+          format = "latex", col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c", "c"),
+          table.attr = "style='width:90%;'") %>% 
   kable_classic("striped", full_width = F) %>%
   row_spec(0, bold = T) %>%
   add_header_above(c(" " = 2, "Semi-Adjusted" = 2, "Fully-Adjusted" = 2), italic = T)
@@ -336,8 +345,8 @@ dplyr::tibble(
     "OR (WHR-adjusted) " = c(0.69, 0.72, 0.41),
     "OR (BMI-adjusted) " = c(0.78, 0.66, 0.44)
 ) %>% kbl(caption = "Table A.2: Model Performance for all multivariable models.",
-            format = "html", col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c"),
-            table.attr = "style='width:90%;'") %>% 
+          format = "latex", col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c"),
+          table.attr = "style='width:90%;'") %>% 
   kable_classic(full_width = F) %>%
   row_spec(0, bold = T) %>%
   add_header_above(c(" " = 1, "Semi-Adjusted" = 2, "Fully-Adjusted" = 2), italic = T)
@@ -357,7 +366,7 @@ knitr::include_graphics("docs/roc_auc.svg")
 ## Summary Statistics
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>% 
-  kableExtra::kbl(format = "html", escape = FALSE, table.attr = "style='width:90%;'",
+  kableExtra::kbl(escape = FALSE, table.attr = "style='width:90%;'",
                   caption = "Table A.3: Baseline characteristics of the study population by diabetes status.") %>% 
   kableExtra::kable_classic(full_width = F) %>%
   kableExtra::pack_rows(index = c(" " = 3, "Participant data" = 24, "Census variables" = 28,
