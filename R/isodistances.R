@@ -5,9 +5,9 @@
 #'
 #' @param x object of class \code{sf} of the origin point(s). Must contain one or more \code{POINT} features.
 #' @param road_network object of class \code{sf} containing road features, derived from the \code{\link[DRIGLUCoSE]{osm_roads}} function.
+#' @param speed numeric or character; either numeric value of speed (meters/minute) or string containing the column name, that indicates the speed.
 #' @param tag character or NA; string containing the column name, that indicates the unique tag column.
 #' @param isochrones_seq a numeric vector of isochrone values (in minutes).
-#' @param speed numeric or character; either numeric value of speed (meters/minute) or string containing the column name, that indicates the speed.
 #' @param cores the number of cores to use.
 #'
 #' @return An \code{sf MULTILINESTRING} of isodistances is returned. The sf object contains two fields:\cr
@@ -16,16 +16,17 @@
 #'
 #' @import sf
 #' @import dplyr
+#' @import sfnetworks
 #'
-#' @importFrom rlang parse_quosure
-#' @importFrom igraph neighbors
-#' @importFrom tidygraph activate
+#' @importFrom rlang parse_quo
 #' @importFrom nabor knn
+#' @importFrom tidygraph node_distance_from
+#' @importFrom units set_units
 #' @importFrom parallel makeCluster
 #' @importFrom parallel parLapply
 #' @importFrom parallel stopCluster
 #' @importFrom parallel mclapply
-isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15, 20), speed, cores = 1) {
+isodistances <- function(x, road_network, speed = 78.5, tag = NA, isochrones_seq = c(5, 10, 15, 20), cores = 1) {
 
   # 1. Check input -------------------------------------------------------
   # x
@@ -90,218 +91,88 @@ isodistances <- function(x, road_network, tag = NA, isochrones_seq = c(5, 10, 15
   if (is.character(speed)) {
     if (!speed %in% names(x)) {
       stop("speed must be either numeric or a column of the sf object")
+    } else {
+      message("speed will be used from sf object")
     }
   }
 
   # cores
   if (cores < 1L) stop("Number of cores must be 1 or greater.")
 
-  # Check if location CRS is cartesian. This is required for the buffer
-  is_cartesian <- x %>%
-    sf::st_crs() %>%
-    .[[2]] %>%
-    grepl("CS[Cartesian,", ., fixed = T)
-
-  if (!is_cartesian) stop("A cartesian CRS is required for applying buffers")
-  rm(sf_class, is_cartesian)
-
-
   # 2. street network function ------------------------------------------
-  this_isodistance <- function(x, road_network, isochrones_seq, speed, tag) {
-    # Speed
+  this_isodistance <- function(x, road_network, speed, tag, isochrones_seq) {
+    # Get speed from input
     if (is.character(speed)) {
-      if (speed %in% names(x)) {
-        speed = as.numeric(x[[speed]])
-        message("speed will be used from sf object")
-      } else (
-        stop("speed must be either numeric or a column of the sf object")
-      )
+      speed = as.numeric(x[[speed]])
     }
 
-    #### 1. Edges and nodes ####
-    # Give each edge a unique index
-    this_buffer <- x %>%
-      sf::st_buffer(max(isochrones_seq) * speed)
+    # clean road_network
+    sf::st_geometry(road_network) = sf::st_geometry(road_network) %>%
+      lapply(function(x) round(x, 0)) %>%
+      sf::st_sfc(crs = sf::st_crs(road_network))
 
-    st_agr(road_network) = "constant"
+    # Build sfNetwork
+    network <- sfnetworks::as_sfnetwork(road_network, directed = FALSE) %>%
+      sfnetworks::activate("edges") %>%
+      dplyr::mutate(weight = sfnetworks::edge_length(),
+                    ID = 1:n(),
+                    speed = units::set_units(78.5, "m/min"),
+                    time = weight / speed)
 
-    edges <- road_network %>%
-      sf::st_intersection(this_buffer$geom) %>%
-      sf::st_cast("MULTILINESTRING") %>%
-      sf::st_cast("LINESTRING", warn = F) %>%
-      dplyr::mutate(edgeID = c(1:n()))
-
-
-    # Create nodes at the start and end point of each edge
-    nodes <- edges %>%
-      sf::st_coordinates() %>%
-      dplyr::as_tibble() %>%
-      dplyr::rename(edgeID = L1) %>%
-      dplyr::group_by(edgeID) %>%
-      dplyr::slice(c(1, n())) %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(start_end = rep(c('start', 'end'), times = dplyr::n()/2))
-
-
-    # Give each node a unique index
-    nodes <- nodes %>%
-      dplyr::mutate(xy = paste(.$X, .$Y)) %>%
-      dplyr::mutate(nodeID = dplyr::group_indices(., factor(xy, levels = unique(xy)))) %>%
-      dplyr::select(-xy)
-
-
-    # Combine the node indices with the edges
-    source_nodes <- nodes %>%
-      dplyr::filter(start_end == 'start') %>%
-      dplyr::pull(nodeID)
-
-    target_nodes <- nodes %>%
-      dplyr::filter(start_end == 'end') %>%
-      dplyr::pull(nodeID)
-
-    edges = edges %>%
-      dplyr::mutate(from = source_nodes, to = target_nodes)
-
-
-    # Remove duplicate nodes
-    nodes <- nodes %>%
-      dplyr::distinct(nodeID, .keep_all = TRUE) %>%
-      dplyr::select(-c(edgeID, start_end)) %>%
-      sf::st_as_sf(coords = c('X', 'Y')) %>%
-      sf::st_set_crs(sf::st_crs(edges))
-
-
-    # Convert to tbl_graph
-    graph <- tidygraph::tbl_graph(nodes = nodes, edges = dplyr::as_tibble(edges), directed = FALSE) %>%
-      tidygraph::activate(edges) %>%
-      dplyr::mutate(length = sf::st_length(geom))
-
-
-    #### Network Analysis ####
-    # 2. Coordinates of the origin
+    # Get node for x
     coords_o <- x %>%
       sf::st_coordinates() %>%
       matrix(ncol = 2)
 
-    # Coordinates of all nodes in the network
-    nodes <- graph %>%
-      tidygraph::activate(nodes) %>%
-      dplyr::as_tibble() %>%
+    nodes <- network %>%
+      sfnetworks::activate(nodes) %>%
       sf::st_as_sf()
 
-    # Calculate nearest points on the network.
     coords <- nodes %>%
       sf::st_coordinates()
 
     node_index_o <- nabor::knn(data = coords, query = coords_o, k = 1)
-    node_o <- nodes[node_index_o$nn.idx, ]
 
-
-    #### Street Network ####
-    max_length <- speed * max(isochrones_seq)
-
-    # Tibble to save nodes that need to be checked
-    outer_nodes <- dplyr::tibble(nodeID = as.integer(),
-                                 length = as.double())
-
-    # Get neighboring nodes of the origin
-    first_nodes <- igraph::neighbors(graph, (node_o$nodeID)) %>%
-      as.numeric() %>%
-      dplyr::as_tibble() %>%
-      dplyr::rename(nodeID = value) %>%
-      dplyr::inner_join(nodes, ., by = "nodeID")
-
-    # Get edges that go between first_nodes and origin and sort by length
-    first_edges <- edges[(edges$from == node_o$nodeID & edges$to %in% first_nodes$nodeID) |
-                           (edges$from %in% first_nodes$nodeID & edges$to == node_o$nodeID), ] %>%
-      dplyr::mutate(length = sf::st_length(geom) %>% as.numeric()) %>%
-      dplyr::select(edgeID, length, highway) %>%
-      sf::st_join(first_nodes, by = geom)
-
-    # Create star_network to store all edges
-    star_network <- first_edges[0,]
-
-    # Append to collection that need to be searched
-    outer_nodes <- outer_nodes %>%
-      rbind(first_edges %>% dplyr::as_tibble() %>% dplyr::select(nodeID, length)) %>%
-      dplyr::arrange(length)
-
-    while (nrow(outer_nodes) > 0) {
-      # Calculate new nodes
-      new_nodes <- igraph::neighbors(graph, outer_nodes[1,]$nodeID) %>%
-        as.numeric() %>%
-        dplyr::as_tibble() %>%
-        dplyr::rename(nodeID = value) %>%
-        dplyr::inner_join(nodes, ., by = "nodeID")
-
-      # Get edges that go between first_nodes and origin and sort by length
-      new_edges <- edges[(edges$from == outer_nodes[1,]$nodeID & edges$to %in% new_nodes$nodeID) |
-                           (edges$from %in% new_nodes$nodeID & edges$to == outer_nodes[1,]$nodeID),] %>%
-        dplyr::mutate(length = sf::st_length(geom) %>% as.numeric()) %>%
-        dplyr::select(edgeID, length, highway) %>%
-        sf::st_join(new_nodes, by = geom)
-
-      # Remove edges, that are already in the star-network and longer than max_length
-      new_edges <- new_edges %>%
-        dplyr::mutate(length = length + outer_nodes[1,]$length) %>%
-        dplyr::filter(length <= max_length & !(edgeID %in% star_network$edgeID))
-
-      # Add new_edges to star_network
-      star_network <- star_network %>%
-        rbind(new_edges)
-
-      # Remove first entry of outer_nodes
-      outer_nodes[1,] <- NA
-      outer_nodes <- na.omit(outer_nodes)
-
-      # Append to collection that need to be searched
-      outer_nodes <- new_edges %>%
-        dplyr::as_tibble() %>%
-        dplyr::select(nodeID, length) %>%
-        dplyr::filter(!nodeID %in% outer_nodes$nodeID) %>%
-        rbind(outer_nodes) %>%
-        dplyr::arrange(length)
-    }
-
-    # Group by time (eg 5, 10, 15, 20 min)
-    star_network <- star_network %>%
-      dplyr::mutate(time = as.integer(NA))
-
-    for (j in seq_along(isochrones_seq)) {
-      max_length <- speed * isochrones_seq[j]
-
-      star_network[star_network$length <= max_length & is.na(star_network$time), ] <- star_network %>%
-        dplyr::filter(length <= max_length & is.na(time)) %>%
-        dplyr::mutate(time = isochrones_seq[j])
-    }
-
-    star_network <- star_network %>%
-      dplyr::mutate(time = as.factor(time)) %>%
-      dplyr::group_by(time) %>%
-      dplyr::summarize(geom = sf::st_union(geom)) %>%
-      dplyr::select(time)
-
-    if (nrow(star_network) > 0) {
-      for (j in 1:nrow(star_network)) {
-        star_network[j,]$geom <- star_network[1:j,] %>%
-          sf::st_union()
+    # Calculate Isodistances
+    for (i in seq_along(isochrones_seq)) {
+      if (i == 1) {
+        output <- network %>%
+          sfnetworks::activate(nodes) %>%
+          dplyr::filter(tidygraph::node_distance_from(node_index_o$nn.idx, weights = time) <= isochrones_seq[i]) %>%
+          sfnetworks::activate(edges) %>%
+          sf::st_as_sf() %>%
+          dplyr::mutate(time = isochrones_seq[i]) %>%
+          dplyr::select(ID, time, geom)
+      } else {
+        output <- network %>%
+          sfnetworks::activate(nodes) %>%
+          dplyr::filter(tidygraph::node_distance_from(node_index_o$nn.idx, weights = time) <= isochrones_seq[i]) %>%
+          sfnetworks::activate(edges) %>%
+          dplyr::filter(!ID %in% output$ID) %>%
+          sf::st_as_sf() %>%
+          dplyr::mutate(time = isochrones_seq[i]) %>%
+          dplyr::select(ID, time, geom) %>%
+          dplyr::add_row(output, .)
       }
     }
 
+    # Group by time (eg 5, 10, 15, 20 min)
+    output <- output %>%
+      dplyr::select(-ID) %>%
+      dplyr::group_by(time) %>%
+      dplyr::summarize(geom = sf::st_union(geom)) %>%
+      dplyr::ungroup()
+
+
     if (!is.na(tag)) {
       this_tag <- x %>%
-        dplyr::as_tibble() %>%
-        dplyr::select(!! rlang::parse_quosure(tag)) %>%
-        unlist() %>%
-        as.vector()
+        dplyr::pull(tag)
 
-      star_network <- star_network %>%
-        dplyr::mutate(!! rlang::parse_quosure(tag) := this_tag) %>%
-        dplyr::select(!! rlang::parse_quosure(tag), time)
+      output <- output %>%
+        dplyr::mutate(!! rlang::parse_quo(tag, env = globalenv()) := this_tag) %>%
+        dplyr::select(!! rlang::parse_quo(tag, env = globalenv()), time)
     }
-
-    invisible(gc())
-    return(star_network)
+    return(output)
   }
 
   # 3. Parallel apply street network function ---------------------------

@@ -4,7 +4,7 @@
 \alias{isochrones}
 \title{Calculate isochrones}
 \usage{
-isochrones(x, buffer = 30, cores = 1)
+isochrones(x, tag = "tag", buffer = 30, cores = 1)
 }
 \arguments{
 \item{x}{object of class \code{sf} containing isodistances, derived from the \code{\link[DRIGLUCoSE]{isodistances}} function.}

@@ -7,9 +7,9 @@
 isodistances(
   x,
   road_network,
+  speed = 78.5,
   tag = NA,
   isochrones_seq = c(5, 10, 15, 20),
-  speed,
   cores = 1
 )
 }
@@ -18,11 +18,11 @@ isodistances(
 
 \item{road_network}{object of class \code{sf} containing road features, derived from the \code{\link[DRIGLUCoSE]{osm_roads}} function.}
 
+\item{speed}{numeric or character; either numeric value of speed (meters/minute) or string containing the column name, that indicates the speed.}
+
 \item{tag}{character or NA; string containing the column name, that indicates the unique tag column.}
 
 \item{isochrones_seq}{a numeric vector of isochrone values (in minutes).}
-
-\item{speed}{numeric or character; either numeric value of speed (meters/minute) or string containing the column name, that indicates the speed.}
 
 \item{cores}{the number of cores to use.}
 }
