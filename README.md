@@ -27,17 +27,27 @@ et al. 2014). Therefore, we present a distance-weighted, network-based
 model for quantifying the combined effects of local greenspace and SES
 on diabetes risk, from which we derive an area-based Diabetes Risk Index
 of Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE).  
-The goal of the DRIGLUCoSE package is to provide a public package
+The goal of the `DRIGLUCoSE` package is to provide a public package
 containing functions and code used in the development of the DRI-GLUCoSE
 Index.
 
 # Installation
 
-You can install the latest version of DRIGLUCoSE from
+This package depends on the
+[sfnetworks](https://github.com/luukvdmeer/sfnetworks) package. It is
+still in very active development. Therefore, the package is also not on
+CRAN yet. Install it directly from GitHub using the `remotes` package in
+R.
+
+``` r
+remotes::install_github("luukvdmeer/sfnetworks")
+```
+
+You can install the latest version of `DRIGLUCoSE` from
 [GitHub](https://CRAN.R-project.org) with:
 
 ``` r
-devtools::install_git("https://github.com/STBrinkmann/DRIGLUCoSE")
+remotes::install_git("https://github.com/STBrinkmann/DRIGLUCoSE")
 ```
 
 Once installed, the library can be loaded as follows:
@@ -116,7 +126,7 @@ Vegetation Index
 ([NDVI](https://gisgeography.com/ndvi-normalized-difference-vegetation-index/))
 is used as a metric to model greenspace exposure. Pre-processing of the
 LANDSAT images and NDVI calculation has been conducted using the
-*LS\_L1C* function:
+`LS_L1C` function:
 
 ``` r
 DRIGLUCoSE::LS_L1C(l1c_path = "docs/LC08_L1TP_193026_20200423_20200508_01_T1_small/", 
@@ -148,10 +158,10 @@ or SES decreases as distance from the home increases.
 ### (i) Road network data and isochrones
 
 In order to compute network-based distance metrics, we acquired street
-data from OpenStreetMap using the R-package *osmdata* (Padgham et
+data from OpenStreetMap using the R-package `osmdata` (Padgham et
 al. 2017). Road types not suitable for walking were removed (e.g.,
 motorways). Network data were topologically corrected and split into
-\~20 metre-long segments using the R package *nngeo* (Dorman 2020).
+\~20 metre-long segments using the R package `nngeo` (Dorman 2020).
 
 ``` r
 erlangen.osm <- DRIGLUCoSE::osm_roads(x = Erlangen, dist = 20, 
@@ -166,7 +176,7 @@ minutes, using the A\*-algorithm (Hart, Nilsson & Raphael 1968). This
 therefore resulted in each participant having ten concentric isochrones,
 the sizes of which are a function of individual walking speed and road
 network.  
-Since the road network contains a lot of features (n=14420), this will
+Since the road network contains a lot of features (n=14436), this will
 take some time (\~15-30 minutes).
 
 ``` r
@@ -182,33 +192,33 @@ erlangen.isochrones <- DRIGLUCoSE::isochrones(x = erlangen.isodistances,
                                               buffer = 40, cores = 2)
 erlangen.isochrones
 #> Simple feature collection with 20 features and 2 fields
-#> geometry type:  POLYGON
+#> geometry type:  GEOMETRY
 #> dimension:      XY
-#> bbox:           xmin: 34033.6 ymin: -160836.2 xmax: 37706.61 ymax: -157758.7
+#> bbox:           xmin: 34034 ymin: -160951 xmax: 37750 ymax: -157811
 #> projected CRS:  ETRS89 / LCC Germany (N-E)
 #> # A tibble: 20 x 3
-#>      tag time                                                               geom
-#>  * <dbl> <chr>                                                     <POLYGON [m]>
-#>  1     1 2     ((35069.53 -159364.5, 35069.53 -159364.1, 35069.56 -159363.5, 35~
-#>  2     1 4     ((34939.85 -159373.8, 34940.23 -159373.4, 34940.61 -159372.9, 34~
-#>  3     1 6     ((34892.51 -159333.3, 34892.51 -159332.4, 34892.52 -159332.3, 34~
-#>  4     1 8     ((34892.51 -159333.3, 34892.51 -159332.4, 34892.52 -159332.3, 34~
-#>  5     1 10    ((34832.45 -159080.6, 34832.44 -159080, 34832.45 -159079.7, 3483~
-#>  6     1 12    ((34609.81 -159190.6, 34607.8 -159191.1, 34605.76 -159191.6, 346~
-#>  7     1 14    ((34491.75 -159216.3, 34491.53 -159216.4, 34489.45 -159216.6, 34~
-#>  8     1 16    ((34314.4 -159277.6, 34312.43 -159278.3, 34310.41 -159278.9, 343~
-#>  9     1 18    ((34137.69 -159298.2, 34136.14 -159296.8, 34134.67 -159295.3, 34~
-#> 10     1 20    ((34033.61 -159310, 34033.6 -159309.9, 34033.63 -159308.9, 34033~
-#> 11     2 2     ((36169.37 -159274.8, 36169.3 -159274.8, 36143.99 -159271.6, 361~
-#> 12     2 4     ((35937.49 -159174.3, 35937.53 -159174.1, 35937.8 -159173.3, 359~
-#> 13     2 6     ((35842.74 -159227.6, 35841.66 -159227.5, 35839.58 -159227.3, 35~
-#> 14     2 8     ((35660.08 -159105.1, 35659.91 -159105.1, 35654.15 -159102.5, 35~
-#> 15     2 10    ((36942.64 -159679.2, 36942.96 -159679.6, 36944.31 -159681.2, 36~
-#> 16     2 12    ((35368.96 -158950.9, 35368.23 -158950.5, 35366.45 -158949.4, 35~
-#> 17     2 14    ((35212.62 -158969.4, 35212.55 -158968.6, 35212.47 -158966.6, 35~
-#> 18     2 16    ((35503.8 -159156.6, 35503.85 -159156.6, 35504.41 -159157.4, 355~
-#> 19     2 18    ((34982.31 -158901.1, 34982.26 -158899, 34982.31 -158896.9, 3498~
-#> 20     2 20    ((34832.45 -159080.6, 34832.44 -159080, 34832.45 -159079.7, 3483~
+#>      tag  time                                                              geom
+#>  * <dbl> <dbl>                                                    <GEOMETRY [m]>
+#>  1     1     2 POLYGON ((35070.01 -159364.4, 35070.01 -159364.3, 35070.05 -1593~
+#>  2     1     4 POLYGON ((34939.9 -159373.7, 34939.9 -159373.7, 34939.9 -159373.~
+#>  3     1     6 MULTIPOLYGON (((35122.04 -159796.6, 35121.24 -159795.8, 35119.83~
+#>  4     1     8 MULTIPOLYGON (((35381.94 -159465.4, 35381.67 -159465.3, 35379.73~
+#>  5     1    10 MULTIPOLYGON (((35202.91 -159978.5, 35202.52 -159976.4, 35202.24~
+#>  6     1    12 MULTIPOLYGON (((34785.32 -159753, 34785.29 -159752.8, 34781.29 -~
+#>  7     1    14 MULTIPOLYGON (((35074.41 -160199.5, 35073.91 -160197.5, 35073.52~
+#>  8     1    16 MULTIPOLYGON (((34917.7 -160026.6, 34916.67 -160024.8, 34915.74 ~
+#>  9     1    18 MULTIPOLYGON (((35274.98 -160596.8, 35274.87 -160596.3, 35274.49~
+#> 10     1    20 MULTIPOLYGON (((35259.52 -160806.4, 35258.77 -160804.6, 35258.06~
+#> 11     2     2 POLYGON ((36168.94 -159274.7, 36144.23 -159271.7, 36142.16 -1592~
+#> 12     2     4 POLYGON ((35995.6 -159233.7, 35975.79 -159226.8, 35973.83 -15922~
+#> 13     2     6 POLYGON ((35822.47 -159166.2, 35822.21 -159165.7, 35821.22 -1591~
+#> 14     2     8 MULTIPOLYGON (((36811.11 -159633.3, 36810.49 -159634, 36810.41 -~
+#> 15     2    10 MULTIPOLYGON (((35928.36 -159544.3, 35928.19 -159543.7, 35926.19~
+#> 16     2    12 MULTIPOLYGON (((35950.69 -159884.5, 35951 -159883.5, 35951.32 -1~
+#> 17     2    14 MULTIPOLYGON (((36704.16 -160015.9, 36682.73 -160017.3, 36682.82~
+#> 18     2    16 MULTIPOLYGON (((36662.22 -159980, 36662.1 -159978.9, 36662.01 -1~
+#> 19     2    18 MULTIPOLYGON (((35846.36 -160338.5, 35846.43 -160338.4, 35846.75~
+#> 20     2    20 MULTIPOLYGON (((35746 -160426, 35746 -160423, 35746.05 -160420.9~
 ```
 
 Figure 1 shows isodistances of the two points of the sample data in
@@ -350,8 +360,8 @@ lines indicate the isochrones.
   
   
 The distance-weighting for the LANDSAT derived NDVI raster (greenspace
-exposure) is handled using *LS\_band\_weighting*, and SES distance- and
-areal-weighting using *census\_weighting*.
+exposure) is handled using `LS_band_weightin`, and SES distance- and
+areal-weighting using `census_weighting`.
 
 ``` r
 # Calculate sd, median, 5th percentile, 95th percentile and skew of NDVI values
@@ -365,26 +375,26 @@ NDVI_weighted <-
                                              list("percentile", 0.05), 
                                              list("percentile", 0.95),
                                              "skew"), 
-                                b = 8, m = 0.6)
+                                b = 8, m = 0.6, cores = 2)
 
 NDVI_weighted
 #> # A tibble: 2 x 6
-#>     tag    sd median X5_percentile X95_percentile    skew
-#>   <dbl> <dbl>  <dbl>         <dbl>          <dbl>   <dbl>
-#> 1     1 0.204  0.597         0.261          0.906 -0.133 
-#> 2     2 0.143  0.561         0.321          0.790 -0.0302
+#>     tag    sd median X5_percentile X95_percentile     skew
+#>   <dbl> <dbl>  <dbl>         <dbl>          <dbl>    <dbl>
+#> 1     1 0.206  0.601         0.272          0.908 -0.110  
+#> 2     2 0.102  0.538         0.367          0.709  0.00458
 ```
 
 ``` r
 census_weighted <- DRIGLUCoSE::census_weighting(isochrones = erlangen.isochrones, 
                                                 tag = "tag", census = census, 
-                                                b = 8, m = 0.6)
+                                                b = 8, m = 0.6, cores = 2)
 census_weighted
 #> # A tibble: 2 x 4
 #>     tag census_var_a census_var_b census_var_c
 #>   <dbl>        <dbl>        <dbl>        <dbl>
-#> 1     1         522.        5215.      128452.
-#> 2     2         521.        5477.      124588.
+#> 1     1         554.        5266.      130628.
+#> 2     2         551.        5416.      124485.
 ```
 
 # Appendix
@@ -484,13 +494,13 @@ DRI-GLUCoSE Score
 
 <td style="text-align:center;">
 
-0.4 (0.3-0.54,<br>p-value\<0.001)
+0.40 (0.30-0.54,<br>p-value\<0.001)
 
 </td>
 
 <td style="text-align:center;">
 
-0.55 (0.43-0.7,<br>p-value\<0.001)
+0.55 (0.43-0.70,<br>p-value\<0.001)
 
 </td>
 
@@ -502,7 +512,7 @@ DRI-GLUCoSE Score
 
 <td style="text-align:center;">
 
-0.5 (0.38-0.64,<br>p-value\<0.001)
+0.50 (0.38-0.64,<br>p-value\<0.001)
 
 </td>
 
@@ -530,13 +540,13 @@ Age (5 year-interval)
 
 <td style="text-align:center;">
 
-1.2 (1.14-1.26,<br>p-value\<0.001)
+1.20 (1.14-1.26,<br>p-value\<0.001)
 
 </td>
 
 <td style="text-align:center;">
 
-1.26 (1.2-1.32,<br>p-value\<0.001)
+1.26 (1.20-1.32,<br>p-value\<0.001)
 
 </td>
 
@@ -676,7 +686,7 @@ Household income range
 
 <td style="text-align:center;">
 
-0.74 (0.69-0.8,<br>p-value\<0.001)
+0.74 (0.69-0.80,<br>p-value\<0.001)
 
 </td>
 
@@ -688,13 +698,13 @@ Household income range
 
 <td style="text-align:center;">
 
-0.85 (0.8-0.9,<br>p-value\<0.001)
+0.85 (0.80-0.90,<br>p-value\<0.001)
 
 </td>
 
 <td style="text-align:center;">
 
-0.84 (0.79-0.9,<br>p-value\<0.001)
+0.84 (0.79-0.90,<br>p-value\<0.001)
 
 </td>
 
@@ -728,7 +738,7 @@ Neighbourhood type: urban
 
 <td style="text-align:center;">
 
-0.72 (0.58-0.9,<br>p-value=0.003)
+0.72 (0.58-0.90,<br>p-value=0.003)
 
 </td>
 
@@ -740,7 +750,7 @@ Neighbourhood type: urban
 
 <td style="text-align:center;">
 
-0.64 (0.5-0.82,<br>p-value\<0.001)
+0.64 (0.50-0.82,<br>p-value\<0.001)
 
 </td>
 
@@ -806,13 +816,13 @@ Physical Activity MET Score
 
 <td style="text-align:center;">
 
-0.9 (0.78-1.03,<br>p-value=0.134)
+0.90 (0.78-1.03,<br>p-value=0.134)
 
 </td>
 
 <td style="text-align:center;">
 
-0.92 (0.8-1.06,<br>p-value=0.272)
+0.92 (0.80-1.06,<br>p-value=0.272)
 
 </td>
 
