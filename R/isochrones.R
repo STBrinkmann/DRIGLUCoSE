@@ -43,7 +43,8 @@ isochrones <- function(x, buffer = 30, cores = 1) {
     isochs <- lapply(x_list, FUN = this_isochrones, buffer = buffer)
   }
 
-  isochs <- do.call(rbind, isochs)
+  isochs <- DRIGLUCoSE::rbind_parallel(isochs, cores = cores) %>%
+    as_tibble()
 
   invisible(gc())
   return(isochs)
