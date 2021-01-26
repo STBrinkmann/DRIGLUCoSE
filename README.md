@@ -923,6 +923,188 @@ Alcohol: \<1 drink/day
 
   
 
+<table style='width:90%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic">
+
+<caption>
+
+Table A.2: Model Performance for all multivariable models.
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="empty-cells: hide;" colspan="1">
+
+</th>
+
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
+
+<div style="border-bottom: 1px solid #111111; margin-bottom: -1px; ">
+
+Semi-Adjusted
+
+</div>
+
+</th>
+
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
+
+<div style="border-bottom: 1px solid #111111; margin-bottom: -1px; ">
+
+Fully-Adjusted
+
+</div>
+
+</th>
+
+</tr>
+
+<tr>
+
+<th style="text-align:left;font-weight: bold;">
+
+Metric
+
+</th>
+
+<th style="text-align:center;font-weight: bold;">
+
+OR<br>(WHR-adjusted)
+
+</th>
+
+<th style="text-align:center;font-weight: bold;">
+
+OR<br>(BMI-adjusted)
+
+</th>
+
+<th style="text-align:center;font-weight: bold;">
+
+OR<br>(WHR-adjusted)
+
+</th>
+
+<th style="text-align:center;font-weight: bold;">
+
+OR<br>(BMI-adjusted)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Sensitivity
+
+</td>
+
+<td style="text-align:center;">
+
+0.67
+
+</td>
+
+<td style="text-align:center;">
+
+0.76
+
+</td>
+
+<td style="text-align:center;">
+
+0.69
+
+</td>
+
+<td style="text-align:center;">
+
+0.78
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Specificity
+
+</td>
+
+<td style="text-align:center;">
+
+0.71
+
+</td>
+
+<td style="text-align:center;">
+
+0.64
+
+</td>
+
+<td style="text-align:center;">
+
+0.72
+
+</td>
+
+<td style="text-align:center;">
+
+0.66
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Youden index
+
+</td>
+
+<td style="text-align:center;">
+
+0.38
+
+</td>
+
+<td style="text-align:center;">
+
+0.41
+
+</td>
+
+<td style="text-align:center;">
+
+0.41
+
+</td>
+
+<td style="text-align:center;">
+
+0.44
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
   
 
 ## Figures

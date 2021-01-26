@@ -338,7 +338,7 @@ names_spaced <- c(
   "OR<br/>(BMI-adjusted)"
 )
 
-tmp <- dplyr::tibble(
+dplyr::tibble(
     Metric = c("Sensitivity", "Specificity", "Youden index"),
     "OR (WHR-adjusted)" = c(0.67, 0.71, 0.38),
     "OR (BMI-adjusted)"  = c(0.76, 0.64, 0.41),
