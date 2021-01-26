@@ -418,12 +418,510 @@ census_weighted
 
 ## Tables
 
-\\begin{table}
+<table style='width:90%; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic lightable-striped">
 
-\\caption{Table A.1: Logistic models for all multivariable models with
-odds ratios, 95% CI, and p-values.} 
+<caption>
 
-\\end{table}  
+Table A.1: Logistic models for all multivariable models with odds
+ratios, 95% CI, and p-values.
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="empty-cells: hide;" colspan="2">
+
+</th>
+
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
+
+<div style="TRUE">
+
+Semi-Adjusted
+
+</div>
+
+</th>
+
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-style: italic; " colspan="2">
+
+<div style="TRUE">
+
+Fully-Adjusted
+
+</div>
+
+</th>
+
+</tr>
+
+<tr>
+
+<th style="text-align:left;font-weight: bold;">
+
+Parameter
+
+</th>
+
+<th style="text-align:center;font-weight: bold;">
+
+OR<br>(bivariate)
+
+</th>
+
+<th style="text-align:center;font-weight: bold;">
+
+OR<br>(WHR-adjusted)
+
+</th>
+
+<th style="text-align:center;font-weight: bold;">
+
+OR<br>(BMI-adjusted)
+
+</th>
+
+<th style="text-align:center;font-weight: bold;">
+
+OR<br>(WHR-adjusted)
+
+</th>
+
+<th style="text-align:center;font-weight: bold;">
+
+OR<br>(BMI-adjusted)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+DRI-GLUCoSE Score
+
+</td>
+
+<td style="text-align:center;">
+
+0.40 (0.30-0.54,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.55 (0.43-0.70,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.59 (0.46-0.76,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.50 (0.38-0.64,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.57 (0.43-0.75,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Age (5 year-interval)
+
+</td>
+
+<td style="text-align:center;">
+
+1.27 (1.19-1.36,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.20 (1.14-1.26,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.26 (1.20-1.32,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.19 (1.13-1.26,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.23 (1.17-1.3,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Sex: female
+
+</td>
+
+<td style="text-align:center;">
+
+0.61 (0.48-0.76,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.89 (0.74-1.06,<br>p-value=0.19)
+
+</td>
+
+<td style="text-align:center;">
+
+0.46 (0.38-0.54,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.83 (0.67-1.02,<br>p-value=0.078)
+
+</td>
+
+<td style="text-align:center;">
+
+0.43 (0.35-0.52,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Obese (WHR)
+
+</td>
+
+<td style="text-align:center;">
+
+5.54 (4.24-7.33,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+5.96 (4.97-7.16,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+5.02 (4.08-6.19,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+BMI
+
+</td>
+
+<td style="text-align:center;">
+
+1.14 (1.12-1.16,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+1.15 (1.13-1.17,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+1.14 (1.12-1.16,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Household income range
+
+</td>
+
+<td style="text-align:center;">
+
+0.74 (0.69-0.80,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.87 (0.82-0.92,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.85 (0.80-0.90,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.84 (0.79-0.90,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.82 (0.77-0.88,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Neighbourhood type: urban
+
+</td>
+
+<td style="text-align:center;">
+
+0.88 (0.67-1.16,<br>p-value=0.385)
+
+</td>
+
+<td style="text-align:center;">
+
+0.69 (0.56-0.86,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.72 (0.58-0.90,<br>p-value=0.003)
+
+</td>
+
+<td style="text-align:center;">
+
+0.54 (0.42-0.69,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+0.64 (0.50-0.82,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+AHEI Score (E^1)
+
+</td>
+
+<td style="text-align:center;">
+
+0.76 (0.68-0.85,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+0.87 (0.79-0.96,<br>p-value=0.005)
+
+</td>
+
+<td style="text-align:center;">
+
+0.92 (0.84-1.02,<br>p-value=0.126)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Physical Activity MET Score
+
+</td>
+
+<td style="text-align:center;">
+
+0.74 (0.63-0.88,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+0.90 (0.78-1.03,<br>p-value=0.134)
+
+</td>
+
+<td style="text-align:center;">
+
+0.92 (0.80-1.06,<br>p-value=0.272)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Current/Former smoker: yes
+
+</td>
+
+<td style="text-align:center;">
+
+1.66 (1.32-2.09,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+1.43 (1.18-1.74,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.27 (1.04-1.54,<br>p-value=0.018)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Alcohol: \<1 drink/day
+
+</td>
+
+<td style="text-align:center;">
+
+1.19 (0.92-1.54,<br>p-value=0.184)
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+</td>
+
+<td style="text-align:center;">
+
+2.11 (1.69-2.64,<br>p-value\<0.001)
+
+</td>
+
+<td style="text-align:center;">
+
+1.81 (1.45-2.26,<br>p-value\<0.001)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+  
 
   
 

@@ -321,7 +321,7 @@ dplyr::tibble(
       "1.81 (1.45-2.26,<br/>p-value<0.001)"
     )
 ) %>% kbl(caption = "Table A.1: Logistic models for all multivariable models with odds ratios, 95% CI, and p-values.",
-          format = "latex", col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c", "c"),
+          col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c", "c"),
           table.attr = "style='width:90%;'") %>% 
   kable_classic("striped", full_width = F) %>%
   row_spec(0, bold = T) %>%
@@ -338,14 +338,14 @@ names_spaced <- c(
   "OR<br/>(BMI-adjusted)"
 )
 
-dplyr::tibble(
+tmp <- dplyr::tibble(
     Metric = c("Sensitivity", "Specificity", "Youden index"),
     "OR (WHR-adjusted)" = c(0.67, 0.71, 0.38),
     "OR (BMI-adjusted)"  = c(0.76, 0.64, 0.41),
     "OR (WHR-adjusted) " = c(0.69, 0.72, 0.41),
     "OR (BMI-adjusted) " = c(0.78, 0.66, 0.44)
 ) %>% kbl(caption = "Table A.2: Model Performance for all multivariable models.",
-          format = "latex", col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c"),
+          col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c"),
           table.attr = "style='width:90%;'") %>% 
   kable_classic(full_width = F) %>%
   row_spec(0, bold = T) %>%
