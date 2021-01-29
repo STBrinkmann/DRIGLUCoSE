@@ -5,6 +5,7 @@ output:
     pandoc_args: --webtex=https://latex.codecogs.com/svg.latex?
     toc: true
 always_allow_html: true
+bibliography: docs/bibliography.bib
 ---
 
 
@@ -20,7 +21,7 @@ library(kableExtra)
 library(formattable)
 ```
 
-As elaborated in our recent analyses (Walker et al. 2019; Scarpone et al. 2020), nearly all previous studies in the literature use either census unit boundaries or simple buffer zones to measure an individual’s built environment (BE) exposures or to characterize their local socioeconomic status (SES) (Rhew et al. 2011, Gong et al. 2014, Fuertes et al. 2014). Therefore, we present a distance-weighted, network-based model for quantifying the combined effects of local greenspace and SES on diabetes risk, from which we derive an area-based Diabetes Risk Index of Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE).\
+As elaborated in our recent analyses [@Walker.2019; @Scarpone.2020], nearly all previous studies in the literature use either census unit boundaries or simple buffer zones to measure an individual’s built environment (BE) exposures or to characterize their local socioeconomic status (SES) [@Gong.2014; @Fuertes.2014]. Therefore, we present a distance-weighted, network-based model for quantifying the combined effects of local greenspace and SES on diabetes risk, from which we derive an area-based Diabetes Risk Index of Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE).\
 The goal of the `DRIGLUCoSE` package is to provide a public package containing functions and code used in the development of the DRI-GLUCoSE Index.
 
 
@@ -88,7 +89,7 @@ DRIGLUCoSE::LS_L1C(l1c_path = "docs/LC08_L1TP_193026_20200423_20200508_01_T1_sma
 In order to estimate each participant’s potential exposures to greenspace and local SES, we (i) mapped age- and sex-specific walkable zones around their residential address, and (ii) applied a negative logit weighting function, such that the estimated effect of greenspace or SES decreases as distance from the home increases.
 
 ### (i) Road network data and isochrones
-In order to compute network-based distance metrics, we acquired street data from OpenStreetMap using the R-package `osmdata` (Padgham et al. 2017). Road types not suitable for walking were removed (e.g., motorways). Network data were topologically corrected and split into ~20 metre-long segments using the R package `nngeo` (Dorman 2020).
+In order to compute network-based distance metrics, we acquired street data from OpenStreetMap using the R-package `osmdata` [@Padgham.2017]. Road types not suitable for walking were removed (e.g., motorways). Network data were topologically corrected and split into ~20 metre-long segments using the R package `nngeo` [@MichaelDorman.2020].
 
 ```{r message=FALSE, warning=FALSE}
 erlangen.osm <- DRIGLUCoSE::osm_roads(x = Erlangen, dist = 20, 
@@ -96,7 +97,7 @@ erlangen.osm <- DRIGLUCoSE::osm_roads(x = Erlangen, dist = 20,
 ```
 
 
-This network data was used to derive walking distance buffers for each participant, based on walking speed. Starting from each participant’s place of residence, we computed network-constrained buffers with an off-road width of 40 meters, running in 2-minute increments from 0 to 20 minutes, using the A*-algorithm (Hart, Nilsson & Raphael 1968). This therefore resulted in each participant having ten concentric isochrones, the sizes of which are a function of individual walking speed and road network.
+This network data was used to derive walking distance buffers for each participant, based on walking speed. Starting from each participant’s place of residence, we computed network-constrained buffers with an off-road width of 40 meters, running in 2-minute increments from 0 to 20 minutes, using the A*-algorithm [@Hart.1968]. This therefore resulted in each participant having ten concentric isochrones, the sizes of which are a function of individual walking speed and road network.
 
 ```{r message=FALSE, warning=FALSE}
 erlangen.isodistances <- DRIGLUCoSE::isodistances(x = Erlangen, 
@@ -157,7 +158,7 @@ erlangen.isorings %>%
 ```
 
 ### (ii) Distance-weighting
-In order to account for the diminishing effect of SES and greenspace exposure as distance increases, we fitted a logit function to weight each incremental isochrone, such that the influence of a variable decreases with increasing distance from the household, i.e., features that are farther away have less influence than nearby features, as illustrated in Figure 2. A logit function was selected as it heuristically approximates a suitable distance-decay function (Bauer and Groneberg 2016; Jia et al. 2019).\
+In order to account for the diminishing effect of SES and greenspace exposure as distance increases, we fitted a logit function to weight each incremental isochrone, such that the influence of a variable decreases with increasing distance from the household, i.e., features that are farther away have less influence than nearby features, as illustrated in Figure 2. A logit function was selected as it heuristically approximates a suitable distance-decay function [@Bauer.2016; @Jia.2019].\
 The distance-weighting is separated in two parts, first the logit function (1) that is used for both SES and greenspace variables, and second the proportional weights function (4) that is only applied on SES variables.
 
 <center>
@@ -281,47 +282,47 @@ dplyr::tibble(
       "Current/Former smoker: yes", "Alcohol: <1 drink/day"
     ),
     "A" = c(
-      "0.40 (0.30-0.54,<br/>p-value<0.001)", "1.27 (1.19-1.36,<br/>p-value<0.001)", 
-      "0.61 (0.48-0.76,<br/>p-value<0.001)", "5.54 (4.24-7.33,<br/>p-value<0.001)", 
-      "1.14 (1.12-1.16,<br/>p-value<0.001)", "0.74 (0.69-0.80,<br/>p-value<0.001)",
-      "0.88 (0.67-1.16,<br/>p-value=0.385)", "0.76 (0.68-0.85,<br/>p-value<0.001)",
-      "0.74 (0.63-0.88,<br/>p-value<0.001)", "1.66 (1.32-2.09,<br/>p-value<0.001)",
-      "1.19 (0.92-1.54,<br/>p-value=0.184)"
+      "0.41 (0.30-0.54,<br/>p<0.001)", "1.27 (1.19-1.36,<br/>p<0.001)", 
+      "0.61 (0.48-0.76,<br/>p<0.001)", "5.54 (4.24-7.33,<br/>p<0.001)", 
+      "1.14 (1.12-1.16,<br/>p<0.001)", "0.74 (0.69-0.80,<br/>p<0.001)",
+      "0.88 (0.67-1.16,<br/>p=0.385)", "0.76 (0.68-0.85,<br/>p<0.001)",
+      "0.74 (0.63-0.88,<br/>p<0.001)", "1.66 (1.32-2.09,<br/>p<0.001)",
+      "1.19 (0.92-1.54,<br/>p=0.184)"
     ),
-    "B)"  = c(
-      "0.55 (0.43-0.70,<br/>p-value<0.001)", "1.20 (1.14-1.26,<br/>p-value<0.001)",
-      "0.89 (0.74-1.06,<br/>p-value=0.19)", "5.96 (4.97-7.16,<br/>p-value<0.001)",
-      "", "0.87 (0.82-0.92,<br/>p-value<0.001)",
-      "0.69 (0.56-0.86,<br/>p-value<0.001)", "",
+    "B"  = c(
+      "0.53 (0.42-0.68,<br/>p<0.001)", "1.20 (1.14-1.25,<br/>p<0.001)",
+      "0.86 (0.72-1.03,<br/>p=0.106)", "5.76 (4.82-6.92,<br/>p<0.001)",
+      "",                              "0.87 (0.82-0.92,<br/>p<0.001)",
+      "0.67 (0.54-0.83,<br/>p<0.001)", "",
       "", "",
       ""
     ),
     "C" = c(
-      "0.59 (0.46-0.76,<br/>p-value<0.001)", "1.26 (1.20-1.32,<br/>p-value<0.001)",
-      "0.46 (0.38-0.54,<br/>p-value<0.001)", "",
-      "1.15 (1.13-1.17,<br/>p-value<0.001)", "0.85 (0.80-0.90,<br/>p-value<0.001)",
-      "0.72 (0.58-0.90,<br/>p-value=0.003)", "",
+      "0.58 (0.45-0.74,<br/>p<0.001)", "1.27 (1.21-1.33,<br/>p<0.001)",
+      "0.44 (0.37-0.52,<br/>p<0.001)", "",
+      "1.15 (1.13-1.17,<br/>p<0.001)", "0.86 (0.81-0.91,<br/>p<0.001)",
+      "0.71 (0.57-0.88,<br/>p=0.002)", "",
       "", "",
       ""
     ),
     "D" = c(
-      "0.50 (0.38-0.64,<br/>p-value<0.001)", "1.19 (1.13-1.26,<br/>p-value<0.001)",
-      "0.83 (0.67-1.02,<br/>p-value=0.078)", "5.02 (4.08-6.19,<br/>p-value<0.001)",
-      "", "0.84 (0.79-0.90,<br/>p-value<0.001)",
-      "0.54 (0.42-0.69,<br/>p-value<0.001)", "0.87 (0.79-0.96,<br/>p-value=0.005)",
-      "0.90 (0.78-1.03,<br/>p-value=0.134)", "1.43 (1.18-1.74,<br/>p-value<0.001)",
-      "2.11 (1.69-2.64,<br/>p-value<0.001)"
+      "0.49 (0.38-0.64,<br/>p<0.001)", "1.19 (1.13-1.26,<br/>p<0.001)",
+      "0.80 (0.65-0.99,<br/>p=0.040)", "4.91 (4.00-6.05,<br/>p<0.001)",
+      "",                              "0.85 (0.79-0.91,<br/>p<0.001)",
+      "0.52 (0.41-0.67,<br/>p<0.001)", "0.87 (0.78-0.96,<br/>p=0.004)",
+      "0.87 (0.76-1.00,<br/>p=0.058)", "1.39 (1.14-1.68,<br/>p<0.001)",
+      "2.16 (1.74-2.70,<br/>p<0.001)"
     ),
     "E" = c(
-      "0.57 (0.43-0.75,<br/>p-value<0.001)", "1.23 (1.17-1.3,<br/>p-value<0.001)",
-      "0.43 (0.35-0.52,<br/>p-value<0.001)", "",
-      "1.14 (1.12-1.16,<br/>p-value<0.001)", "0.82 (0.77-0.88,<br/>p-value<0.001)",
-      "0.64 (0.50-0.82,<br/>p-value<0.001)", "0.92 (0.84-1.02,<br/>p-value=0.126)",
-      "0.92 (0.80-1.06,<br/>p-value=0.272)", "1.27 (1.04-1.54,<br/>p-value=0.018)",
-      "1.81 (1.45-2.26,<br/>p-value<0.001)"
+      "0.58 (0.45-0.76,<br/>p<0.001)", "1.23 (1.17-1.30,<br/>p<0.001)",
+      "0.43 (0.35-0.52,<br/>p<0.001)", "",
+      "1.14 (1.12-1.16,<br/>p<0.001)", "0.81 (0.76-0.87,<br/>p<0.001)",
+      "0.62 (0.48-0.79,<br/>p<0.001)", "0.93 (0.84-1.03,<br/>p=0.180)",
+      "0.93 (0.81-1.08,<br/>p=0.335)", "1.21 (0.99-1.47,<br/>p=0.059)",
+      "1.80 (1.45-2.25,<br/>p<0.001)"
     )
-) %>% kbl(caption = "Table A.1: Logistic models for all multivariable models with odds ratios, 95% CI, and p-values.",
-          col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c", "c"),
+) %>% kbl(caption = "Table A.1: Logistic models for all multivariable models with odds ratios (OR) for diabetes, 95% CI, and p-values.",
+          col.names = names_spaced, escape = FALSE, align=c("l", "r", "r", "r", "r", "r"),
           table.attr = "style='width:90%;'") %>% 
   kable_classic("striped", full_width = F) %>%
   row_spec(0, bold = T) %>%
@@ -339,14 +340,16 @@ names_spaced <- c(
 )
 
 dplyr::tibble(
-    Metric = c("Sensitivity", "Specificity", "Youden index"),
-    "OR (WHR-adjusted)" = c(0.67, 0.71, 0.38),
-    "OR (BMI-adjusted)"  = c(0.76, 0.64, 0.41),
-    "OR (WHR-adjusted) " = c(0.69, 0.72, 0.41),
-    "OR (BMI-adjusted) " = c(0.78, 0.66, 0.44)
+    Metric = c("Probability Threshold *", "Accuracy", 
+               "Sensitivity", "Specificity", "Youden index"),
+    "OR (WHR-adjusted)"  = c(0.45, 0.67, 0.66, 0.71, 0.37),
+    "OR (BMI-adjusted)"  = c(0.48, 0.74, 0.75, 0.65, 0.40),
+    "OR (WHR-adjusted) " = c(0.45, 0.72, 0.72, 0.68, 0.40),
+    "OR (BMI-adjusted) " = c(0.48, 0.76, 0.77, 0.66, 0.43)
 ) %>% kbl(caption = "Table A.2: Model Performance for all multivariable models.",
-          col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c"),
+          col.names = names_spaced, escape = FALSE, align=c("l", "c", "c", "c", "c", "c", "c"),
           table.attr = "style='width:90%;'") %>% 
+  footnote(symbol = "Probability threshold used for predicting Diabetes. Values equal or greater than this threshold are mapped as \"No\".") %>% 
   kable_classic(full_width = F) %>%
   row_spec(0, bold = T) %>%
   add_header_above(c(" " = 1, "Semi-Adjusted" = 2, "Fully-Adjusted" = 2), italic = T)
@@ -355,7 +358,7 @@ dplyr::tibble(
 
 ## Figures
 ```{r fig3, echo=FALSE, fig.cap="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models.", out.width = '90%'}
-knitr::include_graphics("docs/forest_plot_whr.svg")
+knitr::include_graphics("docs/forrest_plot_big.svg")
 ```
 \
 
@@ -369,7 +372,7 @@ readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>%
   kableExtra::kbl(escape = FALSE, table.attr = "style='width:90%;'",
                   caption = "Table A.3: Baseline characteristics of the study population by diabetes status.") %>% 
   kableExtra::kable_classic(full_width = F) %>%
-  kableExtra::pack_rows(index = c(" " = 3, "Participant data" = 24, "Census variables" = 28,
+  kableExtra::pack_rows(index = c(" " = 3, "Participant data" = 24, "Census variables" = 24,
                                   "Normalized Difference Vegetation Index (NDVI)" = 8), 
                         label_row_css = "background-color: #666; color: #fff;") %>% 
   row_spec(0, bold = T) %>%
@@ -388,23 +391,21 @@ readr::read_delim("docs/summary_statistiks.csv", delim = ";") %>%
   #pack_rows("Census variables", 28, 55) %>%
   pack_rows("Neighbourhood type", 28, 29) %>%
   pack_rows("Individual mean income (CAD/1000)", 30, 31) %>%
-  pack_rows("Household mean income (CAD/1000)", 32, 33) %>%
-  pack_rows("Individual median income (CAD/1000)", 34, 35) %>%
-  pack_rows("Household median income (CAD/1000)", 36, 37) %>%
-  pack_rows("Prevalence of low income (%)", 38, 39) %>%
-  pack_rows("Commute Walking/Bicycle (%)", 40, 41) %>%
-  pack_rows("Labour force participation rate (%)", 42, 43) %>%
-  pack_rows("Gov’t transfer payments (%)", 44, 45) %>%
-  pack_rows("Unemployment rate (%)", 46, 47) %>%
-  pack_rows("Lone parent families (%)", 48, 49) %>%
-  pack_rows("Education - No degree (%)", 50, 51) %>%
-  pack_rows("Private Dwellings - Owned (%)", 52, 53) %>%
-  pack_rows("Private Dwellings - Rented (%)", 54, 55) %>%
+  pack_rows("Household median income (CAD/1000)", 32, 33) %>%
+  pack_rows("Prevalence of low income (%)", 34, 35) %>%
+  pack_rows("Commute Walking/Bicycle (%)", 36, 37) %>%
+  pack_rows("Labour force participation rate (%)", 38, 39) %>%
+  pack_rows("Gov’t transfer payments (%)", 40, 41) %>%
+  pack_rows("Unemployment rate (%)", 42, 43) %>%
+  pack_rows("Lone parent families (%)", 44, 45) %>%
+  pack_rows("Education - No degree (%)", 46, 47) %>%
+  pack_rows("Private Dwellings - Owned (%)", 48, 49) %>%
+  pack_rows("Private Dwellings - Rented (%)", 50, 51) %>%
   #pack_rows("NDVI", 56, 63) %>% 
-  pack_rows("NDVI - Median", 56, 57) %>%
-  pack_rows("NDVI - Standard Deviation", 58, 59) %>%
-  pack_rows("NDVI - Min", 60, 61) %>%
-  pack_rows("NDVI - max", 62, 63)
+  pack_rows("NDVI - Median", 52, 53) %>%
+  pack_rows("NDVI - Standard Deviation", 54, 55) %>%
+  pack_rows("NDVI - Min", 56, 57) %>%
+  pack_rows("NDVI - max", 58, 59)
 ```
 
 
@@ -423,4 +424,3 @@ Große, Tim (1)\
 *corresponding author\
 
 # Bibliography
-- work in progress -
