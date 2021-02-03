@@ -77,7 +77,7 @@ LS_band_weighting <- function(isochrones, tag = "tag", time = "time",
   } else {
 
     # Check if geometry column only contains MULTIPOLYGON or POLYGON features
-    sf_class <- census %>%
+    sf_class <- isochrones %>%
       dplyr::pull(geom) %>%
       sf::st_geometry_type() %>%
       as.character() %>%
