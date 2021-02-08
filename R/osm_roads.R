@@ -23,6 +23,7 @@
 #' @importFrom dplyr filter
 #' @importFrom nngeo st_segments
 #' @importFrom methods is
+#' @importFrom data.table rbindlist
 #'
 #' @examples
 #' \dontrun{
@@ -145,7 +146,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
       })
     }
 
-    osm_roads <- DRIGLUCoSE::rbind_parallel(osm_roads)
+    osm_roads <- st_as_sf(data.table::rbindlist(osm_roads) %>% dplyr::as_tibble())
 
     if ("result" %in% names(osm_roads)) {
       osm_roads <- osm_roads %>% dplyr::rename(geom = "result")
