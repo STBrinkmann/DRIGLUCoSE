@@ -14,8 +14,8 @@ DRI-GLUCoSE — Work in Progress
       - [Figures](#figures)
       - [Summary Statistics](#summary-statistics)
   - [About](#about)
-      - [Package contributors:](#package-contributors)
-      - [Thesis authors:](#thesis-authors)
+      - [Package contributors](#package-contributors)
+      - [Thesis authors](#thesis-authors)
   - [Bibliography](#bibliography)
 
 As elaborated in our recent analyses (Walker et al. 2019; Scarpone et
@@ -518,25 +518,25 @@ DRI-GLUCoSE Score
 
 <td style="text-align:right;">
 
-0.53 (0.42-0.68,<br>p\<0.001)
+0.55 (0.43-0.70,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.58 (0.45-0.74,<br>p\<0.001)
+0.59 (0.46-0.76,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.49 (0.38-0.64,<br>p\<0.001)
+0.57 (0.44-0.73,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.58 (0.45-0.76,<br>p\<0.001)
+0.67 (0.51-0.88,<br>p=0.004)
 
 </td>
 
@@ -552,13 +552,13 @@ Age (5 year-interval)
 
 <td style="text-align:right;">
 
-1.27 (1.19-1.36,<br>p\<0.001)
+1.27 (1.19-1.35,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.20 (1.14-1.25,<br>p\<0.001)
+1.19 (1.14-1.25,<br>p\<0.001)
 
 </td>
 
@@ -570,13 +570,13 @@ Age (5 year-interval)
 
 <td style="text-align:right;">
 
-1.19 (1.13-1.26,<br>p\<0.001)
+1.18 (1.12-1.25,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.23 (1.17-1.30,<br>p\<0.001)
+1.20 (1.14-1.27,<br>p\<0.001)
 
 </td>
 
@@ -592,31 +592,31 @@ Sex: female
 
 <td style="text-align:right;">
 
-0.61 (0.48-0.76,<br>p\<0.001)
+0.60 (0.47-0.75,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.86 (0.72-1.03,<br>p=0.106)
+0.88 (0.74-1.04,<br>p=0.126)
 
 </td>
 
 <td style="text-align:right;">
 
-0.44 (0.37-0.52,<br>p\<0.001)
+0.49 (0.42-0.57,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.80 (0.65-0.99,<br>p=0.040)
+0.80 (0.66-0.97,<br>p=0.026)
 
 </td>
 
 <td style="text-align:right;">
 
-0.43 (0.35-0.52,<br>p\<0.001)
+0.46 (0.39-0.56,<br>p\<0.001)
 
 </td>
 
@@ -632,13 +632,13 @@ Obese (WHR)
 
 <td style="text-align:right;">
 
-5.54 (4.24-7.33,<br>p\<0.001)
+5.58 (4.19-7.25,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-5.76 (4.82-6.92,<br>p\<0.001)
+5.80 (4.85-6.95,<br>p\<0.001)
 
 </td>
 
@@ -648,7 +648,7 @@ Obese (WHR)
 
 <td style="text-align:right;">
 
-4.91 (4.00-6.05,<br>p\<0.001)
+4.47 (3.64-5.49,<br>p\<0.001)
 
 </td>
 
@@ -688,7 +688,7 @@ BMI
 
 <td style="text-align:right;">
 
-1.14 (1.12-1.16,<br>p\<0.001)
+1.16 (1.14-1.18,<br>p\<0.001)
 
 </td>
 
@@ -704,7 +704,7 @@ Household income range
 
 <td style="text-align:right;">
 
-0.74 (0.69-0.80,<br>p\<0.001)
+0.75 (0.70-0.80,<br>p\<0.001)
 
 </td>
 
@@ -716,7 +716,7 @@ Household income range
 
 <td style="text-align:right;">
 
-0.86 (0.81-0.91,<br>p\<0.001)
+0.86 (0.81-0.92,<br>p\<0.001)
 
 </td>
 
@@ -728,7 +728,7 @@ Household income range
 
 <td style="text-align:right;">
 
-0.81 (0.76-0.87,<br>p\<0.001)
+0.83 (0.78-0.89,<br>p\<0.001)
 
 </td>
 
@@ -744,31 +744,31 @@ Neighbourhood type: urban
 
 <td style="text-align:right;">
 
-0.88 (0.67-1.16,<br>p=0.385)
+0.86 (0.65-1.12,<br>p=0.276)
 
 </td>
 
 <td style="text-align:right;">
 
-0.67 (0.54-0.83,<br>p\<0.001)
+0.71 (0.58-0.88,<br>p=0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.71 (0.57-0.88,<br>p=0.002)
+0.75 (0.61-0.92,<br>p=0.007)
 
 </td>
 
 <td style="text-align:right;">
 
-0.52 (0.41-0.67,<br>p\<0.001)
+0.60 (0.48-0.76,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.62 (0.48-0.79,<br>p\<0.001)
+0.75 (0.59-0.94,<br>p=0.014)
 
 </td>
 
@@ -784,7 +784,7 @@ AHEI Score (E^1)
 
 <td style="text-align:right;">
 
-0.76 (0.68-0.85,<br>p\<0.001)
+0.78 (0.69-0.87,<br>p\<0.001)
 
 </td>
 
@@ -798,13 +798,13 @@ AHEI Score (E^1)
 
 <td style="text-align:right;">
 
-0.87 (0.78-0.96,<br>p=0.004)
+0.88 (0.80-0.97,<br>p=0.011)
 
 </td>
 
 <td style="text-align:right;">
 
-0.93 (0.84-1.03,<br>p=0.180)
+0.96 (0.87-1.06,<br>p=0.403)
 
 </td>
 
@@ -814,13 +814,13 @@ AHEI Score (E^1)
 
 <td style="text-align:left;">
 
-Physical Activity MET Score
+Recreation Met Score: d\>=525
 
 </td>
 
 <td style="text-align:right;">
 
-0.74 (0.63-0.88,<br>p\<0.001)
+0.56 (0.44-0.71,<br>p\<0.001)
 
 </td>
 
@@ -834,13 +834,13 @@ Physical Activity MET Score
 
 <td style="text-align:right;">
 
-0.87 (0.76-1.00,<br>p=0.058)
+0.90 (0.76-1.08,<br>p=0.271)
 
 </td>
 
 <td style="text-align:right;">
 
-0.93 (0.81-1.08,<br>p=0.335)
+0.83 (0.69-1.00,<br>p=0.046)
 
 </td>
 
@@ -856,7 +856,7 @@ Current/Former smoker: yes
 
 <td style="text-align:right;">
 
-1.66 (1.32-2.09,<br>p\<0.001)
+1.65 (1.31-2.08,<br>p\<0.001)
 
 </td>
 
@@ -870,13 +870,13 @@ Current/Former smoker: yes
 
 <td style="text-align:right;">
 
-1.39 (1.14-1.68,<br>p\<0.001)
+1.50 (1.25-1.79,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.21 (0.99-1.47,<br>p=0.059)
+1.34 (1.12-1.61,<br>p=0.002)
 
 </td>
 
@@ -892,7 +892,7 @@ Alcohol: \<1 drink/day
 
 <td style="text-align:right;">
 
-1.19 (0.92-1.54,<br>p=0.184)
+1.17 (0.91-1.51,<br>p=0.225)
 
 </td>
 
@@ -906,13 +906,13 @@ Alcohol: \<1 drink/day
 
 <td style="text-align:right;">
 
-2.16 (1.74-2.70,<br>p\<0.001)
+1.60 (1.31-1.97,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.80 (1.45-2.25,<br>p\<0.001)
+1.45 (1.18-1.79,<br>p\<0.001)
 
 </td>
 
@@ -1010,13 +1010,7 @@ Probability Threshold \*
 
 <td style="text-align:center;">
 
-0.45
-
-</td>
-
-<td style="text-align:center;">
-
-0.48
+0.46
 
 </td>
 
@@ -1028,7 +1022,13 @@ Probability Threshold \*
 
 <td style="text-align:center;">
 
-0.48
+0.45
+
+</td>
+
+<td style="text-align:center;">
+
+0.51
 
 </td>
 
@@ -1050,19 +1050,53 @@ Accuracy
 
 <td style="text-align:center;">
 
-0.74
+0.76
 
 </td>
 
 <td style="text-align:center;">
 
-0.72
+0.75
+
+</td>
+
+<td style="text-align:center;">
+
+0.74
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+AROC
 
 </td>
 
 <td style="text-align:center;">
 
 0.76
+
+</td>
+
+<td style="text-align:center;">
+
+0.78
+
+</td>
+
+<td style="text-align:center;">
+
+0.77
+
+</td>
+
+<td style="text-align:center;">
+
+0.80
 
 </td>
 
@@ -1078,7 +1112,13 @@ Sensitivity
 
 <td style="text-align:center;">
 
-0.66
+0.67
+
+</td>
+
+<td style="text-align:center;">
+
+0.78
 
 </td>
 
@@ -1090,13 +1130,7 @@ Sensitivity
 
 <td style="text-align:center;">
 
-0.72
-
-</td>
-
-<td style="text-align:center;">
-
-0.77
+0.75
 
 </td>
 
@@ -1118,19 +1152,19 @@ Specificity
 
 <td style="text-align:center;">
 
-0.65
+0.62
 
 </td>
 
 <td style="text-align:center;">
 
-0.68
+0.72
 
 </td>
 
 <td style="text-align:center;">
 
-0.66
+0.71
 
 </td>
 
@@ -1146,7 +1180,7 @@ Youden index
 
 <td style="text-align:center;">
 
-0.37
+0.38
 
 </td>
 
@@ -1158,13 +1192,13 @@ Youden index
 
 <td style="text-align:center;">
 
-0.40
+0.47
 
 </td>
 
 <td style="text-align:center;">
 
-0.43
+0.46
 
 </td>
 
@@ -3224,13 +3258,13 @@ Median (Q1, Q3)
 
 # About
 
-### Package contributors:
+### Package contributors
 
 Brinkmann, Sebastian Tobias (Package creator and author)  
 e-mail: <sebastian.brinkmann@fau.de>  
 Große, Tim (Contributor)
 
-### Thesis authors:
+### Thesis authors
 
 Walker, Blake Byron (1\*)  
 Brinkmann, Sebastian Tobias (1)  
