@@ -29,7 +29,8 @@ Imports:
     stats,
     mosaic,
     sfnetworks,
-    units
+    units,
+    data.table
 Depends: 
     dplyr (>= 0.8.0),
     sf (>= 0.9.6),
