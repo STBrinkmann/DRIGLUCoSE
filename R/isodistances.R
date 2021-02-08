@@ -116,7 +116,7 @@ isodistances <- function(x, road_network, speed = 78.5, tag = NA, isochrones_seq
       sfnetworks::activate("edges") %>%
       dplyr::mutate(weight = sfnetworks::edge_length(),
                     ID = 1:n(),
-                    speed = units::set_units(78.5, "m/min"),
+                    speed = units::set_units(speed, "m/min"),
                     time = weight / speed)
 
     # Get node for x
