@@ -28,14 +28,14 @@ isochrones <- function(x, tag = "tag", buffer = 30, cores = 1, remove_holes = FA
       x %>%
         dplyr::group_by(time) %>%
         dplyr::summarise(!! rlang::parse_quosure(tag), time,
-                         geom = st_cast(geom, "LINESTRING") %>% st_buffer(40) %>% st_union() %>% nngeo::st_remove_holes()) %>%
+                         geom = sf::st_cast(geom, "LINESTRING") %>% sf::st_buffer(40) %>% sf::st_union() %>% nngeo::st_remove_holes()) %>%
         dplyr::ungroup() %>%
         sf::st_cast("MULTIPOLYGON")
     } else {
       x %>%
         dplyr::group_by(time) %>%
         dplyr::summarise(!! rlang::parse_quosure(tag), time,
-                         geom = st_cast(geom, "LINESTRING") %>% st_buffer(40) %>% st_union()) %>%
+                         geom = sf::st_cast(geom, "LINESTRING") %>% sf::st_buffer(40) %>% sf::st_union()) %>%
         dplyr::ungroup() %>%
         sf::st_cast("MULTIPOLYGON")
     }
@@ -51,20 +51,21 @@ isochrones <- function(x, tag = "tag", buffer = 30, cores = 1, remove_holes = FA
     if (Sys.info()[["sysname"]] == "Windows") {
       # Use mclapply for paralleling the isochrones function
       cl <- parallel::makeCluster(cores)
-      isochs <- parallel::parLapply(cl, x_list, fun = this_isochrones, buffer = buffer, tag = tag)
+      isochs <- parallel::parLapply(cl, x_list, fun = this_isochrones, buffer = buffer, tag = tag, remove_holes = remove_holes)
       parallel::stopCluster(cl)
     }
     # ---- Linux and macOS ----
     else {
       # Use mclapply for paralleling the isochrones function
-      isochs <- mclapply(x_list, this_isochrones, buffer = buffer, tag = tag,
-                         mc.cores = cores, mc.preschedule = TRUE)
+      isochs <- parallel::mclapply(x_list, this_isochrones, buffer = buffer, tag = tag, remove_holes = remove_holes,
+                                   mc.cores = cores, mc.preschedule = TRUE)
     }
   } else {
-    isochs <- lapply(x_list, FUN = this_isochrones, buffer = buffer, tag = tag)
+    isochs <- lapply(x_list, FUN = this_isochrones, buffer = buffer, tag = tag, remove_holes = remove_holes)
   }
 
-  isochs <- st_as_sf(data.table::rbindlist(isochs) %>% dplyr::as_tibble())
+  isochs <- st_as_sf(data.table::rbindlist(isochs) %>% dplyr::as_tibble()) %>%
+    sf::st_make_valid()
   class(isochs) <- c(class(isochs), "isochrone")
 
   invisible(gc())
