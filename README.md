@@ -190,33 +190,33 @@ erlangen.isochrones <- DRIGLUCoSE::isochrones(x = erlangen.isodistances,
                                               buffer = 40, cores = 2)
 erlangen.isochrones
 #> Simple feature collection with 20 features and 2 fields
-#> geometry type:  GEOMETRY
+#> geometry type:  MULTIPOLYGON
 #> dimension:      XY
-#> bbox:           xmin: 34034 ymin: -160951 xmax: 37750 ymax: -157811
+#> bbox:           xmin: 34034 ymin: -160951 xmax: 37750 ymax: -157782
 #> projected CRS:  ETRS89 / LCC Germany (N-E)
 #> # A tibble: 20 x 3
-#>      tag  time                                                              geom
-#>  * <dbl> <dbl>                                                    <GEOMETRY [m]>
-#>  1     1     2 POLYGON ((35070.01 -159364.4, 35070.01 -159364.3, 35070.05 -1593~
-#>  2     1     4 POLYGON ((34939.9 -159373.7, 34939.9 -159373.7, 34939.9 -159373.~
-#>  3     1     6 MULTIPOLYGON (((35122.04 -159796.6, 35121.24 -159795.8, 35119.83~
-#>  4     1     8 MULTIPOLYGON (((35381.94 -159465.4, 35381.67 -159465.3, 35379.73~
-#>  5     1    10 MULTIPOLYGON (((35202.91 -159978.5, 35202.52 -159976.4, 35202.24~
-#>  6     1    12 MULTIPOLYGON (((34785.32 -159753, 34785.29 -159752.8, 34781.29 -~
-#>  7     1    14 MULTIPOLYGON (((35074.41 -160199.5, 35073.91 -160197.5, 35073.52~
-#>  8     1    16 MULTIPOLYGON (((34917.7 -160026.6, 34916.67 -160024.8, 34915.74 ~
-#>  9     1    18 MULTIPOLYGON (((35274.98 -160596.8, 35274.87 -160596.3, 35274.49~
-#> 10     1    20 MULTIPOLYGON (((35259.52 -160806.4, 35258.77 -160804.6, 35258.06~
-#> 11     2     2 POLYGON ((36168.94 -159274.7, 36144.23 -159271.7, 36142.16 -1592~
-#> 12     2     4 POLYGON ((35995.6 -159233.7, 35975.79 -159226.8, 35973.83 -15922~
-#> 13     2     6 POLYGON ((35822.47 -159166.2, 35822.21 -159165.7, 35821.22 -1591~
-#> 14     2     8 MULTIPOLYGON (((36811.11 -159633.3, 36810.49 -159634, 36810.41 -~
-#> 15     2    10 MULTIPOLYGON (((35928.36 -159544.3, 35928.19 -159543.7, 35926.19~
-#> 16     2    12 MULTIPOLYGON (((35950.69 -159884.5, 35951 -159883.5, 35951.32 -1~
-#> 17     2    14 MULTIPOLYGON (((36704.16 -160015.9, 36682.73 -160017.3, 36682.82~
-#> 18     2    16 MULTIPOLYGON (((36662.22 -159980, 36662.1 -159978.9, 36662.01 -1~
-#> 19     2    18 MULTIPOLYGON (((35846.36 -160338.5, 35846.43 -160338.4, 35846.75~
-#> 20     2    20 MULTIPOLYGON (((35746 -160426, 35746 -160423, 35746.05 -160420.9~
+#>     time   tag                                                              geom
+#>  * <dbl> <dbl>                                                <MULTIPOLYGON [m]>
+#>  1     2     1 (((35271.54 -159533.7, 35271.72 -159534.1, 35290.72 -159578.1, 3~
+#>  2     4     1 (((35315.98 -159712.9, 35315.99 -159715, 35315.88 -159717, 35315~
+#>  3     6     1 (((35349.93 -159827.5, 35349.55 -159828.3, 35349.47 -159828.5, 3~
+#>  4     8     1 (((35264.2 -159884, 35281.08 -159961.5, 35281.47 -159963.5, 3528~
+#>  5    10     1 (((35255.35 -160127.9, 35254.58 -160127.7, 35253.81 -160127.4, 3~
+#>  6    12     1 (((35268.5 -160300.1, 35267.86 -160300.2, 35267.22 -160300.3, 35~
+#>  7    14     1 (((35267.43 -160417, 35267.05 -160417.1, 35265.04 -160417.7, 352~
+#>  8    16     1 (((35381.5 -160609.8, 35381.49 -160609.9, 35380.86 -160611.9, 35~
+#>  9    18     1 (((35400.51 -160765.2, 35400.13 -160767.3, 35399.64 -160769.3, 3~
+#> 10    20     1 (((35345.78 -160928.9, 35344.79 -160930.7, 35343.71 -160932.5, 3~
+#> 11     2     2 (((36265.3 -159393.8, 36265.18 -159393.8, 36264.26 -159393.9, 36~
+#> 12     4     2 (((36379.73 -159545.4, 36379.78 -159545.8, 36379.83 -159546.5, 3~
+#> 13     6     2 (((36344.92 -159707.2, 36344.97 -159708.5, 36345 -159710.6, 3634~
+#> 14     8     2 (((36295.17 -159884.4, 36295.07 -159884.5, 36294.41 -159885.1, 3~
+#> 15    10     2 (((36257.69 -160013.9, 36256.88 -160014.3, 36256.75 -160014.3, 3~
+#> 16    12     2 (((36070.35 -160069.9, 36068.38 -160069.2, 36066.45 -160068.4, 3~
+#> 17    14     2 (((36080.84 -160147.4, 36080.97 -160149.5, 36081 -160151.6, 3608~
+#> 18    16     2 (((36018.75 -160320.2, 36018.57 -160320.7, 36018.4 -160321.2, 36~
+#> 19    18     2 (((36000.31 -160411.1, 36000.31 -160411.1, 35999.5 -160411.8, 35~
+#> 20    20     2 (((35766.42 -160564.5, 35765.65 -160564.3, 35764.88 -160564.2, 3~
 ```
 
 Figure 1 shows isodistances of the two points of the sample data in
@@ -397,10 +397,10 @@ NDVI_weighted <-
 
 NDVI_weighted
 #> # A tibble: 2 x 6
-#>     tag    sd median X5_percentile X95_percentile     skew
-#>   <dbl> <dbl>  <dbl>         <dbl>          <dbl>    <dbl>
-#> 1     1 0.206  0.601         0.272          0.908 -0.110  
-#> 2     2 0.102  0.538         0.367          0.709  0.00458
+#>     tag    sd median X5_percentile X95_percentile    skew
+#>   <dbl> <dbl>  <dbl>         <dbl>          <dbl>   <dbl>
+#> 1     1 0.206  0.601         0.272          0.908 -0.110 
+#> 2     2 0.102  0.539         0.360          0.710 -0.0150
 ```
 
 ``` r
@@ -412,7 +412,7 @@ census_weighted
 #>     tag census_var_a census_var_b census_var_c
 #>   <dbl>        <dbl>        <dbl>        <dbl>
 #> 1     1         554.        5267.      130635.
-#> 2     2         551.        5416.      124485.
+#> 2     2         549.        5418.      124554.
 ```
 
 # Appendix
@@ -512,31 +512,31 @@ DRI-GLUCoSE Score
 
 <td style="text-align:right;">
 
-0.41 (0.30-0.54,<br>p\<0.001)
+0.37 (0.26-0.51,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.55 (0.43-0.70,<br>p\<0.001)
+0.41 (0.31-0.53,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.59 (0.46-0.76,<br>p\<0.001)
+0.46 (0.35-0.61,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.57 (0.44-0.73,<br>p\<0.001)
+0.45 (0.36-0.56,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.67 (0.51-0.88,<br>p=0.004)
+0.50 (0.37-0.67,<br>p\<0.001)
 
 </td>
 
@@ -552,31 +552,31 @@ Age (5 year-interval)
 
 <td style="text-align:right;">
 
-1.27 (1.19-1.35,<br>p\<0.001)
+1.26 (1.18-1.34,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.19 (1.14-1.25,<br>p\<0.001)
+1.21 (1.15-1.27,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.27 (1.21-1.33,<br>p\<0.001)
+1.26 (1.20-1.33,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.18 (1.12-1.25,<br>p\<0.001)
+1.20 (1.15-1.65,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.20 (1.14-1.27,<br>p\<0.001)
+1.24 (1.18-1.31,<br>p\<0.001)
 
 </td>
 
@@ -592,31 +592,31 @@ Sex: female
 
 <td style="text-align:right;">
 
-0.60 (0.47-0.75,<br>p\<0.001)
+0.63 (0.50-0.78,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.88 (0.74-1.04,<br>p=0.126)
+0.85 (0.71-1.00,<br>p=0.056)
 
 </td>
 
 <td style="text-align:right;">
 
-0.49 (0.42-0.57,<br>p\<0.001)
+0.47 (0.39-0.57,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.80 (0.66-0.97,<br>p=0.026)
+0.95 (0.81-1.11,<br>p=0.498)
 
 </td>
 
 <td style="text-align:right;">
 
-0.46 (0.39-0.56,<br>p\<0.001)
+0.59 (0.48-0.71,<br>p\<0.001)
 
 </td>
 
@@ -632,13 +632,13 @@ Obese (WHR)
 
 <td style="text-align:right;">
 
-5.58 (4.19-7.25,<br>p\<0.001)
+5.72 (4.37-7.59,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-5.80 (4.85-6.95,<br>p\<0.001)
+5.39 (4.50-6.46,<br>p\<0.001)
 
 </td>
 
@@ -648,7 +648,7 @@ Obese (WHR)
 
 <td style="text-align:right;">
 
-4.47 (3.64-5.49,<br>p\<0.001)
+5.06 (4.29-5.97,<br>p\<0.001)
 
 </td>
 
@@ -678,7 +678,7 @@ BMI
 
 <td style="text-align:right;">
 
-1.15 (1.13-1.17,<br>p\<0.001)
+1.14 (1.12-1.15,<br>p\<0.001)
 
 </td>
 
@@ -688,7 +688,7 @@ BMI
 
 <td style="text-align:right;">
 
-1.16 (1.14-1.18,<br>p\<0.001)
+1.13 (1.11-1.15,<br>p\<0.001)
 
 </td>
 
@@ -704,7 +704,7 @@ Household income range
 
 <td style="text-align:right;">
 
-0.75 (0.70-0.80,<br>p\<0.001)
+0.75 (0.70-0.81,<br>p\<0.001)
 
 </td>
 
@@ -716,19 +716,19 @@ Household income range
 
 <td style="text-align:right;">
 
-0.86 (0.81-0.92,<br>p\<0.001)
+0.85 (0.80-0.90,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.85 (0.79-0.91,<br>p\<0.001)
+0.90 (0.86-0.95,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.83 (0.78-0.89,<br>p\<0.001)
+0.85 (0.80-0.91,<br>p\<0.001)
 
 </td>
 
@@ -744,31 +744,31 @@ Neighbourhood type: urban
 
 <td style="text-align:right;">
 
-0.86 (0.65-1.12,<br>p=0.276)
+0.93 (0.71-1.21,<br>p=0.605)
 
 </td>
 
 <td style="text-align:right;">
 
-0.71 (0.58-0.88,<br>p=0.001)
+0.58 (0.47-0.72,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.75 (0.61-0.92,<br>p=0.007)
+0.62 (0.50-0.77,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.60 (0.48-0.76,<br>p\<0.001)
+0.60 (0.50-0.72,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-0.75 (0.59-0.94,<br>p=0.014)
+0.66 (0.52-0.84,<br>p\<0.001)
 
 </td>
 
@@ -784,7 +784,7 @@ AHEI Score (E^1)
 
 <td style="text-align:right;">
 
-0.78 (0.69-0.87,<br>p\<0.001)
+0.78 (0.70-0.88,<br>p\<0.001)
 
 </td>
 
@@ -798,13 +798,13 @@ AHEI Score (E^1)
 
 <td style="text-align:right;">
 
-0.88 (0.80-0.97,<br>p=0.011)
+0.95 (0.88-1.03,<br>p=0.197)
 
 </td>
 
 <td style="text-align:right;">
 
-0.96 (0.87-1.06,<br>p=0.403)
+0.99 (0.89-1.09,<br>p=0.771)
 
 </td>
 
@@ -814,13 +814,13 @@ AHEI Score (E^1)
 
 <td style="text-align:left;">
 
-Recreation Met Score: d\>=525
+Recreation Met Score: \>=525
 
 </td>
 
 <td style="text-align:right;">
 
-0.56 (0.44-0.71,<br>p\<0.001)
+0.58 (0.46-0.73,<br>p\<0.001)
 
 </td>
 
@@ -834,13 +834,13 @@ Recreation Met Score: d\>=525
 
 <td style="text-align:right;">
 
-0.90 (0.76-1.08,<br>p=0.271)
+0.82 (0.71-1.03,<br>p=0.006)
 
 </td>
 
 <td style="text-align:right;">
 
-0.83 (0.69-1.00,<br>p=0.046)
+0.85 (0.71-1.03,<br>p=0.090)
 
 </td>
 
@@ -856,7 +856,7 @@ Current/Former smoker: yes
 
 <td style="text-align:right;">
 
-1.65 (1.31-2.08,<br>p\<0.001)
+1.65 (1.31-2.07,<br>p\<0.001)
 
 </td>
 
@@ -870,13 +870,13 @@ Current/Former smoker: yes
 
 <td style="text-align:right;">
 
-1.50 (1.25-1.79,<br>p\<0.001)
+1.55 (1.34-1.80,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.34 (1.12-1.61,<br>p=0.002)
+1.38 (1.15-1.66,<br>p\<0.001)
 
 </td>
 
@@ -892,7 +892,7 @@ Alcohol: \<1 drink/day
 
 <td style="text-align:right;">
 
-1.17 (0.91-1.51,<br>p=0.225)
+1.17 (0.91-1.51,<br>p=0.217)
 
 </td>
 
@@ -906,13 +906,13 @@ Alcohol: \<1 drink/day
 
 <td style="text-align:right;">
 
-1.60 (1.31-1.97,<br>p\<0.001)
+1.81 (1.54-2.14,<br>p\<0.001)
 
 </td>
 
 <td style="text-align:right;">
 
-1.45 (1.18-1.79,<br>p\<0.001)
+1.34 (1.09-1.65,<br>p=0.006)
 
 </td>
 
@@ -924,11 +924,256 @@ Alcohol: \<1 drink/day
 
   
 
+To analyse the effect of socioeconomic status (SES) and greenspace (GS),
+we further build multivariable models using the formula   
+![&#10;\\begin{align\*}&#10; Diabetes = \\text{Index} + \\text{Age} +
+\\text{Sex} + \\text{BMI} + \\text{Household income range} +
+\\text{urbanicity}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20Diabetes%20%3D%20%5Ctext%7BIndex%7D%20%2B%20%5Ctext%7BAge%7D%20%2B%20%5Ctext%7BSex%7D%20%2B%20%5Ctext%7BBMI%7D%20%2B%20%5Ctext%7BHousehold%20income%20range%7D%20%2B%20%5Ctext%7Burbanicity%7D%0A%5Cend%7Balign%2A%7D%0A
+"
+\\begin{align*}
+  Diabetes = \\text{Index} + \\text{Age} + \\text{Sex} + \\text{BMI} + \\text{Household income range} + \\text{urbanicity}
+\\end{align*}
+")  
+with different combinations for the index variable.
+
 <table style='width:90%;border-bottom: 0; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic">
 
 <caption>
 
-Table A.2: Model Performance for all multivariable models.
+Table A.2: Model Performance and odds ratios of the logistic models,
+comparing combinations of socioeconomic status (SES) and greenspace (GS)
+as index.
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;font-weight: bold;">
+
+Metric
+
+</th>
+
+<th style="text-align:right;font-weight: bold;">
+
+SES + GS
+
+</th>
+
+<th style="text-align:right;font-weight: bold;">
+
+SES
+
+</th>
+
+<th style="text-align:right;font-weight: bold;">
+
+GS
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Probability Threshold \*
+
+</td>
+
+<td style="text-align:right;">
+
+0.47
+
+</td>
+
+<td style="text-align:right;">
+
+0.50
+
+</td>
+
+<td style="text-align:right;">
+
+0.48
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Accuracy
+
+</td>
+
+<td style="text-align:right;">
+
+0.75
+
+</td>
+
+<td style="text-align:right;">
+
+0.72
+
+</td>
+
+<td style="text-align:right;">
+
+0.74
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Sensitivity
+
+</td>
+
+<td style="text-align:right;">
+
+0.76
+
+</td>
+
+<td style="text-align:right;">
+
+0.72
+
+</td>
+
+<td style="text-align:right;">
+
+0.75
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Specificity
+
+</td>
+
+<td style="text-align:right;">
+
+0.65
+
+</td>
+
+<td style="text-align:right;">
+
+0.68
+
+</td>
+
+<td style="text-align:right;">
+
+0.68
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Youden index
+
+</td>
+
+<td style="text-align:right;">
+
+0.41
+
+</td>
+
+<td style="text-align:right;">
+
+0.40
+
+</td>
+
+<td style="text-align:right;">
+
+0.43
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+OR (95% CI, p-value)
+
+</td>
+
+<td style="text-align:right;">
+
+0.46 (0.35-0.61, p \< 0.001)
+
+</td>
+
+<td style="text-align:right;">
+
+0.57 (0.42-0.76, p \< 0.001)
+
+</td>
+
+<td style="text-align:right;">
+
+0.42 (0.31-0.57, p \< 0.001)
+
+</td>
+
+</tr>
+
+</tbody>
+
+<tfoot>
+
+<tr>
+
+<td style="padding: 0; " colspan="100%">
+
+<sup>\*</sup> Probability threshold used for predicting Diabetes. Values
+equal or greater than this threshold are mapped as “No”.
+
+</td>
+
+</tr>
+
+</tfoot>
+
+</table>
+
+  
+
+<table style='width:90%;border-bottom: 0; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic">
+
+<caption>
+
+Table A.3: Model Performance for all multivariable models.
 
 </caption>
 
@@ -1010,25 +1255,25 @@ Probability Threshold \*
 
 <td style="text-align:center;">
 
-0.46
+0.44
 
 </td>
 
 <td style="text-align:center;">
 
-0.45
+0.47
 
 </td>
 
 <td style="text-align:center;">
 
-0.45
+0.58
 
 </td>
 
 <td style="text-align:center;">
 
-0.51
+0.60
 
 </td>
 
@@ -1044,13 +1289,7 @@ Accuracy
 
 <td style="text-align:center;">
 
-0.67
-
-</td>
-
-<td style="text-align:center;">
-
-0.76
+0.71
 
 </td>
 
@@ -1062,41 +1301,13 @@ Accuracy
 
 <td style="text-align:center;">
 
-0.74
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-AROC
+0.64
 
 </td>
 
 <td style="text-align:center;">
 
-0.76
-
-</td>
-
-<td style="text-align:center;">
-
-0.78
-
-</td>
-
-<td style="text-align:center;">
-
-0.77
-
-</td>
-
-<td style="text-align:center;">
-
-0.80
+0.64
 
 </td>
 
@@ -1112,25 +1323,25 @@ Sensitivity
 
 <td style="text-align:center;">
 
-0.67
+0.72
 
 </td>
 
 <td style="text-align:center;">
 
-0.78
+0.76
 
 </td>
 
 <td style="text-align:center;">
 
-0.75
+0.62
 
 </td>
 
 <td style="text-align:center;">
 
-0.75
+0.62
 
 </td>
 
@@ -1146,25 +1357,25 @@ Specificity
 
 <td style="text-align:center;">
 
-0.71
+0.70
 
 </td>
 
 <td style="text-align:center;">
 
-0.62
+0.65
 
 </td>
 
 <td style="text-align:center;">
 
-0.72
+0.81
 
 </td>
 
 <td style="text-align:center;">
 
-0.71
+0.83
 
 </td>
 
@@ -1180,25 +1391,25 @@ Youden index
 
 <td style="text-align:center;">
 
-0.38
+0.42
 
 </td>
 
 <td style="text-align:center;">
 
-0.40
+0.41
 
 </td>
 
 <td style="text-align:center;">
 
-0.47
+0.43
 
 </td>
 
 <td style="text-align:center;">
 
-0.46
+0.45
 
 </td>
 
@@ -1229,7 +1440,7 @@ equal or greater than this threshold are mapped as “No”.
 
 <div class="figure">
 
-<img src="docs/forrest_plot_big.svg" alt="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models." width="90%" />
+<img src="docs/forest_plot_big.svg" alt="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models." width="90%" />
 
 <p class="caption">
 
@@ -1278,19 +1489,19 @@ Parameter
 
 <th style="text-align:left;font-weight: bold;">
 
-No Diabetes (N=4481)
+No Diabetes (N=4616)
 
 </th>
 
 <th style="text-align:left;font-weight: bold;">
 
-Diabetes (N=497)
+Diabetes (N=509)
 
 </th>
 
 <th style="text-align:left;font-weight: bold;">
 
-Total (N=4978)
+Total (N=5125)
 
 </th>
 
@@ -1310,19 +1521,19 @@ Total included
 
 <td style="text-align:left;">
 
-4481 (90.0%)
+4616 (90.1%)
 
 </td>
 
 <td style="text-align:left;">
 
-497 (10.0%)
+509 (9.9%)
 
 </td>
 
 <td style="text-align:left;">
 
-4978
+5125
 
 </td>
 
@@ -1348,19 +1559,19 @@ Hamilton
 
 <td style="text-align:left;">
 
-2255 (50.3%)
+2307 (87.5%)
 
 </td>
 
 <td style="text-align:left;">
 
-324 (65.2%)
+331 (12.5%)
 
 </td>
 
 <td style="text-align:left;">
 
-2579 (51.8%)
+2638
 
 </td>
 
@@ -1376,19 +1587,19 @@ Vancouver
 
 <td style="text-align:left;">
 
-2226 (49.7%)
+2309 (92.8%)
 
 </td>
 
 <td style="text-align:left;">
 
-173 (34.8%)
+178 (7.2%)
 
 </td>
 
 <td style="text-align:left;">
 
-2399 (48.2%)
+2487
 
 </td>
 
@@ -1424,7 +1635,7 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-27.3 (5.3)
+27.3 (5.4)
 
 </td>
 
@@ -1436,7 +1647,7 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-27.8 (5.6)
+27.8 (5.7)
 
 </td>
 
@@ -1446,25 +1657,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-26.4 (23.8, 29.9)
+26.4 (23.8; 29.8)
 
 </td>
 
 <td style="text-align:left;">
 
-30.9 (27.4, 35.8)
+30.9 (27.5; 35.7)
 
 </td>
 
 <td style="text-align:left;">
 
-26.8 (24.0, 30.4)
+26.8 (24.0; 30.4)
 
 </td>
 
@@ -1502,7 +1713,7 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-86.1 (9.3)
+86.0 (9.3)
 
 </td>
 
@@ -1512,25 +1723,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-85.2 (78.6, 91.6)
+85.2 (78.6; 91.6)
 
 </td>
 
 <td style="text-align:left;">
 
-94.2 (87.8, 99.6)
+94.2 (87.8; 99.6)
 
 </td>
 
 <td style="text-align:left;">
 
-86.0 (79.3, 92.6)
+86.0 (79.3; 92.6)
 
 </td>
 
@@ -1550,25 +1761,25 @@ Median (Q1, Q3)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-No
+Low & Moderate
 
 </td>
 
 <td style="text-align:left;">
 
-2696 (60.2%)
+2787 (96.0%)
 
 </td>
 
 <td style="text-align:left;">
 
-112 (22.5%)
+115 (4.0%)
 
 </td>
 
 <td style="text-align:left;">
 
-2808 (56.4%)
+2902
 
 </td>
 
@@ -1578,25 +1789,25 @@ No
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Yes
+High
 
 </td>
 
 <td style="text-align:left;">
 
-1785 (39.8%)
+1829 (82.3%)
 
 </td>
 
 <td style="text-align:left;">
 
-385 (77.5%)
+394 (17.7%)
 
 </td>
 
 <td style="text-align:left;">
 
-2170 (43.6%)
+2223
 
 </td>
 
@@ -1622,19 +1833,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-52.7 (9.3)
+10.5 (1.9)
 
 </td>
 
 <td style="text-align:left;">
 
-56.9 (8.4)
+11.4 (1.7)
 
 </td>
 
 <td style="text-align:left;">
 
-53.1 (9.3)
+10.6 (1.9)
 
 </td>
 
@@ -1644,25 +1855,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-53.0 (45.0, 60.0)
+10.6 (9.0; 12.0)
 
 </td>
 
 <td style="text-align:left;">
 
-57.0 (51.0, 63.0)
+11.6 (10.2; 12.6)
 
 </td>
 
 <td style="text-align:left;">
 
-53.0 (46.0, 61.0)
+10.6 (9.2; 12.2)
 
 </td>
 
@@ -1688,19 +1899,19 @@ Male
 
 <td style="text-align:left;">
 
-2011 (44.9%)
+2076 (87.6%)
 
 </td>
 
 <td style="text-align:left;">
 
-286 (57.5%)
+294 (12.4%)
 
 </td>
 
 <td style="text-align:left;">
 
-2297 (46.1%)
+2370
 
 </td>
 
@@ -1716,19 +1927,19 @@ Female
 
 <td style="text-align:left;">
 
-2470 (55.1%)
+2540 (92.2%)
 
 </td>
 
 <td style="text-align:left;">
 
-211 (42.5%)
+215 (7.8%)
 
 </td>
 
 <td style="text-align:left;">
 
-2681 (53.9%)
+2755
 
 </td>
 
@@ -1754,19 +1965,19 @@ Female
 
 <td style="text-align:left;">
 
-1751 (39.1%)
+1793 (93.3%)
 
 </td>
 
 <td style="text-align:left;">
 
-127 (25.6%)
+129 (6.7%)
 
 </td>
 
 <td style="text-align:left;">
 
-1878 (37.7%)
+1922
 
 </td>
 
@@ -1782,19 +1993,19 @@ Female
 
 <td style="text-align:left;">
 
-730 (16.3%)
+759 (89.8%)
 
 </td>
 
 <td style="text-align:left;">
 
-85 (17.1%)
+86 (10.2%)
 
 </td>
 
 <td style="text-align:left;">
 
-815 (16.4%)
+845
 
 </td>
 
@@ -1810,19 +2021,19 @@ Female
 
 <td style="text-align:left;">
 
-548 (12.2%)
+564 (85.2%)
 
 </td>
 
 <td style="text-align:left;">
 
-96 (19.3%)
+98 (14.8%)
 
 </td>
 
 <td style="text-align:left;">
 
-644 (12.9%)
+662
 
 </td>
 
@@ -1838,19 +2049,19 @@ Female
 
 <td style="text-align:left;">
 
-973 (21.7%)
+1010 (92.7%)
 
 </td>
 
 <td style="text-align:left;">
 
-79 (15.9%)
+80 (7.3%)
 
 </td>
 
 <td style="text-align:left;">
 
-1052 (21.1%)
+1090
 
 </td>
 
@@ -1866,19 +2077,19 @@ Female
 
 <td style="text-align:left;">
 
-299 (6.7%)
+304 (81.3%)
 
 </td>
 
 <td style="text-align:left;">
 
-65 (13.1%)
+70 (18.7%)
 
 </td>
 
 <td style="text-align:left;">
 
-364 (7.3%)
+374
 
 </td>
 
@@ -1894,19 +2105,19 @@ Female
 
 <td style="text-align:left;">
 
-180 (4.0%)
+186 (80.2%)
 
 </td>
 
 <td style="text-align:left;">
 
-45 (9.1%)
+46 (19.8%)
 
 </td>
 
 <td style="text-align:left;">
 
-225 (4.5%)
+232
 
 </td>
 
@@ -1932,19 +2143,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-37.7 (10.0)
+3.8 (1.0)
 
 </td>
 
 <td style="text-align:left;">
 
-35.0 (9.5)
+3.5 (0.9)
 
 </td>
 
 <td style="text-align:left;">
 
-37.4 (10.0)
+3.7 (1.0)
 
 </td>
 
@@ -1954,25 +2165,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-37.7 (30.7, 44.8)
+3.8 (3.1; 4.5)
 
 </td>
 
 <td style="text-align:left;">
 
-34.8 (28.0, 41.4)
+3.5 (2.8; 4.1)
 
 </td>
 
 <td style="text-align:left;">
 
-37.4 (30.4, 44.5)
+3.7 (3.0; 4.5)
 
 </td>
 
@@ -1992,25 +2203,25 @@ Median (Q1, Q3)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Mean (SD)
+under
 
 </td>
 
 <td style="text-align:left;">
 
-2.5 (0.6)
+1721 (87.3%)
 
 </td>
 
 <td style="text-align:left;">
 
-2.4 (0.7)
+250 (12.7%)
 
 </td>
 
 <td style="text-align:left;">
 
-2.5 (0.6)
+1971
 
 </td>
 
@@ -2020,25 +2231,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+over
 
 </td>
 
 <td style="text-align:left;">
 
-3.0 (2.0, 3.0)
+2065 (92.3%)
 
 </td>
 
 <td style="text-align:left;">
 
-2.0 (2.0, 3.0)
+172 (7.7%)
 
 </td>
 
 <td style="text-align:left;">
 
-3.0 (2.0, 3.0)
+2237
 
 </td>
 
@@ -2058,25 +2269,25 @@ Median (Q1, Q3)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-No
+Mean (SD)
 
 </td>
 
 <td style="text-align:left;">
 
-2048 (55.2%)
+0.4 (0.5)
 
 </td>
 
 <td style="text-align:left;">
 
-172 (41.2%)
+0.6 (0.5)
 
 </td>
 
 <td style="text-align:left;">
 
-2220 (53.8%)
+0.5 (0.5)
 
 </td>
 
@@ -2086,25 +2297,25 @@ No
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Yes
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-1664 (44.8%)
+0.0 (0.0; 1.0)
 
 </td>
 
 <td style="text-align:left;">
 
-245 (58.8%)
+1.0 (0.0; 1.0)
 
 </td>
 
 <td style="text-align:left;">
 
-1909 (46.2%)
+0.0 (0.0; 1.0)
 
 </td>
 
@@ -2130,19 +2341,19 @@ Yes
 
 <td style="text-align:left;">
 
-1140 (30.7%)
+1157 (91.0%)
 
 </td>
 
 <td style="text-align:left;">
 
-112 (26.9%)
+114 (9.0%)
 
 </td>
 
 <td style="text-align:left;">
 
-1252 (30.3%)
+1271
 
 </td>
 
@@ -2158,19 +2369,19 @@ Yes
 
 <td style="text-align:left;">
 
-2572 (69.3%)
+2629 (89.5%)
 
 </td>
 
 <td style="text-align:left;">
 
-305 (73.1%)
+308 (10.5%)
 
 </td>
 
 <td style="text-align:left;">
 
-2877 (69.7%)
+2937
 
 </td>
 
@@ -2206,19 +2417,19 @@ suburban/rural
 
 <td style="text-align:left;">
 
-3489 (77.9%)
+3607 (89.9%)
 
 </td>
 
 <td style="text-align:left;">
 
-398 (80.1%)
+405 (10.1%)
 
 </td>
 
 <td style="text-align:left;">
 
-3887 (78.1%)
+4012
 
 </td>
 
@@ -2234,19 +2445,19 @@ urban
 
 <td style="text-align:left;">
 
-992 (22.1%)
+1009 (90.7%)
 
 </td>
 
 <td style="text-align:left;">
 
-99 (19.9%)
+104 (9.3%)
 
 </td>
 
 <td style="text-align:left;">
 
-1091 (21.9%)
+1113
 
 </td>
 
@@ -2272,19 +2483,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-38.1 (13.2)
+37.9 (13.9)
 
 </td>
 
 <td style="text-align:left;">
 
-34.4 (11.5)
+34.3 (12.1)
 
 </td>
 
 <td style="text-align:left;">
 
-37.7 (13.1)
+37.5 (13.8)
 
 </td>
 
@@ -2294,25 +2505,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-35.0 (30.0, 42.0)
+35.0 (29.0; 42.0)
 
 </td>
 
 <td style="text-align:left;">
 
-32.0 (27.0, 39.0)
+32.0 (27.0; 38.0)
 
 </td>
 
 <td style="text-align:left;">
 
-34.0 (30.0, 42.0)
+35.0 (29.0; 42.0)
 
 </td>
 
@@ -2338,19 +2549,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-65.5 (20.1)
+65.5 (21.5)
 
 </td>
 
 <td style="text-align:left;">
 
-60.9 (19.6)
+60.6 (20.5)
 
 </td>
 
 <td style="text-align:left;">
 
-65.0 (20.1)
+65.0 (21.4)
 
 </td>
 
@@ -2360,25 +2571,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-62.0 (52.0, 76.0)
+61.0 (51.0; 77.0)
 
 </td>
 
 <td style="text-align:left;">
 
-57.0 (46.0, 71.0)
+57.0 (45.0; 71.0)
 
 </td>
 
 <td style="text-align:left;">
 
-61.0 (52.0, 75.0)
+61.0 (51.0; 76.0)
 
 </td>
 
@@ -2404,19 +2615,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-9.6 (6.4)
+9.4 (6.9)
 
 </td>
 
 <td style="text-align:left;">
 
-11.2 (7.0)
+11.3 (7.6)
 
 </td>
 
 <td style="text-align:left;">
 
-9.8 (6.5)
+9.6 (7.0)
 
 </td>
 
@@ -2426,25 +2637,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-8.4 (5.0, 13.9)
+8.1 (4.3; 13.7)
 
 </td>
 
 <td style="text-align:left;">
 
-9.9 (5.7, 16.4)
+10.1 (5.2; 16.3)
 
 </td>
 
 <td style="text-align:left;">
 
-8.5 (5.0, 14.2)
+8.2 (4.4; 14.0)
 
 </td>
 
@@ -2470,19 +2681,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-7.6 (6.8)
+7.5 (6.9)
 
 </td>
 
 <td style="text-align:left;">
 
-6.9 (5.8)
+6.8 (5.8)
 
 </td>
 
 <td style="text-align:left;">
 
-7.6 (6.7)
+7.4 (6.8)
 
 </td>
 
@@ -2492,25 +2703,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-5.2 (3.1, 9.9)
+5.1 (3.0; 9.9)
 
 </td>
 
 <td style="text-align:left;">
 
-5.4 (3.2, 8.6)
+5.3 (3.2; 8.6)
 
 </td>
 
 <td style="text-align:left;">
 
-5.3 (3.1, 9.8)
+5.2 (3.0; 9.7)
 
 </td>
 
@@ -2536,19 +2747,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-66.8 (7.3)
+66.6 (7.7)
 
 </td>
 
 <td style="text-align:left;">
 
-65.4 (6.9)
+65.3 (7.6)
 
 </td>
 
 <td style="text-align:left;">
 
-66.7 (7.2)
+66.5 (7.7)
 
 </td>
 
@@ -2558,25 +2769,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-66.8 (61.9, 71.7)
+66.8 (61.8; 71.7)
 
 </td>
 
 <td style="text-align:left;">
 
-64.8 (60.8, 69.7)
+64.9 (60.7; 70.5)
 
 </td>
 
 <td style="text-align:left;">
 
-66.7 (61.8, 71.4)
+66.6 (61.7; 71.6)
 
 </td>
 
@@ -2602,19 +2813,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-10.0 (5.0)
+9.9 (5.2)
 
 </td>
 
 <td style="text-align:left;">
 
-12.3 (5.9)
+12.4 (6.3)
 
 </td>
 
 <td style="text-align:left;">
 
-10.2 (5.1)
+10.1 (5.4)
 
 </td>
 
@@ -2624,25 +2835,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-9.1 (6.0, 12.9)
+8.8 (5.7; 13.0)
 
 </td>
 
 <td style="text-align:left;">
 
-11.4 (7.5, 16.0)
+11.5 (7.2; 16.1)
 
 </td>
 
 <td style="text-align:left;">
 
-9.3 (6.1, 13.3)
+9.0 (5.8; 13.3)
 
 </td>
 
@@ -2668,19 +2879,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-5.6 (2.2)
+5.5 (2.5)
 
 </td>
 
 <td style="text-align:left;">
 
-6.3 (2.5)
+6.3 (2.9)
 
 </td>
 
 <td style="text-align:left;">
 
-5.6 (2.2)
+5.6 (2.6)
 
 </td>
 
@@ -2690,25 +2901,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-5.5 (4.0, 6.8)
+5.4 (3.8; 7.0)
 
 </td>
 
 <td style="text-align:left;">
 
-6.0 (4.8, 7.6)
+5.9 (4.4; 7.7)
 
 </td>
 
 <td style="text-align:left;">
 
-5.6 (4.1, 6.9)
+5.4 (3.8; 7.0)
 
 </td>
 
@@ -2734,19 +2945,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-15.0 (5.8)
+14.8 (6.5)
 
 </td>
 
 <td style="text-align:left;">
 
-17.3 (6.9)
+17.3 (7.5)
 
 </td>
 
 <td style="text-align:left;">
 
-15.2 (6.0)
+15.0 (6.6)
 
 </td>
 
@@ -2756,25 +2967,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-14.4 (11.5, 18.0)
+14.0 (10.9; 18.4)
 
 </td>
 
 <td style="text-align:left;">
 
-16.1 (12.7, 21.2)
+16.1 (11.9; 21.8)
 
 </td>
 
 <td style="text-align:left;">
 
-14.5 (11.6, 18.3)
+14.1 (11.0; 18.8)
 
 </td>
 
@@ -2800,19 +3011,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-19.7 (9.0)
+19.6 (9.2)
 
 </td>
 
 <td style="text-align:left;">
 
-23.8 (10.0)
+23.7 (10.4)
 
 </td>
 
 <td style="text-align:left;">
 
-20.1 (9.2)
+20.0 (9.4)
 
 </td>
 
@@ -2822,25 +3033,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-17.7 (13.1, 25.2)
+17.7 (12.8; 24.9)
 
 </td>
 
 <td style="text-align:left;">
 
-20.9 (16.0, 31.6)
+21.0 (15.8; 31.6)
 
 </td>
 
 <td style="text-align:left;">
 
-17.9 (13.3, 26.0)
+17.9 (13.1; 25.6)
 
 </td>
 
@@ -2866,19 +3077,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-74.0 (16.3)
+73.9 (17.8)
 
 </td>
 
 <td style="text-align:left;">
 
-73.2 (15.8)
+72.9 (17.6)
 
 </td>
 
 <td style="text-align:left;">
 
-73.9 (16.3)
+73.8 (17.7)
 
 </td>
 
@@ -2888,25 +3099,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-76.5 (62.6, 87.4)
+77.1 (62.1; 88.5)
 
 </td>
 
 <td style="text-align:left;">
 
-74.6 (63.0, 85.7)
+75.6 (61.7; 87.0)
 
 </td>
 
 <td style="text-align:left;">
 
-76.3 (62.6, 87.3)
+77.0 (62.1; 88.4)
 
 </td>
 
@@ -2932,19 +3143,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-25.7 (16.0)
+25.3 (17.2)
 
 </td>
 
 <td style="text-align:left;">
 
-26.4 (15.3)
+26.4 (17.0)
 
 </td>
 
 <td style="text-align:left;">
 
-25.8 (15.9)
+25.4 (17.2)
 
 </td>
 
@@ -2954,25 +3165,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-23.2 (12.5, 37.2)
+22.1 (11.2; 36.9)
 
 </td>
 
 <td style="text-align:left;">
 
-25.3 (14.0, 36.9)
+24.0 (12.9; 37.7)
 
 </td>
 
 <td style="text-align:left;">
 
-23.5 (12.6, 37.2)
+22.4 (11.4; 36.9)
 
 </td>
 
@@ -3008,19 +3219,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-0.344 (0.087)
+0.341 (0.089)
 
 </td>
 
 <td style="text-align:left;">
 
-0.318 (0.081)
+0.314 (0.084)
 
 </td>
 
 <td style="text-align:left;">
 
-0.341 (0.087)
+0.338 (0.089)
 
 </td>
 
@@ -3030,25 +3241,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-0.337 (0.294, 0.377)
+0.336 (0.291; 0.379)
 
 </td>
 
 <td style="text-align:left;">
 
-0.315 (0.270, 0.359)
+0.313 (0.266; 0.360)
 
 </td>
 
 <td style="text-align:left;">
 
-0.335 (0.291, 0.375)
+0.333 (0.288; 0.377)
 
 </td>
 
@@ -3074,19 +3285,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-0.098 (0.024)
+0.090 (0.026)
 
 </td>
 
 <td style="text-align:left;">
 
-0.096 (0.023)
+0.088 (0.024)
 
 </td>
 
 <td style="text-align:left;">
 
-0.098 (0.024)
+0.090 (0.026)
 
 </td>
 
@@ -3096,25 +3307,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-0.095 (0.082, 0.111)
+0.086 (0.071; 0.105)
 
 </td>
 
 <td style="text-align:left;">
 
-0.092 (0.081, 0.106)
+0.084 (0.072; 0.100)
 
 </td>
 
 <td style="text-align:left;">
 
-0.095 (0.081, 0.111)
+0.086 (0.071; 0.105)
 
 </td>
 
@@ -3140,19 +3351,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-0.193 (0.095)
+0.206 (0.097)
 
 </td>
 
 <td style="text-align:left;">
 
-0.170 (0.082)
+0.182 (0.086)
 
 </td>
 
 <td style="text-align:left;">
 
-0.191 (0.094)
+0.204 (0.096)
 
 </td>
 
@@ -3162,25 +3373,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-0.180 (0.125, 0.243)
+0.202 (0.135; 0.262)
 
 </td>
 
 <td style="text-align:left;">
 
-0.153 (0.110, 0.227)
+0.173 (0.118; 0.243)
 
 </td>
 
 <td style="text-align:left;">
 
-0.177 (0.124, 0.241)
+0.198 (0.134; 0.260)
 
 </td>
 
@@ -3206,19 +3417,19 @@ Mean (SD)
 
 <td style="text-align:left;">
 
-0.510 (0.087)
+0.495 (0.093)
 
 </td>
 
 <td style="text-align:left;">
 
-0.479 (0.089)
+0.465 (0.093)
 
 </td>
 
 <td style="text-align:left;">
 
-0.507 (0.087)
+0.492 (0.093)
 
 </td>
 
@@ -3228,25 +3439,25 @@ Mean (SD)
 
 <td style="text-align:left; padding-left:  2em;" indentlevel="2">
 
-Median (Q1, Q3)
+Median (Q1; Q3)
 
 </td>
 
 <td style="text-align:left;">
 
-0.503 (0.457, 0.552)
+0.484 (0.435; 0.546)
 
 </td>
 
 <td style="text-align:left;">
 
-0.474 (0.425, 0.527)
+0.459 (0.401; 0.514)
 
 </td>
 
 <td style="text-align:left;">
 
-0.501 (0.452, 0.550)
+0.482 (0.432; 0.543)
 
 </td>
 
