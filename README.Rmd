@@ -398,7 +398,7 @@ knitr::include_graphics("docs/roc_auc.svg")
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 readr::read_csv("docs/summary_statistics.csv") %>% 
   kableExtra::kbl(escape = FALSE, table.attr = "style='width:90%;'",
-                  caption = "Table A.3: Baseline characteristics of the study population by diabetes status.") %>% 
+                  caption = "Table A.4: Baseline characteristics of the study population by diabetes status.") %>% 
   kableExtra::kable_classic(full_width = F) %>%
   kableExtra::pack_rows(index = c(" " = 3, "Participant data" = 24, "Census variables" = 24,
                                   "Normalized Difference Vegetation Index (NDVI)" = 8), 
