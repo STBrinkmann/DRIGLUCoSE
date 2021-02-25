@@ -148,7 +148,7 @@ DRIGLUCoSE::LS_L1C(l1c_path = "docs/LC08_L1TP_193026_20200423_20200508_01_T1_sma
 
 ## Exposure Model
 
-In order to estimate each participant's potential exposures to
+In order to estimate each participant’s potential exposures to
 greenspace and local SES, we (i) mapped age- and sex-specific walkable
 zones around their residential address, and (ii) applied a negative
 logit weighting function, such that the estimated effect of greenspace
@@ -1479,7 +1479,7 @@ multivariable logistic models.
 
 <caption>
 
-Table A.3: Baseline characteristics of the study population by diabetes
+Table A.4: Baseline characteristics of the study population by diabetes
 status.
 
 </caption>
