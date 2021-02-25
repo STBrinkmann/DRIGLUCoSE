@@ -331,11 +331,13 @@ dplyr::tibble(
 \
 
 To analyse the effect of socioeconomic status (SES) and greenspace (GS), we further build multivariable models using the formula
+<center>
 $$
 \begin{align*}
   Diabetes = \text{Index} + \text{Age} + \text{Sex} + \text{BMI} + \text{Household income range} + \text{urbanicity}
 \end{align*}
 $$
+</center>
 with different combinations for the index variable.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
