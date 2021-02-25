@@ -400,7 +400,7 @@ NDVI_weighted
 #>     tag    sd median X5_percentile X95_percentile    skew
 #>   <dbl> <dbl>  <dbl>         <dbl>          <dbl>   <dbl>
 #> 1     1 0.206  0.601         0.272          0.908 -0.110 
-#> 2     2 0.102  0.539         0.360          0.710 -0.0150
+#> 2     2 0.102  0.539         0.360          0.710 -0.0151
 ```
 
 ``` r
@@ -925,23 +925,9 @@ Alcohol: \<1 drink/day
   
 
 To analyse the effect of socioeconomic status (SES) and greenspace (GS),
-we further build multivariable models using the formula
-
-<center>
-
-  
-![&#10;\\begin{align\*}&#10; Diabetes = \\text{Index} + \\text{Age} +
-\\text{Sex} + \\text{BMI} + \\text{Household income range} +
-\\text{urbanicity}&#10;\\end{align\*}&#10;](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20Diabetes%20%3D%20%5Ctext%7BIndex%7D%20%2B%20%5Ctext%7BAge%7D%20%2B%20%5Ctext%7BSex%7D%20%2B%20%5Ctext%7BBMI%7D%20%2B%20%5Ctext%7BHousehold%20income%20range%7D%20%2B%20%5Ctext%7Burbanicity%7D%0A%5Cend%7Balign%2A%7D%0A
-"
-\\begin{align*}
-  Diabetes = \\text{Index} + \\text{Age} + \\text{Sex} + \\text{BMI} + \\text{Household income range} + \\text{urbanicity}
-\\end{align*}
-")  
-
-</center>
-
-with different combinations for the index variable.
+we further build multivariable models using the semi-adjusted model with
+BMI as obesity measurent and tested different combinations for the index
+variable.
 
 <table style='width:90%;border-bottom: 0; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;' class=" lightable-classic">
 
