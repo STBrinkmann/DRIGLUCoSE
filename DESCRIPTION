@@ -14,9 +14,12 @@ Description: Public package containing functions and code used in the developmen
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: 
     magrittr,
+    sf (>= 0.9.6),
+    dplyr (>= 0.8.0),
+    raster (>= 3.4.5),
     nngeo (>= 0.3.8),
     osmdata (>= 0.1.3),
     igraph (>= 1.2.5),
@@ -30,12 +33,10 @@ Imports:
     mosaic,
     sfnetworks,
     units,
-    data.table
+    data.table,
+    pbapply
 Depends: 
-    dplyr (>= 0.8.0),
-    sf (>= 0.9.6),
-    R (>= 2.10),
-    raster (>= 3.4.5)
+    R (>= 2.10)
 Suggests: 
     remotes,
     tmap

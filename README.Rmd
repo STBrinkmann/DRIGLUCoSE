@@ -21,17 +21,11 @@ library(kableExtra)
 library(formattable)
 ```
 
-As elaborated in our recent analyses [@Walker.2019; @Scarpone.2020], nearly all previous studies in the literature use either census unit boundaries or simple buffer zones to measure an individual’s built environment (BE) exposures or to characterize their local socioeconomic status (SES) [@Gong.2014; @Fuertes.2014]. Therefore, we present a distance-weighted, network-based model for quantifying the combined effects of local greenspace and SES on diabetes risk, from which we derive an area-based Diabetes Risk Index of Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE).\
+As elaborated in our recent analyses [@Walker.2019; @Scarpone.2020], nearly all previous studies in the literature use either census unit boundaries or simple buffer zones to measure an individual's built environment (BE) exposures or to characterize their local socioeconomic status (SES) [@Gong.2014; @Fuertes.2014]. Therefore, we present a distance-weighted, network-based model for quantifying the combined effects of local greenspace and SES on diabetes risk, from which we derive an area-based Diabetes Risk Index of Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE).\
 The goal of the `DRIGLUCoSE` package is to provide a public package containing functions and code used in the development of the DRI-GLUCoSE Index.
 
 
 # Installation
-This package depends on the [sfnetworks](https://github.com/luukvdmeer/sfnetworks) package. It is still in very active development. Therefore, the package is also not on CRAN yet. Install it directly from GitHub using the `remotes` package in R.
-```{r eval=FALSE, include=TRUE}
-remotes::install_github("luukvdmeer/sfnetworks")
-```
-
-
 You can install the latest version of `DRIGLUCoSE` from GitHub with:
 
 ```{r eval=FALSE, include=TRUE}
@@ -147,7 +141,7 @@ erlangen.isorings %>%
                  legend.col.is.portrait = T) +
   tmap::tm_facets(by = "tag") +
   tmap::tm_shape(Erlangen) + 
-  tmap::tm_dots(col = "black", size = 0.6, shape = 20) +
+  tmap::tm_dots(size = 0.6, shape = 20) +
   tmap::tm_facets(by = "tag") +
   tmap::tm_layout(legend.outside.position = "right",
                   legend.position = c(0.1, 0.4),
@@ -333,8 +327,6 @@ dplyr::tibble(
 To analyse the effect of socioeconomic status (SES) and greenspace (GS), we further build multivariable models using the semi-adjusted model with BMI as obesity measurent and tested different combinations for the index variable.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-library(kableExtra)
-
 dplyr::tibble(
     Metric = c("Probability Threshold *", "Accuracy",  
                "Sensitivity", "Specificity", "Youden index", "OR (95% CI, p-value)"),

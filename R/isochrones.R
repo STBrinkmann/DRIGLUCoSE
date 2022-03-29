@@ -11,7 +11,7 @@
 #'     tag (id of the original point feature) and time (range of the segments).
 #' @export
 #'
-#' @importFrom rlang parse_quosure
+#' @importFrom rlang parse_quo
 #' @importFrom sf st_buffer
 #' @importFrom sf st_union
 #' @importFrom dplyr group_by
@@ -21,21 +21,23 @@
 #' @importFrom parallel stopCluster
 #' @importFrom parallel mclapply
 #' @importFrom data.table rbindlist
+#' @importFrom rlang caller_env
 isochrones <- function(x, tag = "tag", buffer = 30, cores = 1, remove_holes = FALSE) {
 
   this_isochrones <- function(x, buffer, tag, remove_holes) {
+    require(magrittr)
     if (remove_holes) {
       x %>%
         dplyr::group_by(time) %>%
-        dplyr::summarise(!! rlang::parse_quosure(tag), time,
-                         geom = sf::st_cast(geom, "LINESTRING") %>% sf::st_buffer(40) %>% sf::st_union() %>% nngeo::st_remove_holes()) %>%
+        dplyr::summarise(!! rlang::parse_quo(tag, env = rlang::global_env()), time,
+                         geom = sf::st_cast(geom, "LINESTRING") %>% sf::st_buffer(buffer) %>% sf::st_union() %>% nngeo::st_remove_holes()) %>%
         dplyr::ungroup() %>%
         sf::st_cast("MULTIPOLYGON")
     } else {
       x %>%
         dplyr::group_by(time) %>%
-        dplyr::summarise(!! rlang::parse_quosure(tag), time,
-                         geom = sf::st_cast(geom, "LINESTRING") %>% sf::st_buffer(40) %>% sf::st_union()) %>%
+        dplyr::summarise(!! rlang::parse_quo(tag, env = rlang::global_env()), time,
+                         geom = sf::st_cast(geom, "LINESTRING") %>% sf::st_buffer(buffer) %>% sf::st_union()) %>%
         dplyr::ungroup() %>%
         sf::st_cast("MULTIPOLYGON")
     }
@@ -43,7 +45,7 @@ isochrones <- function(x, tag = "tag", buffer = 30, cores = 1, remove_holes = FA
 
   # Convert x to list to enable parLapply/mclapply
   x_list <- x %>%
-    dplyr::group_by(!! rlang::parse_quosure(tag)) %>%
+    dplyr::group_by(!! rlang::parse_quo(tag, env = rlang::global_env())) %>%
     dplyr::group_split()
 
   if (cores > 1) {
@@ -64,7 +66,7 @@ isochrones <- function(x, tag = "tag", buffer = 30, cores = 1, remove_holes = FA
     isochs <- lapply(x_list, FUN = this_isochrones, buffer = buffer, tag = tag, remove_holes = remove_holes)
   }
 
-  isochs <- st_as_sf(data.table::rbindlist(isochs) %>% dplyr::as_tibble()) %>%
+  isochs <- sf::st_as_sf(data.table::rbindlist(isochs) %>% dplyr::as_tibble()) %>%
     sf::st_make_valid()
   class(isochs) <- c(class(isochs), "isochrone")
 

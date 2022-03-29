@@ -4,7 +4,7 @@
 \alias{isochrones}
 \title{Calculate isochrones}
 \usage{
-isochrones(x, tag = "tag", buffer = 30, cores = 1)
+isochrones(x, tag = "tag", buffer = 30, cores = 1, remove_holes = FALSE)
 }
 \arguments{
 \item{x}{object of class \code{sf} containing isodistances, derived from the \code{\link[DRIGLUCoSE]{isodistances}} function.}
@@ -12,6 +12,8 @@ isochrones(x, tag = "tag", buffer = 30, cores = 1)
 \item{buffer}{numeric; buffer distance to be applied on the polyline features of the isodistance object.}
 
 \item{cores}{the number of cores to use.}
+
+\item{remove_holes}{logical; should \code{\link[nngeo]{st_remove_holes}} function be applied?}
 }
 \value{
 An \code{sf MULTIPOLYGON} of isodistances is returned. The sf object contains two fields:

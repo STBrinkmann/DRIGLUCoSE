@@ -169,8 +169,8 @@ isodistances <- function(x, road_network, speed = 78.5, tag = NA, isochrones_seq
         dplyr::pull(tag)
 
       output <- output %>%
-        dplyr::mutate(!! rlang::parse_quo(tag, env = globalenv()) := this_tag) %>%
-        dplyr::select(!! rlang::parse_quo(tag, env = globalenv()), time)
+        dplyr::mutate(!! rlang::parse_quo(tag, env = rlang::global_env()) := this_tag) %>%
+        dplyr::select(!! rlang::parse_quo(tag, env = rlang::global_env()), time)
     }
     return(output)
   }

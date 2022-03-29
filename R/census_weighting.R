@@ -23,7 +23,7 @@
 #' @import dplyr
 #' @import mosaic
 #'
-#' @importFrom rlang parse_quosure
+#' @importFrom rlang parse_quo
 #' @importFrom mosaicCore makeFun
 #' @importFrom mosaicCalc antiD
 #' @importFrom parallel makeCluster
@@ -137,15 +137,18 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     sf::st_agr(this_tag) = "constant"
 
     # Create empty sf for rings output
-    isoch_rings <- .isochrones[0,] %>% dplyr::select(!! rlang::parse_quosure(.tag), !! rlang::parse_quosure(.time))
+    isoch_rings <- .isochrones[0,] %>% dplyr::select(!! rlang::parse_quo(.tag, env = rlang::global_env()),
+                                                     !! rlang::parse_quo(.time, env = rlang::global_env()))
 
     for(i in 1:nrow(this_tag)) {
       if (i == 1) {
-        isoch_rings[1,] <- this_tag[i,] %>% dplyr::select(!! rlang::parse_quosure(.tag), !! rlang::parse_quosure(.time)) # first isochrone
+        isoch_rings[1,] <- this_tag[i,] %>% dplyr::select(!! rlang::parse_quo(.tag, env = rlang::global_env()),
+                                                          !! rlang::parse_quo(.time, env = rlang::global_env())) # first isochrone
       } else {
         # create subsequent rings and add subsequent to sf
         isoch_rings <- sf::st_difference(this_tag[i,], this_tag[i-1,]) %>%
-          dplyr::select(!! rlang::parse_quosure(.tag), !! rlang::parse_quosure(.time)) %>%
+          dplyr::select(!! rlang::parse_quo(.tag, env = rlang::global_env()),
+                        !! rlang::parse_quo(.time, env = rlang::global_env())) %>%
           dplyr::add_row(isoch_rings, .)
       }
     }
@@ -237,7 +240,7 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
 
   # Convert isochrones to list to enable mclapply
   isochrones_list <- isochrones %>%
-    dplyr::group_by(!! rlang::parse_quosure(tag)) %>%
+    dplyr::group_by(!! rlang::parse_quo(tag, env = rlang::global_env())) %>%
     dplyr::group_split()
 
   if (cores > 1) {
