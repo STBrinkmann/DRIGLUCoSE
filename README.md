@@ -480,19 +480,19 @@ OR<br>(BMI-adjusted)
 DRI-GLUCoSE Score
 </td>
 <td style="text-align:right;">
-0.37 (0.26-0.51,<br>p\<0.001)
+0.37 (0.26-0.51,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.41 (0.31-0.53,<br>p\<0.001)
+0.41 (0.31-0.53,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.46 (0.35-0.61,<br>p\<0.001)
+0.46 (0.35-0.61,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.45 (0.36-0.56,<br>p\<0.001)
+0.45 (0.36-0.56,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.50 (0.37-0.67,<br>p\<0.001)
+0.50 (0.37-0.67,<br>p&lt0.001)
 </td>
 </tr>
 <tr>
@@ -500,19 +500,19 @@ DRI-GLUCoSE Score
 Age (5 year-interval)
 </td>
 <td style="text-align:right;">
-1.26 (1.18-1.34,<br>p\<0.001)
+1.26 (1.18-1.34,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-1.21 (1.15-1.27,<br>p\<0.001)
+1.21 (1.15-1.27,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-1.26 (1.20-1.33,<br>p\<0.001)
+1.26 (1.20-1.33,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-1.20 (1.15-1.65,<br>p\<0.001)
+1.20 (1.15-1.65,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-1.24 (1.18-1.31,<br>p\<0.001)
+1.24 (1.18-1.31,<br>p&lt0.001)
 </td>
 </tr>
 <tr>
@@ -520,19 +520,19 @@ Age (5 year-interval)
 Sex: female
 </td>
 <td style="text-align:right;">
-0.63 (0.50-0.78,<br>p\<0.001)
+0.63 (0.50-0.78,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 0.85 (0.71-1.00,<br>p=0.056)
 </td>
 <td style="text-align:right;">
-0.47 (0.39-0.57,<br>p\<0.001)
+0.47 (0.39-0.57,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 0.95 (0.81-1.11,<br>p=0.498)
 </td>
 <td style="text-align:right;">
-0.59 (0.48-0.71,<br>p\<0.001)
+0.59 (0.48-0.71,<br>p&lt0.001)
 </td>
 </tr>
 <tr>
@@ -540,15 +540,15 @@ Sex: female
 Obese (WHR)
 </td>
 <td style="text-align:right;">
-5.72 (4.37-7.59,<br>p\<0.001)
+5.72 (4.37-7.59,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-5.39 (4.50-6.46,<br>p\<0.001)
+5.39 (4.50-6.46,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-5.06 (4.29-5.97,<br>p\<0.001)
+5.06 (4.29-5.97,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 </td>
@@ -558,17 +558,17 @@ Obese (WHR)
 BMI
 </td>
 <td style="text-align:right;">
-1.14 (1.12-1.16,<br>p\<0.001)
+1.14 (1.12-1.16,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-1.14 (1.12-1.15,<br>p\<0.001)
+1.14 (1.12-1.15,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-1.13 (1.11-1.15,<br>p\<0.001)
+1.13 (1.11-1.15,<br>p&lt0.001)
 </td>
 </tr>
 <tr>
@@ -576,19 +576,19 @@ BMI
 Household income range
 </td>
 <td style="text-align:right;">
-0.75 (0.70-0.81,<br>p\<0.001)
+0.75 (0.70-0.81,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.87 (0.82-0.92,<br>p\<0.001)
+0.87 (0.82-0.92,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.85 (0.80-0.90,<br>p\<0.001)
+0.85 (0.80-0.90,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.90 (0.86-0.95,<br>p\<0.001)
+0.90 (0.86-0.95,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.85 (0.80-0.91,<br>p\<0.001)
+0.85 (0.80-0.91,<br>p&lt0.001)
 </td>
 </tr>
 <tr>
@@ -599,16 +599,16 @@ Neighbourhood type: urban
 0.93 (0.71-1.21,<br>p=0.605)
 </td>
 <td style="text-align:right;">
-0.58 (0.47-0.72,<br>p\<0.001)
+0.58 (0.47-0.72,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.62 (0.50-0.77,<br>p\<0.001)
+0.62 (0.50-0.77,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.60 (0.50-0.72,<br>p\<0.001)
+0.60 (0.50-0.72,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-0.66 (0.52-0.84,<br>p\<0.001)
+0.66 (0.52-0.84,<br>p&lt0.001)
 </td>
 </tr>
 <tr>
@@ -616,7 +616,7 @@ Neighbourhood type: urban
 AHEI Score (E^1)
 </td>
 <td style="text-align:right;">
-0.78 (0.70-0.88,<br>p\<0.001)
+0.78 (0.70-0.88,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 </td>
@@ -631,10 +631,10 @@ AHEI Score (E^1)
 </tr>
 <tr>
 <td style="text-align:left;">
-Recreation Met Score: \>=525
+Recreation Met Score: &gt=525
 </td>
 <td style="text-align:right;">
-0.58 (0.46-0.73,<br>p\<0.001)
+0.58 (0.46-0.73,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 </td>
@@ -652,22 +652,22 @@ Recreation Met Score: \>=525
 Current/Former smoker: yes
 </td>
 <td style="text-align:right;">
-1.65 (1.31-2.07,<br>p\<0.001)
+1.65 (1.31-2.07,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-1.55 (1.34-1.80,<br>p\<0.001)
+1.55 (1.34-1.80,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
-1.38 (1.15-1.66,<br>p\<0.001)
+1.38 (1.15-1.66,<br>p&lt0.001)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Alcohol: \<1 drink/day
+Alcohol: &lt1 drink/day
 </td>
 <td style="text-align:right;">
 1.17 (0.91-1.51,<br>p=0.217)
@@ -677,7 +677,7 @@ Alcohol: \<1 drink/day
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-1.81 (1.54-2.14,<br>p\<0.001)
+1.81 (1.54-2.14,<br>p&lt0.001)
 </td>
 <td style="text-align:right;">
 1.34 (1.09-1.65,<br>p=0.006)
@@ -716,7 +716,7 @@ GS
 <tbody>
 <tr>
 <td style="text-align:left;">
-Probability Threshold \*
+Probability Threshold *
 </td>
 <td style="text-align:right;">
 0.47
@@ -1268,7 +1268,7 @@ Female
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 4em;" indentlevel="2">
-\<20k
+&lt20k
 </td>
 <td style="text-align:left;">
 186 (80.2%)
@@ -1386,7 +1386,7 @@ Median (Q1; Q3)
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 4em;" indentlevel="2">
-\>=1 drinks/day
+&gt=1 drinks/day
 </td>
 <td style="text-align:left;">
 1157 (91.0%)
@@ -1400,7 +1400,7 @@ Median (Q1; Q3)
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 4em;" indentlevel="2">
-\<1 drink/day
+&lt1 drink/day
 </td>
 <td style="text-align:left;">
 2629 (89.5%)
