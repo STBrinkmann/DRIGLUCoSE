@@ -789,20 +789,20 @@ Youden index
 OR (95% CI, p-value)
 </td>
 <td style="text-align:right;">
-0.46 (0.35-0.61, p \< 0.001)
+0.46 (0.35-0.61, p < 0.001)
 </td>
 <td style="text-align:right;">
-0.57 (0.42-0.76, p \< 0.001)
+0.57 (0.42-0.76, p < 0.001)
 </td>
 <td style="text-align:right;">
-0.42 (0.31-0.57, p \< 0.001)
+0.42 (0.31-0.57, p < 0.001)
 </td>
 </tr>
 </tbody>
 <tfoot>
 <tr>
 <td style="padding: 0; " colspan="100%">
-<sup>\*</sup> Probability threshold used for predicting Diabetes. Values
+<sup>*</sup> Probability threshold used for predicting Diabetes. Values
 equal or greater than this threshold are mapped as “No”.
 </td>
 </tr>
@@ -856,7 +856,7 @@ OR<br>(BMI-adjusted)
 <tbody>
 <tr>
 <td style="text-align:left;">
-Probability Threshold \*
+Probability Threshold *
 </td>
 <td style="text-align:center;">
 0.44
@@ -943,7 +943,7 @@ Youden index
 <tfoot>
 <tr>
 <td style="padding: 0; " colspan="100%">
-<sup>\*</sup> Probability threshold used for predicting Diabetes. Values
+<sup>*</sup> Probability threshold used for predicting Diabetes. Values
 equal or greater than this threshold are mapped as “No”.
 </td>
 </tr>
@@ -1198,7 +1198,7 @@ Female
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 4em;" indentlevel="2">
-\>90k
+&lt90k
 </td>
 <td style="text-align:left;">
 1793 (93.3%)
