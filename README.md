@@ -1,4 +1,4 @@
-DRI-GLUCoSE — Work in Progress
+DRI-GLUCoSE
 ================
 
 -   [Installation](#installation)
@@ -10,13 +10,15 @@ DRI-GLUCoSE — Work in Progress
             isochrones](#i-road-network-data-and-isochrones)
         -   [(ii) Distance-weighting](#ii-distance-weighting)
 -   [Appendix](#appendix)
-    -   [Tables](#tables)
     -   [Figures](#figures)
+    -   [Tables](#tables)
     -   [Summary Statistics](#summary-statistics)
 -   [About](#about)
     -   [Package contributors](#package-contributors)
     -   [Thesis authors](#thesis-authors)
 -   [Bibliography](#bibliography)
+
+[![DOI:10.1007/s11524-022-00630-w](https://zenodo.org/badge/DOI/10.1007/s11524-022-00630-w.svg)](https://doi.org/10.1007/s11524-022-00630-w)
 
 As elaborated in our recent analyses (Walker et al. 2019; Scarpone et
 al. 2020), nearly all previous studies in the literature use either
@@ -26,10 +28,10 @@ socioeconomic status (SES) (Gong et al. 2014; Fuertes et al. 2014).
 Therefore, we present a distance-weighted, network-based model for
 quantifying the combined effects of local greenspace and SES on diabetes
 risk, from which we derive an area-based Diabetes Risk Index of
-Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE).  
-The goal of the `DRIGLUCoSE` package is to provide a public package
+Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE). The
+goal of the `DRIGLUCoSE` package is to provide a public package
 containing functions and code used in the development of the DRI-GLUCoSE
-Index.
+Index(Walker et al. 2022).
 
 # Installation
 
@@ -54,16 +56,16 @@ sf object of 2 points in Erlangen, Germany.
 ``` r
 data(Erlangen)
 Erlangen
-#> Simple feature collection with 2 features and 2 fields
-#> Geometry type: POINT
-#> Dimension:     XY
-#> Bounding box:  xmin: 35199.46 ymin: -159433.5 xmax: 36281.59 ymax: -159243.2
-#> Projected CRS: ETRS89 / LCC Germany (N-E)
-#> # A tibble: 2 x 3
-#>     tag Speed                 geom
-#>   <dbl> <dbl>          <POINT [m]>
-#> 1     1  78.5 (35199.46 -159433.5)
-#> 2     2  79.8 (36281.59 -159243.2)
+## Simple feature collection with 2 features and 2 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: 35199.46 ymin: -159433.5 xmax: 36281.59 ymax: -159243.2
+## Projected CRS: ETRS89 / LCC Germany (N-E)
+## # A tibble: 2 x 3
+##     tag Speed                 geom
+##   <dbl> <dbl>          <POINT [m]>
+## 1     1  78.5 (35199.46 -159433.5)
+## 2     2  79.8 (36281.59 -159243.2)
 ```
 
 ## Census variables
@@ -87,23 +89,23 @@ census <- sf::st_make_grid(
   dplyr::rename(geom = x)
 
 census
-#> Simple feature collection with 2142 features and 3 fields
-#> Geometry type: POLYGON
-#> Dimension:     XY
-#> Bounding box:  xmin: 33236.96 ymin: -161396 xmax: 38336.96 ymax: -157196
-#> Projected CRS: ETRS89 / LCC Germany (N-E)
-#> First 10 features:
-#>    census_var_a census_var_b census_var_c                           geom
-#> 1           284         2009       114811 POLYGON ((33236.96 -161396,...
-#> 2           848         3318       139961 POLYGON ((33336.96 -161396,...
-#> 3           918         3954       112673 POLYGON ((33436.96 -161396,...
-#> 4           101         3359       137505 POLYGON ((33536.96 -161396,...
-#> 5           623         3107       109201 POLYGON ((33636.96 -161396,...
-#> 6           905         2630       131656 POLYGON ((33736.96 -161396,...
-#> 7           645         6512       135789 POLYGON ((33836.96 -161396,...
-#> 8           934         9945       115006 POLYGON ((33936.96 -161396,...
-#> 9           400         3583       111379 POLYGON ((34036.96 -161396,...
-#> 10          900         7778       137576 POLYGON ((34136.96 -161396,...
+## Simple feature collection with 2142 features and 3 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 33236.96 ymin: -161396 xmax: 38336.96 ymax: -157196
+## Projected CRS: ETRS89 / LCC Germany (N-E)
+## First 10 features:
+##    census_var_a census_var_b census_var_c                           geom
+## 1           284         2009       114811 POLYGON ((33236.96 -161396,...
+## 2           848         3318       139961 POLYGON ((33336.96 -161396,...
+## 3           918         3954       112673 POLYGON ((33436.96 -161396,...
+## 4           101         3359       137505 POLYGON ((33536.96 -161396,...
+## 5           623         3107       109201 POLYGON ((33636.96 -161396,...
+## 6           905         2630       131656 POLYGON ((33736.96 -161396,...
+## 7           645         6512       135789 POLYGON ((33836.96 -161396,...
+## 8           934         9945       115006 POLYGON ((33936.96 -161396,...
+## 9           400         3583       111379 POLYGON ((34036.96 -161396,...
+## 10          900         7778       137576 POLYGON ((34136.96 -161396,...
 ```
 
 ## Greenspace
@@ -124,16 +126,16 @@ DRIGLUCoSE::LS_L1C(l1c_path = "docs/LC08_L1TP_193026_20200423_20200508_01_T1_sma
                    sf_mask = DRIGLUCoSE::Erlangen %>% 
                      dplyr::mutate(geom = sf::st_buffer(geom, Speed*25)),
                    cores = 20)
-#> Project raster
-#> DN to TOA Reflectance
-#> class      : RasterStack 
-#> dimensions : 122, 151, 18422, 8  (nrow, ncol, ncell, nlayers)
-#> resolution : 30, 30  (x, y)
-#> extent     : 33493.69, 38023.69, -161164.2, -157504.2  (xmin, xmax, ymin, ymax)
-#> crs        : +proj=lcc +lat_0=51 +lon_0=10.5 +lat_1=48.6666666666667 +lat_2=53.6666666666667 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs 
-#> names      :      Blue,     Green,       Red,       NIR,     SWIR1,     SWIR2,      NDWI,      NDVI 
-#> min values :         0,         0,         0,         0,         0,         0,        -1,        -1 
-#> max values : 0.2020575, 0.2322532, 0.3076383, 0.5424371, 0.4233773, 0.3753066, 1.0000000, 1.0000000
+## Project raster
+## DN to TOA Reflectance
+## class      : RasterStack 
+## dimensions : 122, 151, 18422, 8  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 33493.69, 38023.69, -161164.2, -157504.2  (xmin, xmax, ymin, ymax)
+## crs        : +proj=lcc +lat_0=51 +lon_0=10.5 +lat_1=48.6666666666667 +lat_2=53.6666666666667 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs 
+## names      :      Blue,     Green,       Red,       NIR,     SWIR1,     SWIR2,      NDWI,      NDVI 
+## min values :         0,         0,         0,         0,         0,         0,        -1,        -1 
+## max values : 0.2020575, 0.2322532, 0.3076383, 0.5424371, 0.4233773, 0.3753066, 1.0000000, 1.0000000
 ```
 
 ## Exposure Model
@@ -179,34 +181,34 @@ erlangen.isodistances <- DRIGLUCoSE::isodistances(x = Erlangen,
 erlangen.isochrones <- DRIGLUCoSE::isochrones(x = erlangen.isodistances, 
                                               buffer = 40, cores = 2)
 erlangen.isochrones
-#> Simple feature collection with 20 features and 2 fields
-#> Geometry type: MULTIPOLYGON
-#> Dimension:     XY
-#> Bounding box:  xmin: 34034 ymin: -160951 xmax: 37750 ymax: -157782
-#> Projected CRS: ETRS89 / LCC Germany (N-E)
-#> # A tibble: 20 x 3
-#>     time   tag                                                              geom
-#>  * <dbl> <dbl>                                                <MULTIPOLYGON [m]>
-#>  1     2     1 (((35292.18 -159582.1, 35292.75 -159584.1, 35293.22 -159586.1, 3~
-#>  2     4     1 (((35314.38 -159725.3, 35313.74 -159727.3, 35312.99 -159729.2, 3~
-#>  3     6     1 (((35348.96 -159829.4, 35348.54 -159830.2, 35348.45 -159830.3, 3~
-#>  4     8     1 (((35282 -159969.8, 35281.96 -159971.9, 35281.8 -159974, 35281.5~
-#>  5    10     1 (((35245.96 -160123.4, 35245.29 -160122.9, 35244.62 -160122.5, 3~
-#>  6    12     1 (((35262.67 -160300.9, 35262.28 -160300.9, 35261.62 -160301, 352~
-#>  7    14     1 (((35321.28 -160216.4, 35321.58 -160216.1, 35322.09 -160215.7, 3~
-#>  8    16     1 (((35375.03 -160623, 35373.73 -160624.6, 35372.35 -160626.2, 353~
-#>  9    18     1 (((35429.36 -160612.4, 35428.87 -160610.3, 35428.87 -160610.3, 3~
-#> 10    20     1 (((35546 -160803.2, 35546.09 -160803.5, 35546.22 -160804.2, 3554~
-#> 11     2     2 (((36385.71 -159372.9, 36384.21 -159374.3, 36382.64 -159375.7, 3~
-#> 12     4     2 (((36379.78 -159545.8, 36379.83 -159546.5, 36379.9 -159547.1, 36~
-#> 13     6     2 (((36368.01 -159688.3, 36366.95 -159690.1, 36365.8 -159691.9, 36~
-#> 14     8     2 (((36655.61 -159681.6, 36656.11 -159683.6, 36656.49 -159685.6, 3~
-#> 15    10     2 (((36520.27 -159907.5, 36518.33 -159908.3, 36516.36 -159909, 365~
-#> 16    12     2 (((36053.07 -160058.5, 36051.72 -160056.9, 36050.46 -160055.3, 3~
-#> 17    14     2 (((36666.38 -159919.4, 36667.14 -159917.5, 36668.01 -159915.5, 3~
-#> 18    16     2 (((36016.71 -160325, 36016.5 -160325.4, 36016.23 -160325.9, 3601~
-#> 19    18     2 (((37046.71 -160178.9, 37045.45 -160177.2, 37044.28 -160175.5, 3~
-#> 20    20     2 (((36689.36 -160321.8, 36690.36 -160320, 36691.45 -160318.2, 366~
+## Simple feature collection with 20 features and 2 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 34034 ymin: -160951 xmax: 37750 ymax: -157782
+## Projected CRS: ETRS89 / LCC Germany (N-E)
+## # A tibble: 20 x 3
+##     time   tag                                                              geom
+##  * <dbl> <dbl>                                                <MULTIPOLYGON [m]>
+##  1     2     1 (((35292.18 -159582.1, 35292.75 -159584.1, 35293.22 -159586.1, 3~
+##  2     4     1 (((35314.38 -159725.3, 35313.74 -159727.3, 35312.99 -159729.2, 3~
+##  3     6     1 (((35348.37 -159830.5, 35347.9 -159831.2, 35347.44 -159832, 3534~
+##  4     8     1 (((35282 -159969.8, 35281.96 -159971.9, 35281.8 -159974, 35281.5~
+##  5    10     1 (((35249.78 -160125.6, 35249.57 -160125.5, 35248.86 -160125.1, 3~
+##  6    12     1 (((35264.36 -160300.8, 35263.71 -160300.8, 35263.06 -160300.9, 3~
+##  7    14     1 (((35379.71 -160416.5, 35380.79 -160418.3, 35381.78 -160420.1, 3~
+##  8    16     1 (((35412 -160571, 35411.95 -160573.1, 35411.78 -160575.2, 35411.~
+##  9    18     1 (((35430.23 -160426.8, 35430.28 -160426.3, 35430.28 -160426.3, 3~
+## 10    20     1 (((35546 -160803.2, 35546.09 -160803.5, 35546.22 -160804.2, 3554~
+## 11     2     2 (((36385.71 -159372.9, 36384.21 -159374.3, 36382.64 -159375.7, 3~
+## 12     4     2 (((36379.78 -159545.8, 36379.83 -159546.5, 36379.9 -159547.1, 36~
+## 13     6     2 (((36368.01 -159688.3, 36366.95 -159690.1, 36365.8 -159691.9, 36~
+## 14     8     2 (((36655.01 -159679.5, 36655.61 -159681.6, 36656.11 -159683.6, 3~
+## 15    10     2 (((36520.27 -159907.5, 36518.33 -159908.3, 36516.36 -159909, 365~
+## 16    12     2 (((36053.07 -160058.5, 36051.72 -160056.9, 36050.46 -160055.3, 3~
+## 17    14     2 (((36832.82 -159976.8, 36832.8 -159977, 36832.79 -159977.1, 3683~
+## 18    16     2 (((36016.71 -160325, 36016.5 -160325.4, 36016.23 -160325.9, 3601~
+## 19    18     2 (((36020.67 -160327.7, 36022.64 -160327, 36024.65 -160326.4, 360~
+## 20    20     2 (((36689.36 -160321.8, 36690.36 -160320, 36691.45 -160318.2, 366~
 ```
 
 Figure 1 shows isodistances of the two points of the sample data in
@@ -223,24 +225,23 @@ decreases with increasing distance from the household, i.e., features
 that are farther away have less influence than nearby features, as
 illustrated in Figure 2. A logit function was selected as it
 heuristically approximates a suitable distance-decay function (Bauer and
-Groneberg 2016; Jia, Wang, and Xierali 2019).  
-The distance-weighting is separated in two parts, first the logit
-function (1) that is used for both SES and greenspace variables, and
-second the proportional weights function (4) that is only applied on SES
-variables.
+Groneberg 2016; Jia, Wang, and Xierali 2019). The distance-weighting is
+separated in two parts, first the logit function (1) that is used for
+both SES and greenspace variables, and second the proportional weights
+function (4) that is only applied on SES variables.
 
 <center>
 
 ![
 \\begin{align\*}
-  G\_t =
+  G_t =
     \\begin{cases}
-      \\cfrac{\\int\_0^{r\_t} \\, g(r)dr}{\\int\_0^{r\_{t\_{max}}} \\, g(r)dr}, t=1\\\\
-      \\cfrac{\\int\_{r\_{t-1}}^{r\_t}  \\, g(r)dr}{\\int\_0^{r\_{t\_{max}}} \\, g(r)dr}, t&gt;1
+      \\cfrac{\\int_0^{r_t} \\, g(r)dr}{\\int_0^{r\_{t\_{max}}} \\, g(r)dr}, t=1\\\\
+      \\cfrac{\\int\_{r\_{t-1}}^{r_t}  \\, g(r)dr}{\\int_0^{r\_{t\_{max}}} \\, g(r)dr}, t\>1
     \\end{cases}
     && \\text{(1)}
 \\end{align\*}
-](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20G_t%20%3D%0A%20%20%20%20%5Cbegin%7Bcases%7D%0A%20%20%20%20%20%20%5Ccfrac%7B%5Cint_0%5E%7Br_t%7D%20%5C%2C%20g%28r%29dr%7D%7B%5Cint_0%5E%7Br_%7Bt_%7Bmax%7D%7D%7D%20%5C%2C%20g%28r%29dr%7D%2C%20t%3D1%5C%5C%0A%20%20%20%20%20%20%5Ccfrac%7B%5Cint_%7Br_%7Bt-1%7D%7D%5E%7Br_t%7D%20%20%5C%2C%20g%28r%29dr%7D%7B%5Cint_0%5E%7Br_%7Bt_%7Bmax%7D%7D%7D%20%5C%2C%20g%28r%29dr%7D%2C%20t%3E1%0A%20%20%20%20%5Cend%7Bcases%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%281%29%7D%0A%5Cend%7Balign%2A%7D%0A "
+](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Cbegin%7Balign%2A%7D%0A%20%20G_t%20%3D%0A%20%20%20%20%5Cbegin%7Bcases%7D%0A%20%20%20%20%20%20%5Ccfrac%7B%5Cint_0%5E%7Br_t%7D%20%5C%2C%20g%28r%29dr%7D%7B%5Cint_0%5E%7Br_%7Bt_%7Bmax%7D%7D%7D%20%5C%2C%20g%28r%29dr%7D%2C%20t%3D1%5C%5C%0A%20%20%20%20%20%20%5Ccfrac%7B%5Cint_%7Br_%7Bt-1%7D%7D%5E%7Br_t%7D%20%20%5C%2C%20g%28r%29dr%7D%7B%5Cint_0%5E%7Br_%7Bt_%7Bmax%7D%7D%7D%20%5C%2C%20g%28r%29dr%7D%2C%20t%3E1%0A%20%20%20%20%5Cend%7Bcases%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%281%29%7D%0A%5Cend%7Balign%2A%7D%0A "
 \begin{align*}
   G_t =
     \begin{cases}
@@ -253,11 +254,13 @@ variables.
 
 </center>
 
-Each isochrone ![t](https://latex.codecogs.com/svg.latex?t "t") is
-assigned a distance weight
-![G\_T](https://latex.codecogs.com/svg.latex?G_T "G_T"), calculated as
-the integral of the logistic distance decay function
-![g(r)](https://latex.codecogs.com/svg.latex?g%28r%29 "g(r)") (2)
+Each isochrone
+![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
+is assigned a distance weight
+![G_T](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;G_T "G_T"),
+calculated as the integral of the logistic distance decay function
+![g(r)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;g%28r%29 "g(r)")
+(2)
 
 <center>
 
@@ -267,7 +270,7 @@ the integral of the logistic distance decay function
     \\cfrac{1}{1 + e^{ \\,b \\,(r-m)}}
     && \\text{(2)}
 \\end{align\*}
-](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20g%28r%29%20%3D%0A%20%20%20%20%5Ccfrac%7B1%7D%7B1%20%2B%20e%5E%7B%20%5C%2Cb%20%5C%2C%28r-m%29%7D%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%282%29%7D%0A%5Cend%7Balign%2A%7D%0A "
+](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Cbegin%7Balign%2A%7D%0A%20%20g%28r%29%20%3D%0A%20%20%20%20%5Ccfrac%7B1%7D%7B1%20%2B%20e%5E%7B%20%5C%2Cb%20%5C%2C%28r-m%29%7D%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%282%29%7D%0A%5Cend%7Balign%2A%7D%0A "
 \begin{align*}
   g(r) =
     \cfrac{1}{1 + e^{ \,b \,(r-m)}}
@@ -277,16 +280,17 @@ the integral of the logistic distance decay function
 
 </center>
 
-with ![b = 8](https://latex.codecogs.com/svg.latex?b%20%3D%208 "b = 8")
+with
+![b = 8](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;b%20%3D%208 "b = 8")
 and
-![m = 0.6](https://latex.codecogs.com/svg.latex?m%20%3D%200.6 "m = 0.6"),
+![m = 0.6](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;m%20%3D%200.6 "m = 0.6"),
 in the interval between the mean inner radius
-![r\_{t-1}](https://latex.codecogs.com/svg.latex?r_%7Bt-1%7D "r_{t-1}")
+![r\_{t-1}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;r_%7Bt-1%7D "r_{t-1}")
 and mean outer radius
-![r\_t](https://latex.codecogs.com/svg.latex?r_t "r_t") of the isochrone
-(e.g. 2 to 4 minutes isochrones), normalized by the integral from 0 to
-the outermost isochrone boundary
-![r\_{t\_{max}}](https://latex.codecogs.com/svg.latex?r_%7Bt_%7Bmax%7D%7D "r_{t_{max}}")
+![r_t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;r_t "r_t")
+of the isochrone (e.g. 2 to 4 minutes isochrones), normalized by the
+integral from 0 to the outermost isochrone boundary
+![r\_{t\_{max}}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;r_%7Bt_%7Bmax%7D%7D "r_{t_{max}}")
 (e.g. 20 minutes isochrone). Weighted summary statistics to describe the
 greenspace (e.g. mean or minimum NDVI) are thus described as (3)
 
@@ -294,10 +298,10 @@ greenspace (e.g. mean or minimum NDVI) are thus described as (3)
 
 ![
 \\begin{align\*}
-  \\sum\_t G\_t \\, f(NDVI\_t \\, \\cap \\, I\_t)
+  \\sum_t G_t \\, f(NDVI_t \\, \\cap \\, I_t)
     && \\text{(3)}
 \\end{align\*}
-](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20%5Csum_t%20G_t%20%5C%2C%20f%28NDVI_t%20%5C%2C%20%5Ccap%20%5C%2C%20I_t%29%0A%20%20%20%20%26%26%20%5Ctext%7B%283%29%7D%0A%5Cend%7Balign%2A%7D%0A "
+](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Cbegin%7Balign%2A%7D%0A%20%20%5Csum_t%20G_t%20%5C%2C%20f%28NDVI_t%20%5C%2C%20%5Ccap%20%5C%2C%20I_t%29%0A%20%20%20%20%26%26%20%5Ctext%7B%283%29%7D%0A%5Cend%7Balign%2A%7D%0A "
 \begin{align*}
   \sum_t G_t \, f(NDVI_t \, \cap \, I_t)
     && \text{(3)}
@@ -314,11 +318,11 @@ the isochrone are further defined as (4)
 ![
 \\begin{align\*}
   A\_{tj} =
-    \\cfrac{A(C\_j \\, \\cap \\, I\_t)}
-    {A(I\_t)}
+    \\cfrac{A(C_j \\, \\cap \\, I_t)}
+    {A(I_t)}
     && \\text{(4)}
 \\end{align\*}
-](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20A_%7Btj%7D%20%3D%0A%20%20%20%20%5Ccfrac%7BA%28C_j%20%5C%2C%20%5Ccap%20%5C%2C%20I_t%29%7D%0A%20%20%20%20%7BA%28I_t%29%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%284%29%7D%0A%5Cend%7Balign%2A%7D%0A "
+](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Cbegin%7Balign%2A%7D%0A%20%20A_%7Btj%7D%20%3D%0A%20%20%20%20%5Ccfrac%7BA%28C_j%20%5C%2C%20%5Ccap%20%5C%2C%20I_t%29%7D%0A%20%20%20%20%7BA%28I_t%29%7D%0A%20%20%20%20%26%26%20%5Ctext%7B%284%29%7D%0A%5Cend%7Balign%2A%7D%0A "
 \begin{align*}
   A_{tj} =
     \cfrac{A(C_j \, \cap \, I_t)}
@@ -330,23 +334,25 @@ the isochrone are further defined as (4)
 </center>
 
 with the proportion of the area of the intersection of the census area
-![C\_j](https://latex.codecogs.com/svg.latex?C_j "C_j") and the
-isochrone ![I\_t](https://latex.codecogs.com/svg.latex?I_t "I_t"), and
-the area of the isochrone
-![I\_t](https://latex.codecogs.com/svg.latex?I_t "I_t"). The weighted
-value of the SES variable
-![x\_i](https://latex.codecogs.com/svg.latex?x_i "x_i") in the census
-area ![j](https://latex.codecogs.com/svg.latex?j "j") is then defined as
-(5)
+![C_j](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;C_j "C_j")
+and the isochrone
+![I_t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;I_t "I_t"),
+and the area of the isochrone
+![I_t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;I_t "I_t").
+The weighted value of the SES variable
+![x_i](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;x_i "x_i")
+in the census area
+![j](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;j "j")
+is then defined as (5)
 
 <center>
 
 ![
 \\begin{align\*}
-  \\sum\_t \\left( \\ G\_t \\ \\sum\_j \\, x\_{ij} \\; A{tj} \\right)
+  \\sum_t \\left( \\ G_t \\ \\sum_j \\, x\_{ij} \\; A{tj} \\right)
     && \\text{(5)}
 \\end{align\*}
-](https://latex.codecogs.com/svg.latex?%0A%5Cbegin%7Balign%2A%7D%0A%20%20%5Csum_t%20%5Cleft%28%20%5C%20G_t%20%5C%20%5Csum_j%20%5C%2C%20x_%7Bij%7D%20%5C%3B%20A%7Btj%7D%20%5Cright%29%0A%20%20%20%20%26%26%20%5Ctext%7B%285%29%7D%0A%5Cend%7Balign%2A%7D%0A "
+](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Cbegin%7Balign%2A%7D%0A%20%20%5Csum_t%20%5Cleft%28%20%5C%20G_t%20%5C%20%5Csum_j%20%5C%2C%20x_%7Bij%7D%20%5C%3B%20A%7Btj%7D%20%5Cright%29%0A%20%20%20%20%26%26%20%5Ctext%7B%285%29%7D%0A%5Cend%7Balign%2A%7D%0A "
 \begin{align*}
   \sum_t \left( \ G_t \ \sum_j \, x_{ij} \; A{tj} \right)
     && \text{(5)}
@@ -361,19 +367,8 @@ variable and fig. 2b has been calculated using (5), thus representing
 the proportional weights of all intersections with the census areas and
 isochrones. Greenspace is weighted as shown in fig. 2c using (3).
 
-<div class="figure">
+<img src="docs/WeightsPlot.svg" title="Figure 2: Unweighted values (a) and network-based distance-weighting function for socioeconomic variables (b) and greenspace (c). Bold black lines indicate the isochrones." alt="Figure 2: Unweighted values (a) and network-based distance-weighting function for socioeconomic variables (b) and greenspace (c). Bold black lines indicate the isochrones." width="90%" />
 
-<img src="docs/WeightsPlot.svg" alt="Figure 2: Unweighted values (a) and network-based distance-weighting function for socioeconomic variables (b) and greenspace (c). Bold black lines indicate the isochrones." width="90%" />
-<p class="caption">
-Figure 2: Unweighted values (a) and network-based distance-weighting
-function for socioeconomic variables (b) and greenspace (c). Bold black
-lines indicate the isochrones.
-</p>
-
-</div>
-
-  
-  
 The distance-weighting for the LANDSAT derived NDVI raster (greenspace
 exposure) is handled using `LS_band_weightin`, and SES distance- and
 areal-weighting using `census_weighting`.
@@ -393,11 +388,11 @@ NDVI_weighted <-
                                 b = 8, m = 0.6, cores = 2)
 
 NDVI_weighted
-#> # A tibble: 2 x 6
-#>     tag    sd median X5_percentile X95_percentile    skew
-#>   <dbl> <dbl>  <dbl>         <dbl>          <dbl>   <dbl>
-#> 1     1 0.206  0.606         0.277          0.911 -0.125 
-#> 2     2 0.104  0.539         0.360          0.714 -0.0122
+## # A tibble: 2 x 6
+##     tag    sd median X5_percentile X95_percentile    skew
+##   <dbl> <dbl>  <dbl>         <dbl>          <dbl>   <dbl>
+## 1     1 0.205  0.615         0.281          0.914 -0.145 
+## 2     2 0.104  0.540         0.360          0.714 -0.0122
 ```
 
 ``` r
@@ -405,14 +400,28 @@ census_weighted <- DRIGLUCoSE::census_weighting(isochrones = erlangen.isochrones
                                                 tag = "tag", census = census, 
                                                 b = 8, m = 0.6, cores = 2)
 census_weighted
-#> # A tibble: 2 x 4
-#>     tag census_var_a census_var_b census_var_c
-#>   <dbl>        <dbl>        <dbl>        <dbl>
-#> 1     1         558.        5264.      130897.
-#> 2     2         547.        5419.      124606.
+## # A tibble: 2 x 4
+##     tag census_var_a census_var_b census_var_c
+##   <dbl>        <dbl>        <dbl>        <dbl>
+## 1     1         562.        5323.      130970.
+## 2     2         547.        5419.      124610.
 ```
 
 # Appendix
+
+## Figures
+
+DRI-GLUCoSE scores for Vancouver (top) and Hamilton (bottom), ranging
+from low risk (purple) to high risk areas (orange).
+
+<img src="docs/DRI-GLUCoSE Index - Vancouver.png" width="90%" />
+<img src="docs/DRI-GLUCoSE Index - Hamilton.png" width="90%" />
+
+
+
+<img src="docs/forest_plot_big.svg" title="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models." alt="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models." width="90%" />
+
+<img src="docs/roc_auc.svg" title="Figure A.2: The ROC curves for both BMI- and WHR-controlled multivariable logistic models." alt="Figure A.2: The ROC curves for both BMI- and WHR-controlled multivariable logistic models." width="90%" />
 
 ## Tables
 
@@ -471,19 +480,19 @@ OR<br>(BMI-adjusted)
 DRI-GLUCoSE Score
 </td>
 <td style="text-align:right;">
-0.37 (0.26-0.51,<br>p&lt;0.001)
+0.37 (0.26-0.51,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.41 (0.31-0.53,<br>p&lt;0.001)
+0.41 (0.31-0.53,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.46 (0.35-0.61,<br>p&lt;0.001)
+0.46 (0.35-0.61,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.45 (0.36-0.56,<br>p&lt;0.001)
+0.45 (0.36-0.56,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.50 (0.37-0.67,<br>p&lt;0.001)
+0.50 (0.37-0.67,<br>p\<0.001)
 </td>
 </tr>
 <tr>
@@ -491,19 +500,19 @@ DRI-GLUCoSE Score
 Age (5 year-interval)
 </td>
 <td style="text-align:right;">
-1.26 (1.18-1.34,<br>p&lt;0.001)
+1.26 (1.18-1.34,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-1.21 (1.15-1.27,<br>p&lt;0.001)
+1.21 (1.15-1.27,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-1.26 (1.20-1.33,<br>p&lt;0.001)
+1.26 (1.20-1.33,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-1.20 (1.15-1.65,<br>p&lt;0.001)
+1.20 (1.15-1.65,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-1.24 (1.18-1.31,<br>p&lt;0.001)
+1.24 (1.18-1.31,<br>p\<0.001)
 </td>
 </tr>
 <tr>
@@ -511,19 +520,19 @@ Age (5 year-interval)
 Sex: female
 </td>
 <td style="text-align:right;">
-0.63 (0.50-0.78,<br>p&lt;0.001)
+0.63 (0.50-0.78,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 0.85 (0.71-1.00,<br>p=0.056)
 </td>
 <td style="text-align:right;">
-0.47 (0.39-0.57,<br>p&lt;0.001)
+0.47 (0.39-0.57,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 0.95 (0.81-1.11,<br>p=0.498)
 </td>
 <td style="text-align:right;">
-0.59 (0.48-0.71,<br>p&lt;0.001)
+0.59 (0.48-0.71,<br>p\<0.001)
 </td>
 </tr>
 <tr>
@@ -531,15 +540,15 @@ Sex: female
 Obese (WHR)
 </td>
 <td style="text-align:right;">
-5.72 (4.37-7.59,<br>p&lt;0.001)
+5.72 (4.37-7.59,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-5.39 (4.50-6.46,<br>p&lt;0.001)
+5.39 (4.50-6.46,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-5.06 (4.29-5.97,<br>p&lt;0.001)
+5.06 (4.29-5.97,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 </td>
@@ -549,17 +558,17 @@ Obese (WHR)
 BMI
 </td>
 <td style="text-align:right;">
-1.14 (1.12-1.16,<br>p&lt;0.001)
+1.14 (1.12-1.16,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-1.14 (1.12-1.15,<br>p&lt;0.001)
+1.14 (1.12-1.15,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-1.13 (1.11-1.15,<br>p&lt;0.001)
+1.13 (1.11-1.15,<br>p\<0.001)
 </td>
 </tr>
 <tr>
@@ -567,19 +576,19 @@ BMI
 Household income range
 </td>
 <td style="text-align:right;">
-0.75 (0.70-0.81,<br>p&lt;0.001)
+0.75 (0.70-0.81,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.87 (0.82-0.92,<br>p&lt;0.001)
+0.87 (0.82-0.92,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.85 (0.80-0.90,<br>p&lt;0.001)
+0.85 (0.80-0.90,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.90 (0.86-0.95,<br>p&lt;0.001)
+0.90 (0.86-0.95,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.85 (0.80-0.91,<br>p&lt;0.001)
+0.85 (0.80-0.91,<br>p\<0.001)
 </td>
 </tr>
 <tr>
@@ -590,16 +599,16 @@ Neighbourhood type: urban
 0.93 (0.71-1.21,<br>p=0.605)
 </td>
 <td style="text-align:right;">
-0.58 (0.47-0.72,<br>p&lt;0.001)
+0.58 (0.47-0.72,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.62 (0.50-0.77,<br>p&lt;0.001)
+0.62 (0.50-0.77,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.60 (0.50-0.72,<br>p&lt;0.001)
+0.60 (0.50-0.72,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-0.66 (0.52-0.84,<br>p&lt;0.001)
+0.66 (0.52-0.84,<br>p\<0.001)
 </td>
 </tr>
 <tr>
@@ -607,7 +616,7 @@ Neighbourhood type: urban
 AHEI Score (E^1)
 </td>
 <td style="text-align:right;">
-0.78 (0.70-0.88,<br>p&lt;0.001)
+0.78 (0.70-0.88,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 </td>
@@ -622,10 +631,10 @@ AHEI Score (E^1)
 </tr>
 <tr>
 <td style="text-align:left;">
-Recreation Met Score: &gt;=525
+Recreation Met Score: \>=525
 </td>
 <td style="text-align:right;">
-0.58 (0.46-0.73,<br>p&lt;0.001)
+0.58 (0.46-0.73,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 </td>
@@ -643,22 +652,22 @@ Recreation Met Score: &gt;=525
 Current/Former smoker: yes
 </td>
 <td style="text-align:right;">
-1.65 (1.31-2.07,<br>p&lt;0.001)
+1.65 (1.31-2.07,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-1.55 (1.34-1.80,<br>p&lt;0.001)
+1.55 (1.34-1.80,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
-1.38 (1.15-1.66,<br>p&lt;0.001)
+1.38 (1.15-1.66,<br>p\<0.001)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Alcohol: &lt;1 drink/day
+Alcohol: \<1 drink/day
 </td>
 <td style="text-align:right;">
 1.17 (0.91-1.51,<br>p=0.217)
@@ -668,7 +677,7 @@ Alcohol: &lt;1 drink/day
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-1.81 (1.54-2.14,<br>p&lt;0.001)
+1.81 (1.54-2.14,<br>p\<0.001)
 </td>
 <td style="text-align:right;">
 1.34 (1.09-1.65,<br>p=0.006)
@@ -676,8 +685,6 @@ Alcohol: &lt;1 drink/day
 </tr>
 </tbody>
 </table>
-
-  
 
 To analyse the effect of socioeconomic status (SES) and greenspace (GS),
 we further build multivariable models using the semi-adjusted model with
@@ -782,13 +789,13 @@ Youden index
 OR (95% CI, p-value)
 </td>
 <td style="text-align:right;">
-0.46 (0.35-0.61, p &lt; 0.001)
+0.46 (0.35-0.61, p \< 0.001)
 </td>
 <td style="text-align:right;">
-0.57 (0.42-0.76, p &lt; 0.001)
+0.57 (0.42-0.76, p \< 0.001)
 </td>
 <td style="text-align:right;">
-0.42 (0.31-0.57, p &lt; 0.001)
+0.42 (0.31-0.57, p \< 0.001)
 </td>
 </tr>
 </tbody>
@@ -796,14 +803,11 @@ OR (95% CI, p-value)
 <tr>
 <td style="padding: 0; " colspan="100%">
 <sup>\*</sup> Probability threshold used for predicting Diabetes. Values
-equal or greater than this threshold are mapped as “No.”
+equal or greater than this threshold are mapped as “No”.
 </td>
 </tr>
 </tfoot>
 </table>
-
-  
-
 <table style="width:90%;border-bottom: 0; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;" class=" lightable-classic">
 <caption>
 Table A.3: Model Performance for all multivariable models.
@@ -940,37 +944,11 @@ Youden index
 <tr>
 <td style="padding: 0; " colspan="100%">
 <sup>\*</sup> Probability threshold used for predicting Diabetes. Values
-equal or greater than this threshold are mapped as “No.”
+equal or greater than this threshold are mapped as “No”.
 </td>
 </tr>
 </tfoot>
 </table>
-
-  
-
-## Figures
-
-<div class="figure">
-
-<img src="docs/forest_plot_big.svg" alt="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models." width="90%" />
-<p class="caption">
-Figure A.1: Forest plot showing significant effects for both BMI- and
-WHR-controlled multivariable logistic models.
-</p>
-
-</div>
-
-  
-
-<div class="figure">
-
-<img src="docs/roc_auc.svg" alt="Figure A.2: The ROC curves for both BMI- and WHR-controlled multivariable logistic models." width="90%" />
-<p class="caption">
-Figure A.2: The ROC curves for both BMI- and WHR-controlled
-multivariable logistic models.
-</p>
-
-</div>
 
 ## Summary Statistics
 
@@ -1220,7 +1198,7 @@ Female
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 4em;" indentlevel="2">
-&gt;90k
+\>90k
 </td>
 <td style="text-align:left;">
 1793 (93.3%)
@@ -1290,7 +1268,7 @@ Female
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 4em;" indentlevel="2">
-&lt;20k
+\<20k
 </td>
 <td style="text-align:left;">
 186 (80.2%)
@@ -1408,7 +1386,7 @@ Median (Q1; Q3)
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 4em;" indentlevel="2">
-&gt;=1 drinks/day
+\>=1 drinks/day
 </td>
 <td style="text-align:left;">
 1157 (91.0%)
@@ -1422,7 +1400,7 @@ Median (Q1; Q3)
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 4em;" indentlevel="2">
-&lt;1 drink/day
+\<1 drink/day
 </td>
 <td style="text-align:left;">
 2629 (89.5%)
@@ -1979,20 +1957,37 @@ Median (Q1; Q3)
 
 ### Package contributors
 
-Brinkmann, Sebastian Tobias (Package creator and author)  
-e-mail: <sebastian.brinkmann@fau.de>  
-Große, Tim (Contributor)
+Brinkmann, Sebastian Tobias (Package creator and author) e-mail:
+<sebastian.brinkmann@fau.de> Große, Tim (Contributor)
 
 ### Thesis authors
 
 Walker, Blake Byron (1\*)  
 Brinkmann, Sebastian Tobias (1)  
 Große, Tim (1)  
+Dominik Kremer (1)  
+Schuurman Nadine (2)  
+Hystad Perry (3)  
+Rangarajan Sumathy (4)  
+Teo Koon (4)  
+Yusuf Salim (4)  
+Lear Scott A. (5)
 
 1: Community Health Environments and Social Terrains (CHEST) Lab,
 Institut für Geographie, Friedrich-Alexander-Universität
-Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany  
-\*corresponding author  
+Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany
+
+\*corresponding author
+
+2: Department of Geography, Simon Fraser University, Burnaby, Canada
+
+3: Spatial Health Lab, College of Public Health and Human Sciences,
+Oregon State University, Corvallis, USA
+
+4: Population Health Research Institute, McMaster University, Hamilton,
+Canada
+
+5: Faculty of Health Sciences, Simon Fraser University, Burnaby, Canada
 
 # Bibliography
 
@@ -2070,6 +2065,18 @@ Approach for County-Scale Geospatial Analysis of Emerging Infectious
 Diseases: A Cross-Sectional Case Study of COVID-19 Incidence in
 Germany.” *International Journal of Health Geographics* 19 (1): 32.
 <https://doi.org/10.1186/s12942-020-00225-1>.
+
+</div>
+
+<div id="ref-Walker_2022" class="csl-entry">
+
+Walker, Blake Byron, Sebastian Tobias Brinkmann, Tim Große, Dominik
+Kremer, Nadine Schuurman, Perry Hystad, Sumathy Rangarajan, Koon Teo,
+Salim Yusuf, and Scott A. Lear. 2022. “Neighborhood Greenspace and
+Socioeconomic Risk Are Associated with Diabetes Risk at the
+Sub-Neighborhood Scale: Results from the Prospective Urban and Rural
+Epidemiology (PURE) Study.” *Journal of Urban Health* 99 (3): 506–18.
+<https://doi.org/10.1007/s11524-022-00630-w>.
 
 </div>
 

@@ -1,5 +1,5 @@
 ---
-title: 'DRI-GLUCoSE  ---  Work in Progress'
+title: 'DRI-GLUCoSE'
 output:
   github_document:
     pandoc_args: --webtex=https://latex.codecogs.com/svg.latex?
@@ -8,11 +8,11 @@ always_allow_html: true
 bibliography: docs/bibliography.bib
 ---
 
+[![DOI:10.1007/s11524-022-00630-w](https://zenodo.org/badge/DOI/10.1007/s11524-022-00630-w.svg)](https://doi.org/10.1007/s11524-022-00630-w)
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
@@ -21,17 +21,15 @@ library(kableExtra)
 library(formattable)
 ```
 
-As elaborated in our recent analyses [@Walker.2019; @Scarpone.2020], nearly all previous studies in the literature use either census unit boundaries or simple buffer zones to measure an individual's built environment (BE) exposures or to characterize their local socioeconomic status (SES) [@Gong.2014; @Fuertes.2014]. Therefore, we present a distance-weighted, network-based model for quantifying the combined effects of local greenspace and SES on diabetes risk, from which we derive an area-based Diabetes Risk Index of Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE).\
-The goal of the `DRIGLUCoSE` package is to provide a public package containing functions and code used in the development of the DRI-GLUCoSE Index.
-
+As elaborated in our recent analyses [@Walker.2019; @Scarpone.2020], nearly all previous studies in the literature use either census unit boundaries or simple buffer zones to measure an individual's built environment (BE) exposures or to characterize their local socioeconomic status (SES) [@Gong.2014; @Fuertes.2014]. Therefore, we present a distance-weighted, network-based model for quantifying the combined effects of local greenspace and SES on diabetes risk, from which we derive an area-based Diabetes Risk Index of Greenspace, Land Use and Socioeconomic Environments (DRI-GLUCoSE). The goal of the `DRIGLUCoSE` package is to provide a public package containing functions and code used in the development of the DRI-GLUCoSE Index[@Walker_2022].
 
 # Installation
+
 You can install the latest version of `DRIGLUCoSE` from GitHub with:
 
 ```{r eval=FALSE, include=TRUE}
 remotes::install_git("https://github.com/STBrinkmann/DRIGLUCoSE")
 ```
-
 
 Once installed, the library can be loaded as follows:
 
@@ -39,8 +37,8 @@ Once installed, the library can be loaded as follows:
 library(DRIGLUCoSE)
 ```
 
-
 # Methods
+
 One key purpose of this package is, to provide functions for route networked derived isochrones. For that purpose we have provided a sample sf object of 2 points in Erlangen, Germany.
 
 ```{r}
@@ -49,6 +47,7 @@ Erlangen
 ```
 
 ## Census variables
+
 In our analysis we acquired data of the Canadian census dissemination areas. It has been converted to a shapefile (sf) with one column per census variable. To demonstrate we use the following randomly generated data:
 
 ```{r message=FALSE, warning=FALSE}
@@ -68,7 +67,8 @@ census
 ```
 
 ## Greenspace
-In our analysis we acquired LANDSAT images through the United States Geological Survey’s EarthExplorer platform (https://earthexplorer.usgs.gov/). The Normalized Difference Vegetation Index ([NDVI](https://gisgeography.com/ndvi-normalized-difference-vegetation-index/)) is used as a metric to model greenspace exposure. Pre-processing of the LANDSAT images and NDVI calculation has been conducted using the `LS_L1C` function:
+
+In our analysis we acquired LANDSAT images through the United States Geological Survey’s EarthExplorer platform (<https://earthexplorer.usgs.gov/>). The Normalized Difference Vegetation Index ([NDVI](https://gisgeography.com/ndvi-normalized-difference-vegetation-index/)) is used as a metric to model greenspace exposure. Pre-processing of the LANDSAT images and NDVI calculation has been conducted using the `LS_L1C` function:
 
 ```{r message=FALSE, warning=FALSE}
 DRIGLUCoSE::LS_L1C(l1c_path = "docs/LC08_L1TP_193026_20200423_20200508_01_T1_small/", 
@@ -80,16 +80,17 @@ DRIGLUCoSE::LS_L1C(l1c_path = "docs/LC08_L1TP_193026_20200423_20200508_01_T1_sma
 ```
 
 ## Exposure Model
+
 In order to estimate each participant’s potential exposures to greenspace and local SES, we (i) mapped age- and sex-specific walkable zones around their residential address, and (ii) applied a negative logit weighting function, such that the estimated effect of greenspace or SES decreases as distance from the home increases.
 
 ### (i) Road network data and isochrones
-In order to compute network-based distance metrics, we acquired street data from OpenStreetMap using the R-package `osmdata` [@Padgham.2017]. Road types not suitable for walking were removed (e.g., motorways). Network data were topologically corrected and split into ~20 metre-long segments using the R package `nngeo` [@MichaelDorman.2020].
+
+In order to compute network-based distance metrics, we acquired street data from OpenStreetMap using the R-package `osmdata` [@Padgham.2017]. Road types not suitable for walking were removed (e.g., motorways). Network data were topologically corrected and split into \~20 metre-long segments using the R package `nngeo` [@MichaelDorman.2020].
 
 ```{r message=FALSE, warning=FALSE}
 erlangen.osm <- DRIGLUCoSE::osm_roads(x = Erlangen, dist = 20, 
                                       speed = "Speed", cores = 2)
 ```
-
 
 This network data was used to derive walking distance buffers for each participant, based on walking speed. Starting from each participant’s place of residence, we computed network-constrained buffers with an off-road width of 40 meters, running in 2-minute increments from 0 to 20 minutes, using the A*-algorithm [@Hart.1968]. This therefore resulted in each participant having ten concentric isochrones, the sizes of which are a function of individual walking speed and road network.
 
@@ -106,7 +107,6 @@ erlangen.isochrones <- DRIGLUCoSE::isochrones(x = erlangen.isodistances,
                                               buffer = 40, cores = 2)
 erlangen.isochrones
 ```
-
 
 Figure 1 shows isodistances of the two points of the sample data in Erlangen, Germany.
 
@@ -152,8 +152,8 @@ erlangen.isorings %>%
 ```
 
 ### (ii) Distance-weighting
-In order to account for the diminishing effect of SES and greenspace exposure as distance increases, we fitted a logit function to weight each incremental isochrone, such that the influence of a variable decreases with increasing distance from the household, i.e., features that are farther away have less influence than nearby features, as illustrated in Figure 2. A logit function was selected as it heuristically approximates a suitable distance-decay function [@Bauer.2016; @Jia.2019].\
-The distance-weighting is separated in two parts, first the logit function (1) that is used for both SES and greenspace variables, and second the proportional weights function (4) that is only applied on SES variables.
+
+In order to account for the diminishing effect of SES and greenspace exposure as distance increases, we fitted a logit function to weight each incremental isochrone, such that the influence of a variable decreases with increasing distance from the household, i.e., features that are farther away have less influence than nearby features, as illustrated in Figure 2. A logit function was selected as it heuristically approximates a suitable distance-decay function [@Bauer.2016; @Jia.2019]. The distance-weighting is separated in two parts, first the logit function (1) that is used for both SES and greenspace variables, and second the proportional weights function (4) that is only applied on SES variables.
 
 <center>
 $$
@@ -220,9 +220,8 @@ Figure 2 visualizes the different submodels used for distance-weighting SES and 
 ```{r fig2, echo=FALSE, fig.cap="Figure 2: Unweighted values (a) and network-based distance-weighting function for socioeconomic variables (b) and greenspace (c). Bold black lines indicate the isochrones.", out.width = '90%'}
 knitr::include_graphics("docs/WeightsPlot.svg")
 ```
-\
-\
-The distance-weighting for the LANDSAT derived NDVI raster (greenspace exposure) is handled using `LS_band_weightin`, and SES distance- and areal-weighting using `census_weighting`. 
+
+The distance-weighting for the LANDSAT derived NDVI raster (greenspace exposure) is handled using `LS_band_weightin`, and SES distance- and areal-weighting using `census_weighting`.
 
 ```{r eval=TRUE, message=FALSE, warning=FALSE}
 # Calculate sd, median, 5th percentile, 95th percentile and skew of NDVI values
@@ -245,7 +244,6 @@ NDVI_weighted
 unlink("docs/LS_PreProcessed", recursive = T)
 ```
 
-
 ```{r eval=TRUE, message=FALSE, warning=FALSE}
 census_weighted <- DRIGLUCoSE::census_weighting(isochrones = erlangen.isochrones, 
                                                 tag = "tag", census = census, 
@@ -253,8 +251,26 @@ census_weighted <- DRIGLUCoSE::census_weighting(isochrones = erlangen.isochrones
 census_weighted
 ```
 
-
 # Appendix
+
+## Figures
+
+DRI-GLUCoSE scores for Vancouver (top) and Hamilton (bottom), ranging from low risk (purple) to high risk areas (orange).
+
+```{r fig3, echo=FALSE, out.width = '90%'}
+knitr::include_graphics("docs/DRI-GLUCoSE Index - Vancouver.png")
+```
+```{r fig4, echo=FALSE, out.width = '90%'}
+knitr::include_graphics("docs/DRI-GLUCoSE Index - Hamilton.png")
+```
+
+```{r fig5, echo=FALSE, fig.cap="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models.", out.width = '90%'}
+knitr::include_graphics("docs/forest_plot_big.svg")
+```
+
+```{r fig6, echo=FALSE, fig.cap="Figure A.2: The ROC curves for both BMI- and WHR-controlled multivariable logistic models.", out.width = '90%'}
+knitr::include_graphics("docs/roc_auc.svg")
+```
 
 ## Tables
 
@@ -322,7 +338,6 @@ dplyr::tibble(
   row_spec(0, bold = T) %>%
   add_header_above(c(" " = 2, "Semi-Adjusted" = 2, "Fully-Adjusted" = 2), italic = T)
 ```
-\
 
 To analyse the effect of socioeconomic status (SES) and greenspace (GS), we further build multivariable models using the semi-adjusted model with BMI as obesity measurent and tested different combinations for the index variable.
 
@@ -340,7 +355,6 @@ dplyr::tibble(
   kable_classic(full_width = F) %>%
   row_spec(0, bold = T)
 ```
-\
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 names_spaced <- c(
@@ -366,19 +380,9 @@ dplyr::tibble(
   row_spec(0, bold = T) %>%
   add_header_above(c(" " = 1, "Semi-Adjusted" = 2, "Fully-Adjusted" = 2), italic = T)
 ```
-\
-
-## Figures
-```{r fig3, echo=FALSE, fig.cap="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models.", out.width = '90%'}
-knitr::include_graphics("docs/forest_plot_big.svg")
-```
-\
-
-```{r fig4, echo=FALSE, fig.cap="Figure A.2: The ROC curves for both BMI- and WHR-controlled multivariable logistic models.", out.width = '90%'}
-knitr::include_graphics("docs/roc_auc.svg")
-```
 
 ## Summary Statistics
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 readr::read_csv("docs/summary_statistics.csv") %>% 
   kableExtra::kbl(escape = FALSE, table.attr = "style='width:90%;'",
@@ -420,19 +424,35 @@ readr::read_csv("docs/summary_statistics.csv") %>%
   pack_rows("NDVI - max", 58, 59)
 ```
 
-
 # About
+
 ### Package contributors
-Brinkmann, Sebastian Tobias (Package creator and author)\
-e-mail: sebastian.brinkmann@fau.de\
-Große, Tim (Contributor)
+
+Brinkmann, Sebastian Tobias (Package creator and author) e-mail: [sebastian.brinkmann@fau.de](mailto:sebastian.brinkmann@fau.de) Große, Tim (Contributor)
 
 ### Thesis authors
-Walker, Blake Byron (1*)\
-Brinkmann, Sebastian Tobias (1)\
-Große, Tim (1)\
 
-1: Community Health Environments and Social Terrains (CHEST) Lab, Institut für Geographie, Friedrich-Alexander-Universität Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany\
-*corresponding author\
+Walker, Blake Byron (1*)  
+Brinkmann, Sebastian Tobias (1)  
+Große, Tim (1)  
+Dominik Kremer (1)  
+Schuurman Nadine (2)  
+Hystad Perry (3)  
+Rangarajan Sumathy (4)  
+Teo Koon (4)  
+Yusuf Salim (4)  
+Lear Scott A. (5)
+
+1: Community Health Environments and Social Terrains (CHEST) Lab, Institut für Geographie, Friedrich-Alexander-Universität Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany
+
+*corresponding author
+
+2: Department of Geography, Simon Fraser University, Burnaby, Canada
+
+3: Spatial Health Lab, College of Public Health and Human Sciences, Oregon State University, Corvallis, USA
+
+4: Population Health Research Institute, McMaster University, Hamilton, Canada
+
+5: Faculty of Health Sciences, Simon Fraser University, Burnaby, Canada
 
 # Bibliography
