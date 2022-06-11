@@ -1958,6 +1958,7 @@ Median (Q1; Q3)
 
 Brinkmann, Sebastian Tobias (Package creator and author) e-mail:
 <sebastian.brinkmann@fau.de>
+
 Große, Tim (Contributor)
 
 ### Thesis authors
