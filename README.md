@@ -16,6 +16,7 @@ DRI-GLUCoSE
 -   [About](#about)
     -   [Package contributors](#package-contributors)
     -   [Thesis authors](#thesis-authors)
+    -   [Citation](#citation)
 -   [Bibliography](#bibliography)
 
 [![DOI:10.1007/s11524-022-00630-w](https://zenodo.org/badge/DOI/10.1007/s11524-022-00630-w.svg)](https://doi.org/10.1007/s11524-022-00630-w)
@@ -288,11 +289,11 @@ in the interval between the mean inner radius
 ![r\_{t-1}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;r_%7Bt-1%7D "r_{t-1}")
 and mean outer radius
 ![r_t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;r_t "r_t")
-of the isochrone (e.g. 2 to 4 minutes isochrones), normalized by the
+of the isochrone (e.g. 2 to 4 minutes isochrones), normalized by the
 integral from 0 to the outermost isochrone boundary
 ![r\_{t\_{max}}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;r_%7Bt_%7Bmax%7D%7D "r_{t_{max}}")
-(e.g. 20 minutes isochrone). Weighted summary statistics to describe the
-greenspace (e.g. mean or minimum NDVI) are thus described as (3)
+(e.g. 20 minutes isochrone). Weighted summary statistics to describe the
+greenspace (e.g. mean or minimum NDVI) are thus described as (3)
 
 <center>
 
@@ -363,9 +364,9 @@ is then defined as (5)
 
 Figure 2 visualizes the different submodels used for distance-weighting
 SES and greenspace. Fig. 2a shows the unweighted values of a SES
-variable and fig. 2b has been calculated using (5), thus representing
+variable and fig. 2b has been calculated using (5), thus representing
 the proportional weights of all intersections with the census areas and
-isochrones. Greenspace is weighted as shown in fig. 2c using (3).
+isochrones. Greenspace is weighted as shown in fig. 2c using (3).
 
 <img src="docs/WeightsPlot.svg" title="Figure 2: Unweighted values (a) and network-based distance-weighting function for socioeconomic variables (b) and greenspace (c). Bold black lines indicate the isochrones." alt="Figure 2: Unweighted values (a) and network-based distance-weighting function for socioeconomic variables (b) and greenspace (c). Bold black lines indicate the isochrones." width="90%" />
 
@@ -416,8 +417,6 @@ from low risk (purple) to high risk areas (orange).
 
 <img src="docs/DRI-GLUCoSE Index - Vancouver.png" width="90%" />
 <img src="docs/DRI-GLUCoSE Index - Hamilton.png" width="90%" />
-
-
 
 <img src="docs/forest_plot_big.svg" title="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models." alt="Figure A.1: Forest plot showing significant effects for both BMI- and WHR-controlled multivariable logistic models." width="90%" />
 
@@ -789,13 +788,13 @@ Youden index
 OR (95% CI, p-value)
 </td>
 <td style="text-align:right;">
-0.46 (0.35-0.61, p < 0.001)
+0.46 (0.35-0.61, p &lt 0.001)
 </td>
 <td style="text-align:right;">
-0.57 (0.42-0.76, p < 0.001)
+0.57 (0.42-0.76, p &lt 0.001)
 </td>
 <td style="text-align:right;">
-0.42 (0.31-0.57, p < 0.001)
+0.42 (0.31-0.57, p &lt 0.001)
 </td>
 </tr>
 </tbody>
@@ -1198,7 +1197,7 @@ Female
 </tr>
 <tr>
 <td style="text-align:left;padding-left: 4em;" indentlevel="2">
-&lt90k
+&gt90k
 </td>
 <td style="text-align:left;">
 1793 (93.3%)
@@ -1962,7 +1961,7 @@ Brinkmann, Sebastian Tobias (Package creator and author) e-mail:
 
 ### Thesis authors
 
-Walker, Blake Byron (1\*)  
+Walker, Blake Byron (1*)  
 Brinkmann, Sebastian Tobias (1)  
 Große, Tim (1)  
 Dominik Kremer (1)  
@@ -1977,7 +1976,7 @@ Lear Scott A. (5)
 Institut für Geographie, Friedrich-Alexander-Universität
 Erlangen-Nürnberg, Wetterkreuz 15, 91052 Erlangen, Germany
 
-\*corresponding author
+*corresponding author
 
 2: Department of Geography, Simon Fraser University, Burnaby, Canada
 
@@ -1988,6 +1987,32 @@ Oregon State University, Corvallis, USA
 Canada
 
 5: Faculty of Health Sciences, Simon Fraser University, Burnaby, Canada
+
+### Citation
+
+``` r
+citation("DRIGLUCoSE")
+## 
+## To cite DRIGLUCoSE in publications use:
+## 
+##   Walker, B.B., Brinkmann, S.T., Große, T. et al. Neighborhood
+##   Greenspace and Socioeconomic Risk are Associated with Diabetes Risk
+##   at the Sub-neighborhood Scale: Results from the Prospective Urban and
+##   Rural Epidemiology (PURE) Study. J Urban Health 99, 506–518 (2022).
+##   https://doi.org/10.1007/s11524-022-00630-w
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Article{,
+##     title = {Neighborhood Greenspace and Socioeconomic Risk are Associated with Diabetes Risk at the Sub-neighborhood Scale: Results from the Prospective Urban and Rural Epidemiology (PURE) Study},
+##     author = {Blake Byron Walker and Sebastian T. Brinkmann and T. Große et al.},
+##     journal = {J Urban Health},
+##     year = {2022},
+##     volume = {99},
+##     pages = {506–518},
+##     url = {https://doi.org/10.1007/s11524-022-00630-w},
+##   }
+```
 
 # Bibliography
 

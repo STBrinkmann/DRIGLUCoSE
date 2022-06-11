@@ -1,0 +1,13 @@
+citHeader("To cite DRIGLUCoSE in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "Neighborhood Greenspace and Socioeconomic Risk are Associated with Diabetes Risk at the Sub-neighborhood Scale: Results from the Prospective Urban and Rural Epidemiology (PURE) Study",
+  author   = "Blake Byron Walker, Sebastian T. Brinkmann, T. Große et al.",
+  journal  = "J Urban Health",
+  year     = "2022",
+  volume   = "99",
+  pages    = "506–518",
+  url      = "https://doi.org/10.1007/s11524-022-00630-w",
+  textVersion = paste("Walker, B.B., Brinkmann, S.T., Große, T. et al. Neighborhood Greenspace and Socioeconomic Risk are Associated with Diabetes Risk at the Sub-neighborhood Scale: Results from the Prospective Urban and Rural Epidemiology (PURE) Study. J Urban Health 99, 506–518 (2022). https://doi.org/10.1007/s11524-022-00630-w")
+)

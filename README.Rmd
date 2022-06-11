@@ -428,7 +428,8 @@ readr::read_csv("docs/summary_statistics.csv") %>%
 
 ### Package contributors
 
-Brinkmann, Sebastian Tobias (Package creator and author) e-mail: [sebastian.brinkmann@fau.de](mailto:sebastian.brinkmann@fau.de) Große, Tim (Contributor)
+Brinkmann, Sebastian Tobias (Package creator and author) e-mail: [sebastian.brinkmann@fau.de](mailto:sebastian.brinkmann@fau.de)
+Große, Tim (Contributor)
 
 ### Thesis authors
 
@@ -454,5 +455,11 @@ Lear Scott A. (5)
 4: Population Health Research Institute, McMaster University, Hamilton, Canada
 
 5: Faculty of Health Sciences, Simon Fraser University, Burnaby, Canada
+
+### Citation
+```{r}
+citation("DRIGLUCoSE")
+```
+
 
 # Bibliography
