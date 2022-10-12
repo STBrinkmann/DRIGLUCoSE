@@ -183,10 +183,10 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
     for (i in 1:nrow(this_tag)) {
       if (i == 1) {
         # Weights for 5 min isochrone
-        dist_weights[i,] <- G(this_tag$r_norm[i]) / G(1)
+        dist_weights[i,] <- G(this_tag$r_norm[i], b=.b, m=.m) / G(1, b=.b, m=.m)
       } else {
         # Weights for outer isochrones
-        dist_weights[i,] <- (G(this_tag$r_norm[i]) - G(this_tag$r_norm[i-1])) / G(1)
+        dist_weights[i,] <- (G(this_tag$r_norm[i], b=.b, m=.m) - G(this_tag$r_norm[i-1], b=.b, m=.m)) / G(1, b=.b, m=.m)
       }
     }
     # Convert to vector
@@ -226,7 +226,7 @@ census_weighting <- function(isochrones, tag = "tag", time = "time",
 
     if (!is.na(.tag)) {
       output <- c(.isochrones[[.tag]] %>% unique(), ring_values)
-      names(output) <- c("tag", var_names)
+      names(output) <- c(.tag, var_names)
     } else {
       output <- ring_values
       names(output) <- var_names

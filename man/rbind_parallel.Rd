@@ -11,9 +11,6 @@ rbind_parallel(X, cores = 1L)
 
 \item{cores}{the number of cores to use.}
 }
-\value{
-
-}
 \description{
 Helper function to allow parallel \code{\link{rbind}}
 }
