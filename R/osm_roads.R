@@ -82,8 +82,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
       capture.output(
         osm_roads <- osmdata::opq(bbox = x_bbox) %>%
           osmdata::add_osm_feature(key = 'highway') %>%
-          osmdata::osmdata_sf() %>%
-          osmdata::osm_poly2line()
+          osmdata::osmdata_sf()
       )
     )
 
@@ -94,28 +93,29 @@ osm_roads <- function(x, dist, speed, cores = 1L,
   }
 
   if (class(.error) == "try-error") stop("Runtime error.")
-  if (is.na(osm_roads)) stop("No features downloaded from www.openstreetmap.org.")
+  if (is.null(osm_roads$osm_lines) & is.null(osm_roads$osm_multilines)) {
+    stop("No features downloaded from www.openstreetmap.org.")
+  }
 
-  osm_roads <- osm_roads$osm_lines %>%
+  # Convert to multilinestring
+  if (is.null(osm_roads$osm_lines)) {
+    osm_roads <- osm_roads$osm_multilines
+  } else {
+    osm_lines <- osm_roads$osm_lines %>%
+      filter(!highway %in% remove_features) %>%
+      sf::st_cast("MULTILINESTRING")
+    if (is.null(osm_roads$osm_multilines)) {
+      osm_roads <- osm_lines
+    } else {
+      osm_roads <- rbind(osm_lines, osm_roads$osm_multilines)
+    }
+  }
+
+  osm_roads <- osm_roads %>%
     dplyr::select(highway) %>%
     dplyr::filter(!highway %in% remove_features) %>%
-    #dplyr::rename(geom = geometry) %>%
+    sf::st_set_geometry("geom") %>%
     sf::st_transform(crs = sf::st_crs(x))
-
-  # Get geometry column name
-  geometry_col_name <- lapply(osm_roads, is, "sfc") %>%
-    unlist() %>%
-    which() %>%
-    names()
-
-  if (length(geometry_col_name) > 1) {
-    warning("x contains more than one geometry column. Only the first one will be used.")
-    geometry_col_name <- dplyr::first(geometry_col_name)
-  }
-
-  if (geometry_col_name != "geom") {
-    osm_roads <- rename(osm_roads, geom = geometry_col_name)
-  }
 
 
   # 3. Topology cleaning -------------------------------------------------------
@@ -127,7 +127,7 @@ osm_roads <- function(x, dist, speed, cores = 1L,
         cl <- parallel::makeCluster(cores)
         osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200)))
         osm_roads <- parallel::parLapply(cl, osm_roads, fun = function(x){
-          x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
+          nngeo::st_segments(x, progress = FALSE)
         })
         parallel::stopCluster(cl)
       }
@@ -135,21 +135,21 @@ osm_roads <- function(x, dist, speed, cores = 1L,
       else {
         osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200))) %>%
           parallel::mclapply(function(x){
-            x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
+            nngeo::st_segments(x, progress = FALSE)
           },
           mc.cores = cores, mc.preschedule = TRUE)
       }
     } else {
       osm_roads <- suppressWarnings(split(osm_roads, seq(from = 1, to = nrow(osm_roads), by = 200)))
       osm_roads <- lapply(osm_roads, FUN = function(x){
-        x %>% sf::st_cast("LINESTRING") %>% nngeo::st_segments(progress = FALSE)
+        nngeo::st_segments(x, progress = FALSE)
       })
     }
 
     osm_roads <- st_as_sf(data.table::rbindlist(osm_roads) %>% dplyr::as_tibble())
 
     if ("result" %in% names(osm_roads)) {
-      osm_roads <- osm_roads %>% dplyr::rename(geom = "result")
+      osm_roads <- sf::st_set_geometry(osm_roads, "geom")
     }
   }
 
